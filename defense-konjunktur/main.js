@@ -5,9 +5,9 @@ const root = document.documentElement;
 toggleBtn.addEventListener('click', () => {
   root.classList.toggle('dark');
   if (root.classList.contains('dark')) {
-    toggleBtn.textContent = '☀️ Light Mode';
+    toggleBtn.textContent = '☀️';
   } else {
-    toggleBtn.textContent = '🌙 Dark Mode';
+    toggleBtn.textContent = '🌙';
   }
 });
 import scrollama from 'scrollama';
