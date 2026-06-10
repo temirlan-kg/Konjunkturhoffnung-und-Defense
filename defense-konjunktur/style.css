@@ -116,7 +116,7 @@ nav a:hover {
   line-height: 1.1;
   margin-bottom: 1.5rem;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #6ee7b7 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ffffff 40%, #e0f0ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -131,9 +131,9 @@ nav a:hover {
 }
 
 .hero-sub {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.8;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.75);
   max-width: 580px;
   margin-bottom: 0;
 }
@@ -186,10 +186,7 @@ nav a:hover {
   font-weight: 800;
   margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 0%, #93c5fd 50%, #6ee7b7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #ffffff;
 }
 
 .intro {
@@ -201,7 +198,7 @@ nav a:hover {
 
 .quelle {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
   margin-top: 1rem;
 }
 
@@ -235,7 +232,7 @@ nav a:hover {
 }
 
 :root:not(.dark) .hero::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cpath d='M-100 600 Q 300 100 700 400 T 1300 200' stroke='rgba(0,0,0,0.05)' stroke-width='1' fill='none'/%3E%3Cpath d='M-50 700 Q 400 200 800 500 T 1350 100' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3Cpath d='M100 800 Q 500 300 900 600 T 1400 300' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3Cpath d='M0 300 Q 350 700 750 350 T 1300 550' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3Cpath d='M200 0 Q 600 400 950 200 T 1400 500' stroke='rgba(0,0,0,0.04)' stroke-width='1' fill='none'/%3E%3Cpath d='M-200 400 Q 200 800 600 450 T 1100 650' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800'%3E%3Cpath d='M-100 600 Q 300 100 700 400 T 1300 200' stroke='rgba(0,0,0,0.05)' stroke-width='1' fill='none'/%3E%3Cpath d='M-50 700 Q 400 200 800 500 T 1350 100' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3Cpath d='M100 800 Q 500 300 900 600 T 1400 300' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3Cpath d='M0 300 Q 350 700 750 350 T 1300 550' stroke='rgba(0,0,0,0.03)' stroke-width='1' fill='none'/%3E%3Cpath d='M200 0 Q 600 400 950 200 T 1400 500' stroke='rgba(0,0,0,0.04)' stroke-width='1' fill='none'/%3E%3C/svg%3E");
   background-size: cover;
 }
 
@@ -247,7 +244,11 @@ nav a:hover {
 }
 
 :root:not(.dark) .hero-sub2 { color: #1d4ed8; }
-:root:not(.dark) .hero-sub { color: rgba(0,0,0,0.45); }
+
+:root:not(.dark) .hero-sub {
+  font-size: 1.2rem;
+  color: rgba(0,0,0,0.65);
+}
 
 :root:not(.dark) .scroll-section {
   background:
@@ -262,11 +263,15 @@ nav a:hover {
 }
 
 :root:not(.dark) .scroll-section h2 {
-  background: linear-gradient(135deg, #1e2761 0%, #1d4ed8 50%, #0891b2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  background: none !important;
 }
 
-:root:not(.dark) .intro { color: rgba(0,0,0,0.5); }
-:root:not(.dark) .quelle { color: rgba(0,0,0,0.25); }
+:root:not(.dark) .intro {
+  color: rgba(0,0,0,0.6);
+}
+
+:root:not(.dark) .quelle {
+  color: rgba(0,0,0,0.55);
+}
