@@ -27,7 +27,7 @@ export function initMittelstand(force = false) {
         series: [{ name: 'Anteil', data: [
           { name: 'Bereits aktiv', y: 17, color: '#3fb950' },
           { name: 'Planen Einstieg', y: 12.3, color: '#58a6ff' },
-          { name: 'Kein Interesse / Sonstiges', y: 70.7, color: '#30363d' }
+          { name: 'Kein Interesse / Sonstiges', y: 70.7, color: '#64748b' }
         ]}],
         credits: { enabled: false }
       });
