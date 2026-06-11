@@ -408,10 +408,7 @@ nav a:hover {
   .metric-grid { grid-template-columns: 1fr; }
 }
 
-/* 4. Die Legende (> 70 Mrd., 50–70 etc.) radikal unsichtbar machen */
-.map-legend {
-  display: none !important;
-}
+
 
 /* ==========================================================================
    HERO-SECTION FIX: MAP DARF NICHT DURCHBLITZEN

@@ -24,6 +24,7 @@ const ausgaben = {
 };
 
 let drawn = false;
+let svgElement = null; // Speichert das SVG global für den Zoom
 
 export function initEuropeMap() {
   if (drawn) return;
@@ -40,9 +41,13 @@ export function initEuropeMap() {
   const width = 480;
   const height = 520;
 
-  const svg = d3.select('#europe-map')
+  // Erstellt das SVG
+  svgElement = d3.select('#europe-map')
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`);
+
+  // Erstellt eine Hauptgruppe <g> für die Zoom-Animation
+  const mainGroup = svgElement.append('g').attr('class', 'map-main-group');
 
   const projection = d3.geoMercator()
     .center([10, 54])
@@ -55,11 +60,10 @@ export function initEuropeMap() {
     .then(world => {
       const countries = topojson.feature(world, world.objects.countries).features;
 
-      svg.selectAll('path')
+      mainGroup.selectAll('path')
         .data(countries)
         .join('path')
         .attr('d', path)
-        /* 🚀 NEU: Gibt jedem Land seinen Namen als CSS-Klasse (z.B. class="country-path Germany") */
         .attr('class', d => `country-path ${d.properties.name.replace(/\s+/g, '-')}`)
         .attr('fill', d => {
           const val = ausgaben[d.properties.name];
@@ -67,7 +71,7 @@ export function initEuropeMap() {
         })
         .attr('stroke', strokeColor)
         .attr('stroke-width', 0.5)
-        .style('transition', 'fill 0.4s ease, opacity 0.4s ease') /* Übergang für Scrollytelling animieren */
+        .style('transition', 'fill 0.4s ease, opacity 0.5s ease, stroke 0.5s ease')
         .append('title')
         .text(d => {
           const val = ausgaben[d.properties.name];
@@ -89,5 +93,74 @@ export function initEuropeMap() {
     legend.innerHTML = items.map(i =>
       `<span><i style="background:${i.c}"></i>${i.t}</span>`
     ).join('');
+  }
+
+  // Automatische Scroll-Überwachung starten
+  setupScrollyListener();
+}
+
+/**
+ * 🚀 KORRIGIERTE ZOOM-FUNKTION
+ */
+export function updateMapZoom(step) {
+  if (!svgElement) return;
+
+  const mainGroup = svgElement.select('.map-main-group');
+
+  if (step === 1) {
+    // 🇩🇪 SCHRITT 02: DEUTSCHLAND FOKUSSIEREN & VERGRÖSSERN
+
+    // 1. Alle anderen Länder-Pfade fast unsichtbar machen
+    svgElement.selectAll('.country-path')
+      .style('opacity', '0.08')
+      .style('stroke', 'transparent');
+
+    // 2. Deutschland strahlend im Vordergrund lassen und weiß umranden
+    svgElement.select('.country-path.Germany')
+      .style('opacity', '1')
+      .style('stroke', '#ffffff')
+      .style('stroke-width', '1.2px');
+
+    // 3. 🚀 Mathematisch berechneter Zoom auf die Mitte (width=480, height=520)
+    // Bei scale(2.2) müssen wir den Ursprung verschieben, damit Deutschland im Fokus bleibt
+    mainGroup
+      .transition()
+      .duration(1000)
+      .ease(d3.easeCubicOut)
+      .attr('transform', 'translate(-250, -280) scale(2.2)');
+
+  } else {
+    // 🔄 ZURÜCKSETZEN FÜR SCHRITTE 01, 03, 04 (Normale Europa-Ansicht)
+    svgElement.selectAll('.country-path')
+      .style('opacity', '1')
+      .style('stroke', document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)')
+      .style('stroke-width', '0.5px');
+
+    mainGroup
+      .transition()
+      .duration(800)
+      .ease(d3.easeCubicOut)
+      .attr('transform', 'translate(0, 0) scale(1)');
+  }
+}
+
+function setupScrollyListener() {
+  const steps = document.querySelectorAll('.scrolly-step');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const step = parseInt(entry.target.getAttribute('data-step'));
+          updateMapZoom(step);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '-40% 0% -40% 0%',
+      threshold: 0.1
+    });
+
+    steps.forEach(step => observer.observe(step));
   }
 }
