@@ -31,10 +31,9 @@ export function initPolitik(force = false) {
           lineColor: gridColor
         },
         yAxis: {
-          title: { text: 'Milliarden Euro', style: { color: mutedColor }, align: 'high' },
-          labels: { style: { color: mutedColor }, overflow: 'justify' },
-          gridLineColor: gridColor,
-          gridLineWidth: 1
+          title: { text: 'Milliarden Euro', style: { color: mutedColor } },
+          labels: { style: { color: mutedColor } },
+          gridLineWidth: 0
         },
         tooltip: {
           /* 🚀 Das erweiterte HTML-Tooltip aus deinem Beispiel */
