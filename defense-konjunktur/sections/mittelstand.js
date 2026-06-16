@@ -1,5 +1,4 @@
-import Highcharts from 'highcharts';
-import 'highcharts/highcharts-3d';
+ import Highcharts from 'highcharts';
 
 let chart = null;
 let observer = null;
@@ -24,24 +23,19 @@ export function initMittelstand(force = false) {
 
     chart = Highcharts.chart('chart-mittelstand', {
       chart: {
-        type: 'pie',
         backgroundColor: 'transparent',
-        options3d: { enabled: true, alpha: 45 },
+        plotBackgroundColor: null,
+        plotBorderWidth: 0,
+        plotShadow: false,
         animation: false,
         events: {
           load: function() {
-            // Alle Segmente sofort unsichtbar machen
-            this.series[0].points.forEach(point => {
-              if (point.graphic && point.graphic.element) {
-                point.graphic.element.style.opacity = '0';
-              }
-            });
+            // Animation für jedes Segment
+            this.series[0].points.forEach((point, i) => {
+              const seg = segments[i];
+              if (!seg) return;
 
-            // Dann nacheinander reinfliegen lassen
-            segments.forEach((seg, i) => {
               setTimeout(() => {
-                if (!this.series[0] || !this.series[0].points[i]) return;
-                const point = this.series[0].points[i];
                 if (point.graphic && point.graphic.element) {
                   const el = point.graphic.element;
                   const startX = seg.direction === 'left' ? -400 : 400;
@@ -66,33 +60,56 @@ export function initMittelstand(force = false) {
                     lbl.style.opacity = '1';
                   }, 400);
                 }
-              }, i * 900);
+              }, i * 700);
             });
           }
         }
       },
       title: {
-        text: 'Industriebetriebe & Defense-Markt (DIHK 2026)',
-        style: { color: textColor, fontSize: '16px' }
+        text: 'Mittelstand<br>im<br>Defense-Markt',
+        align: 'center',
+        verticalAlign: 'middle',
+        y: 40,
+        style: {
+          fontSize: '1.1em',
+          color: textColor,
+          fontWeight: 'bold'
+        }
       },
       subtitle: {
-        text: 'Anteil der Unternehmen nach Marktstatus',
-        style: { color: subtitleColor }
+        text: 'Quelle: DIHK-Konjunkturumfrage April 2026',
+        align: 'center',
+        verticalAlign: 'bottom',
+        style: { color: subtitleColor, fontSize: '11px' }
+      },
+      tooltip: {
+        pointFormat: '<b>{point.name}</b>: {point.percentage:.1f} %'
       },
       plotOptions: {
         pie: {
-          innerSize: 100,
-          depth: 45,
           animation: false,
           dataLabels: {
             enabled: true,
-            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-            style: { color: textColor, textOutline: 'none', fontWeight: 'bold' }
-          }
+            distance: -40,
+            style: {
+              fontWeight: 'bold',
+              color: 'white',
+              textOutline: 'none',
+              fontSize: '12px'
+            },
+            format: '{point.percentage:.1f} %'
+          },
+          startAngle: -90,
+          endAngle: 90,
+          center: ['50%', '75%'],
+          size: '110%',
+          borderWidth: 0
         }
       },
       series: [{
-        name: 'Anteil',
+        type: 'pie',
+        name: 'Marktstatus',
+        innerSize: '50%',
         data: segments.map(s => ({ name: s.name, y: s.y, color: s.color }))
       }],
       credits: { enabled: false }

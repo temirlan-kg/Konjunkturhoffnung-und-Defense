@@ -23,8 +23,53 @@ const ausgaben = {
   'Hungary': 3,
 };
 
+// ISO-2 Ländercodes für die Labels
+const countryCodes = {
+  'Germany': 'DE',
+  'France': 'FR',
+  'United Kingdom': 'GB',
+  'Italy': 'IT',
+  'Spain': 'ES',
+  'Poland': 'PL',
+  'Netherlands': 'NL',
+  'Sweden': 'SE',
+  'Finland': 'FI',
+  'Norway': 'NO',
+  'Belgium': 'BE',
+  'Greece': 'GR',
+  'Romania': 'RO',
+  'Czechia': 'CZ',
+  'Denmark': 'DK',
+  'Portugal': 'PT',
+  'Austria': 'AT',
+  'Hungary': 'HU',
+  'Ireland': 'IE',
+  'Switzerland': 'CH',
+  'Slovakia': 'SK',
+  'Slovenia': 'SI',
+  'Croatia': 'HR',
+  'Bulgaria': 'BG',
+  'Lithuania': 'LT',
+  'Latvia': 'LV',
+  'Estonia': 'EE',
+  'Iceland': 'IS',
+  'Luxembourg': 'LU',
+  'Albania': 'AL',
+  'Serbia': 'RS',
+  'Bosnia and Herz.': 'BA',
+  'Montenegro': 'ME',
+  'North Macedonia': 'MK',
+  'Kosovo': 'XK',
+  'Moldova': 'MD',
+  'Ukraine': 'UA',
+  'Belarus': 'BY',
+  'Russia': 'RU',
+  'Turkey': 'TR',
+  'Cyprus': 'CY',
+  'Malta': 'MT',
+};
+
 let drawn = false;
-let svgElement = null; // Speichert das SVG global für den Zoom
 
 export function initEuropeMap() {
   if (drawn) return;
@@ -32,26 +77,24 @@ export function initEuropeMap() {
 
   const isDark = document.documentElement.classList.contains('dark');
   const noDataColor = isDark ? '#1c2333' : '#e2e8f0';
-  const strokeColor = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)';
+  const strokeColor = isDark ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)';
+  const labelBg = isDark ? 'rgba(15,23,42,0.85)' : 'rgba(255,255,255,0.9)';
+  const labelText = isDark ? '#e6edf3' : '#0f172a';
 
   const colorScale = d3.scaleThreshold()
     .domain([5, 15, 30, 50, 70])
     .range(['#1e3a5f', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#6ee7b7']);
 
-  const width = 480;
-  const height = 520;
+  const width = 600;
+  const height = 600;
 
-  // Erstellt das SVG
-  svgElement = d3.select('#europe-map')
+  const svg = d3.select('#europe-map')
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`);
 
-  // Erstellt eine Hauptgruppe <g> für die Zoom-Animation
-  const mainGroup = svgElement.append('g').attr('class', 'map-main-group');
-
   const projection = d3.geoMercator()
-    .center([10, 54])
-    .scale(380)
+    .center([15, 52])
+    .scale(560)
     .translate([width / 2, height / 2]);
 
   const path = d3.geoPath(projection);
@@ -60,22 +103,57 @@ export function initEuropeMap() {
     .then(world => {
       const countries = topojson.feature(world, world.objects.countries).features;
 
-      mainGroup.selectAll('path')
+      // Länder zeichnen
+      svg.selectAll('path')
         .data(countries)
         .join('path')
         .attr('d', path)
-        .attr('class', d => `country-path ${d.properties.name.replace(/\s+/g, '-')}`)
         .attr('fill', d => {
           const val = ausgaben[d.properties.name];
           return val ? colorScale(val) : noDataColor;
         })
         .attr('stroke', strokeColor)
-        .attr('stroke-width', 0.5)
-        .style('transition', 'fill 0.4s ease, opacity 0.5s ease, stroke 0.5s ease')
+        .attr('stroke-width', 0.8)
+        .style('transition', 'fill 0.3s ease')
         .append('title')
         .text(d => {
           const val = ausgaben[d.properties.name];
           return val ? `${d.properties.name}: ${val} Mrd. €` : d.properties.name;
+        });
+
+      // Ländercodes als Labels hinzufügen
+      svg.selectAll('g.country-label')
+        .data(countries.filter(d => countryCodes[d.properties.name]))
+        .join('g')
+        .attr('class', 'country-label')
+        .attr('transform', d => {
+          const centroid = path.centroid(d);
+          return `translate(${centroid[0]}, ${centroid[1]})`;
+        })
+        .each(function(d) {
+          const g = d3.select(this);
+          const code = countryCodes[d.properties.name];
+
+          // Hintergrund-Rechteck für Label
+          g.append('rect')
+            .attr('x', -10)
+            .attr('y', -7)
+            .attr('width', 20)
+            .attr('height', 14)
+            .attr('rx', 3)
+            .attr('fill', labelBg)
+            .attr('stroke', 'rgba(0,0,0,0.3)')
+            .attr('stroke-width', 0.5);
+
+          // Text
+          g.append('text')
+            .text(code)
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle')
+            .attr('font-size', '9px')
+            .attr('font-weight', 'bold')
+            .attr('fill', labelText)
+            .style('pointer-events', 'none');
         });
     });
 
@@ -93,74 +171,5 @@ export function initEuropeMap() {
     legend.innerHTML = items.map(i =>
       `<span><i style="background:${i.c}"></i>${i.t}</span>`
     ).join('');
-  }
-
-  // Automatische Scroll-Überwachung starten
-  setupScrollyListener();
-}
-
-/**
- * 🚀 KORRIGIERTE ZOOM-FUNKTION
- */
-export function updateMapZoom(step) {
-  if (!svgElement) return;
-
-  const mainGroup = svgElement.select('.map-main-group');
-
-  if (step === 1) {
-    // 🇩🇪 SCHRITT 02: DEUTSCHLAND FOKUSSIEREN & VERGRÖSSERN
-
-    // 1. Alle anderen Länder-Pfade fast unsichtbar machen
-    svgElement.selectAll('.country-path')
-      .style('opacity', '0.08')
-      .style('stroke', 'transparent');
-
-    // 2. Deutschland strahlend im Vordergrund lassen und weiß umranden
-    svgElement.select('.country-path.Germany')
-      .style('opacity', '1')
-      .style('stroke', '#ffffff')
-      .style('stroke-width', '1.2px');
-
-    // 3. 🚀 Mathematisch berechneter Zoom auf die Mitte (width=480, height=520)
-    // Bei scale(2.2) müssen wir den Ursprung verschieben, damit Deutschland im Fokus bleibt
-    mainGroup
-      .transition()
-      .duration(1000)
-      .ease(d3.easeCubicOut)
-      .attr('transform', 'translate(-250, -280) scale(2.2)');
-
-  } else {
-    // 🔄 ZURÜCKSETZEN FÜR SCHRITTE 01, 03, 04 (Normale Europa-Ansicht)
-    svgElement.selectAll('.country-path')
-      .style('opacity', '1')
-      .style('stroke', document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.1)')
-      .style('stroke-width', '0.5px');
-
-    mainGroup
-      .transition()
-      .duration(800)
-      .ease(d3.easeCubicOut)
-      .attr('transform', 'translate(0, 0) scale(1)');
-  }
-}
-
-function setupScrollyListener() {
-  const steps = document.querySelectorAll('.scrolly-step');
-
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const step = parseInt(entry.target.getAttribute('data-step'));
-          updateMapZoom(step);
-        }
-      });
-    }, {
-      root: null,
-      rootMargin: '-40% 0% -40% 0%',
-      threshold: 0.1
-    });
-
-    steps.forEach(step => observer.observe(step));
   }
 }
