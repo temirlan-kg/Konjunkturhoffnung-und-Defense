@@ -23,53 +23,61 @@ const ausgaben = {
   'Hungary': 3,
 };
 
-// ISO-2 Ländercodes für die Labels
 const countryCodes = {
-  'Germany': 'DE',
-  'France': 'FR',
-  'United Kingdom': 'GB',
-  'Italy': 'IT',
-  'Spain': 'ES',
-  'Poland': 'PL',
-  'Netherlands': 'NL',
-  'Sweden': 'SE',
-  'Finland': 'FI',
-  'Norway': 'NO',
-  'Belgium': 'BE',
-  'Greece': 'GR',
-  'Romania': 'RO',
-  'Czechia': 'CZ',
-  'Denmark': 'DK',
-  'Portugal': 'PT',
-  'Austria': 'AT',
-  'Hungary': 'HU',
-  'Ireland': 'IE',
-  'Switzerland': 'CH',
-  'Slovakia': 'SK',
-  'Slovenia': 'SI',
-  'Croatia': 'HR',
-  'Bulgaria': 'BG',
-  'Lithuania': 'LT',
-  'Latvia': 'LV',
-  'Estonia': 'EE',
-  'Iceland': 'IS',
-  'Luxembourg': 'LU',
-  'Albania': 'AL',
-  'Serbia': 'RS',
-  'Bosnia and Herz.': 'BA',
-  'Montenegro': 'ME',
-  'North Macedonia': 'MK',
-  'Kosovo': 'XK',
-  'Moldova': 'MD',
-  'Ukraine': 'UA',
-  'Belarus': 'BY',
-  'Russia': 'RU',
-  'Turkey': 'TR',
-  'Cyprus': 'CY',
-  'Malta': 'MT',
+  'Germany': 'DE', 'France': 'FR', 'United Kingdom': 'GB', 'Italy': 'IT',
+  'Spain': 'ES', 'Poland': 'PL', 'Netherlands': 'NL', 'Sweden': 'SE',
+  'Finland': 'FI', 'Norway': 'NO', 'Belgium': 'BE', 'Greece': 'GR',
+  'Romania': 'RO', 'Czechia': 'CZ', 'Denmark': 'DK', 'Portugal': 'PT',
+  'Austria': 'AT', 'Hungary': 'HU', 'Ireland': 'IE', 'Switzerland': 'CH',
+  'Slovakia': 'SK', 'Slovenia': 'SI', 'Croatia': 'HR', 'Bulgaria': 'BG',
+  'Lithuania': 'LT', 'Latvia': 'LV', 'Estonia': 'EE', 'Iceland': 'IS',
+  'Luxembourg': 'LU', 'Albania': 'AL', 'Serbia': 'RS', 'Bosnia and Herz.': 'BA',
+  'Montenegro': 'ME', 'North Macedonia': 'MK', 'Kosovo': 'XK', 'Moldova': 'MD',
+  'Ukraine': 'UA', 'Belarus': 'BY', 'Russia': 'RU', 'Turkey': 'TR',
+  'Cyprus': 'CY', 'Malta': 'MT',
+};
+
+// Highlight + Zoom-Konfiguration pro Step
+// scale: 1 = normal, 2 = stark gezoomt
+// center: [longitude, latitude] auf welches Gebiet zentriert wird
+const stepConfigs = {
+  '0': {
+    // Geopolitische Realität — gesamte Europa-Ansicht
+    highlight: null,
+    scale: 1,
+    center: [15, 52]
+  },
+  '1': {
+    // Deutschland im Fokus — Zoom auf Deutschland
+    highlight: ['Germany'],
+    scale: 2.2,
+    center: [10.5, 51]
+  },
+  '2': {
+    // Industrieller Wandel — Zoom auf Mittel-/Westeuropa
+    highlight: ['Germany', 'France', 'Italy', 'United Kingdom', 'Poland'],
+    scale: 1.4,
+    center: [8, 50]
+  },
+  '3': {
+    // Innovationslandschaft — gesamtes NATO-Europa
+    highlight: ['Germany', 'France', 'United Kingdom', 'Poland', 'Italy', 'Sweden', 'Netherlands'],
+    scale: 1.1,
+    center: [12, 53]
+  }
 };
 
 let drawn = false;
+let svg = null;
+let mapGroup = null;
+let pathsSelection = null;
+let labelsSelection = null;
+let projection = null;
+let path = null;
+const baseScale = 560;
+const baseCenter = [15, 52];
+const width = 600;
+const height = 600;
 
 export function initEuropeMap() {
   if (drawn) return;
@@ -85,26 +93,26 @@ export function initEuropeMap() {
     .domain([5, 15, 30, 50, 70])
     .range(['#1e3a5f', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd', '#6ee7b7']);
 
-  const width = 600;
-  const height = 600;
-
-  const svg = d3.select('#europe-map')
+  svg = d3.select('#europe-map')
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`);
 
-  const projection = d3.geoMercator()
-    .center([15, 52])
-    .scale(560)
+  // Gruppe für alle Karten-Elemente (für Transform/Zoom)
+  mapGroup = svg.append('g').attr('class', 'map-group');
+
+  projection = d3.geoMercator()
+    .center(baseCenter)
+    .scale(baseScale)
     .translate([width / 2, height / 2]);
 
-  const path = d3.geoPath(projection);
+  path = d3.geoPath(projection);
 
   d3.json('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     .then(world => {
       const countries = topojson.feature(world, world.objects.countries).features;
 
-      // Länder zeichnen
-      svg.selectAll('path')
+      // Länder
+      pathsSelection = mapGroup.selectAll('path')
         .data(countries)
         .join('path')
         .attr('d', path)
@@ -114,27 +122,43 @@ export function initEuropeMap() {
         })
         .attr('stroke', strokeColor)
         .attr('stroke-width', 0.8)
-        .style('transition', 'fill 0.3s ease')
-        .append('title')
+        .style('transition', 'fill 0.6s ease, opacity 0.8s ease, stroke-width 0.8s ease');
+
+      pathsSelection.append('title')
         .text(d => {
           const val = ausgaben[d.properties.name];
           return val ? `${d.properties.name}: ${val} Mrd. €` : d.properties.name;
         });
 
-      // Ländercodes als Labels hinzufügen
-      svg.selectAll('g.country-label')
+      const fixedPositions = {
+        'Norway': [10.5, 61],
+        'Sweden': [15, 62],
+        'Finland': [26, 64],
+        'United Kingdom': [-2, 54],
+        'Italy': [12.5, 43],
+        'France': [2.5, 47],
+      };
+
+      // Labels
+      labelsSelection = mapGroup.selectAll('g.country-label')
         .data(countries.filter(d => countryCodes[d.properties.name]))
         .join('g')
         .attr('class', 'country-label')
+        .style('transition', 'opacity 0.8s ease')
         .attr('transform', d => {
-          const centroid = path.centroid(d);
-          return `translate(${centroid[0]}, ${centroid[1]})`;
+          const name = d.properties.name;
+          let pos;
+          if (fixedPositions[name]) {
+            pos = projection(fixedPositions[name]);
+          } else {
+            pos = path.centroid(d);
+          }
+          return `translate(${pos[0]}, ${pos[1]})`;
         })
         .each(function(d) {
           const g = d3.select(this);
           const code = countryCodes[d.properties.name];
 
-          // Hintergrund-Rechteck für Label
           g.append('rect')
             .attr('x', -10)
             .attr('y', -7)
@@ -145,7 +169,6 @@ export function initEuropeMap() {
             .attr('stroke', 'rgba(0,0,0,0.3)')
             .attr('stroke-width', 0.5);
 
-          // Text
           g.append('text')
             .text(code)
             .attr('text-anchor', 'middle')
@@ -155,6 +178,12 @@ export function initEuropeMap() {
             .attr('fill', labelText)
             .style('pointer-events', 'none');
         });
+
+      // Smooth transition für mapGroup
+      mapGroup.style('transition', 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)');
+
+      // Scroll-Steps beobachten
+      setupScrollHighlight();
     });
 
   // Legende
@@ -171,5 +200,57 @@ export function initEuropeMap() {
     legend.innerHTML = items.map(i =>
       `<span><i style="background:${i.c}"></i>${i.t}</span>`
     ).join('');
+  }
+}
+
+function setupScrollHighlight() {
+  const steps = document.querySelectorAll('.scrolly-step');
+
+  const stepObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const stepIndex = entry.target.getAttribute('data-step');
+        applyStep(stepIndex);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  steps.forEach(step => stepObserver.observe(step));
+}
+
+function applyStep(stepIndex) {
+  if (!pathsSelection || !labelsSelection || !mapGroup) return;
+
+  const config = stepConfigs[stepIndex];
+  if (!config) return;
+
+  // 1. Zoom & Pan: Berechnung wie weit verschoben werden soll
+  const targetPoint = projection(config.center);
+  const cx = width / 2;
+  const cy = height / 2;
+  const dx = cx - targetPoint[0];
+  const dy = cy - targetPoint[1];
+
+  // CSS transform für Zoom + Pan
+  const tx = (cx - config.scale * (cx - dx));
+  const ty = (cy - config.scale * (cy - dy));
+  mapGroup.style('transform', `translate(${tx}px, ${ty}px) scale(${config.scale})`);
+  mapGroup.style('transform-origin', `0 0`);
+
+  // 2. Highlight: Länder hervorheben
+  const highlight = config.highlight;
+
+  if (!highlight) {
+    pathsSelection
+      .style('opacity', 1)
+      .style('stroke-width', 0.8);
+    labelsSelection.style('opacity', 1);
+  } else {
+    pathsSelection
+      .style('opacity', d => highlight.includes(d.properties.name) ? 1 : 0.2)
+      .style('stroke-width', d => highlight.includes(d.properties.name) ? 1.5 : 0.5);
+
+    labelsSelection
+      .style('opacity', d => highlight.includes(d.properties.name) ? 1 : 0.25);
   }
 }
