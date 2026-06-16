@@ -15,9 +15,8 @@ Seit der Zeitenwende 2022 hat sich die sicherheitspolitische Lage in Europa grun
 **These:** *Der Rüstungsboom ist Realität — ob er zur Konjunkturhoffnung wird, entscheiden die nächsten Jahre.*
 
 ### Zielgruppe
-- Unternehmen, Entscheider und Fachleute
+- Unternehmen
 - Mittelständische Unternehmer
-
 
 ### Gestaltungsprinzipien
 - Niedrigschwellig
@@ -109,4 +108,32 @@ npm run build
 
 ---
 
-## 📁 Projektstruktur
+## 📊 Datenquellen
+
+### Offizielle Statistiken
+- **NATO** — Defence Expenditure Database
+- **European Defence Agency (EDA)** — Defence Data 2024–2025
+- **Bundestag** — Haushaltspläne und Sondervermögen
+- **Bundesministerium der Verteidigung (BMVg)** — Mittelplanung
+
+### Verbandsdaten
+- **DIHK** — Konjunkturumfrage April 2026
+- **BDSV** — Bundesverband der Deutschen Sicherheits- und Verteidigungsindustrie
+
+### Wirtschaftsstudien
+- **EY/Deka 2025** — Beschäftigungsprognose
+- **McKinsey** — Marktvolumen-Analyse
+- **Universität Mannheim** — Fiskalmultiplikator-Studie
+- **Bitkom DefTech Report 2026**
+
+---
+
+
+## 👥 Team
+- **Temirlan Anarkulov**
+- **Semanur Asalioglu**
+- **Manuel Nseguet Tchamfa**
+---
+
+
+**Stand:** Juni 2026
