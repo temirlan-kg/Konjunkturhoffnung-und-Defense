@@ -37,30 +37,23 @@ const countryCodes = {
   'Cyprus': 'CY', 'Malta': 'MT',
 };
 
-// Highlight + Zoom-Konfiguration pro Step
-// scale: 1 = normal, 2 = stark gezoomt
-// center: [longitude, latitude] auf welches Gebiet zentriert wird
 const stepConfigs = {
   '0': {
-    // Geopolitische Realität — gesamte Europa-Ansicht
     highlight: null,
     scale: 1,
     center: [15, 52]
   },
   '1': {
-    // Deutschland im Fokus — Zoom auf Deutschland
     highlight: ['Germany'],
     scale: 2.2,
     center: [10.5, 51]
   },
   '2': {
-    // Industrieller Wandel — Zoom auf Mittel-/Westeuropa
     highlight: ['Germany', 'France', 'Italy', 'United Kingdom', 'Poland'],
     scale: 1.4,
     center: [8, 50]
   },
   '3': {
-    // Innovationslandschaft — gesamtes NATO-Europa
     highlight: ['Germany', 'France', 'United Kingdom', 'Poland', 'Italy', 'Sweden', 'Netherlands'],
     scale: 1.1,
     center: [12, 53]
@@ -97,7 +90,6 @@ export function initEuropeMap() {
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`);
 
-  // Gruppe für alle Karten-Elemente (für Transform/Zoom)
   mapGroup = svg.append('g').attr('class', 'map-group');
 
   projection = d3.geoMercator()
@@ -111,7 +103,6 @@ export function initEuropeMap() {
     .then(world => {
       const countries = topojson.feature(world, world.objects.countries).features;
 
-      // Länder
       pathsSelection = mapGroup.selectAll('path')
         .data(countries)
         .join('path')
@@ -139,7 +130,6 @@ export function initEuropeMap() {
         'France': [2.5, 47],
       };
 
-      // Labels
       labelsSelection = mapGroup.selectAll('g.country-label')
         .data(countries.filter(d => countryCodes[d.properties.name]))
         .join('g')
@@ -179,11 +169,14 @@ export function initEuropeMap() {
             .style('pointer-events', 'none');
         });
 
-      // Smooth transition für mapGroup
       mapGroup.style('transition', 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)');
 
-      // Scroll-Steps beobachten
+      // Initial: ausgezoomt + unsichtbar
+      resetMap();
+
+      // Beobachter starten
       setupScrollHighlight();
+      setupIntroAnimation();
     });
 
   // Legende
@@ -201,6 +194,18 @@ export function initEuropeMap() {
       `<span><i style="background:${i.c}"></i>${i.t}</span>`
     ).join('');
   }
+}
+
+// Setzt Karte auf "rausgezoomt + unsichtbar" zurück
+function resetMap() {
+  if (!mapGroup) return;
+  mapGroup.style('transition', 'none');
+  mapGroup.style('transform', 'translate(150px, 150px) scale(0.4)');
+  mapGroup.style('transform-origin', '0 0');
+  mapGroup.style('opacity', '0');
+  // Force reflow damit Browser den Reset wirklich übernimmt
+  void mapGroup.node().getBoundingClientRect();
+  mapGroup.style('transition', 'transform 1.8s cubic-bezier(0.22, 1, 0.36, 1), opacity 1.2s ease');
 }
 
 function setupScrollHighlight() {
@@ -224,20 +229,20 @@ function applyStep(stepIndex) {
   const config = stepConfigs[stepIndex];
   if (!config) return;
 
-  // 1. Zoom & Pan: Berechnung wie weit verschoben werden soll
   const targetPoint = projection(config.center);
   const cx = width / 2;
   const cy = height / 2;
   const dx = cx - targetPoint[0];
   const dy = cy - targetPoint[1];
 
-  // CSS transform für Zoom + Pan
   const tx = (cx - config.scale * (cx - dx));
   const ty = (cy - config.scale * (cy - dy));
+
+  mapGroup.style('transition', 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease');
+  mapGroup.style('opacity', '1');
   mapGroup.style('transform', `translate(${tx}px, ${ty}px) scale(${config.scale})`);
   mapGroup.style('transform-origin', `0 0`);
 
-  // 2. Highlight: Länder hervorheben
   const highlight = config.highlight;
 
   if (!highlight) {
@@ -253,4 +258,31 @@ function applyStep(stepIndex) {
     labelsSelection
       .style('opacity', d => highlight.includes(d.properties.name) ? 1 : 0.25);
   }
+}
+
+function setupIntroAnimation() {
+  const section = document.getElementById('section-allgemeines');
+  if (!section || !mapGroup) return;
+
+  const introObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Reset und neue Animation jedes Mal
+        resetMap();
+
+        setTimeout(() => {
+          mapGroup.style('opacity', '1');
+          applyStep('0');
+        }, 100);
+      } else {
+        // Beim Verlassen: Karte ausblenden für nächste Intro
+        if (mapGroup) {
+          mapGroup.style('transition', 'opacity 0.5s ease');
+          mapGroup.style('opacity', '0');
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  introObserver.observe(section);
 }
