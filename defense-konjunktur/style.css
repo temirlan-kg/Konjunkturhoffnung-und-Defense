@@ -387,3 +387,181 @@ nav a:hover {
 @media (max-width: 640px) {
   .metric-grid { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================================
+   8. LAND-DROPDOWN & DETAIL-PANEL (SCHRITT 04 – INNOVATIONSLANDSCHAFT)
+   ========================================================================== */
+.land-dropdown {
+  margin-top: 1.5rem;
+  padding: 10px 16px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-side);
+  color: var(--text-primary);
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  transition: border 0.2s ease;
+}
+
+.land-dropdown:hover {
+  border-color: var(--accent);
+}
+
+/* Detail-Panel, fährt von rechts über die Karte */
+.land-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 380px;
+  height: 100%;
+  background: var(--bg-side);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 30px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  overflow-y: auto;
+  transform: translateX(105%);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 50;
+}
+
+.land-panel.open {
+  transform: translateX(0);
+}
+
+.panel-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--border);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.panel-kopf {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 0.25rem;
+}
+
+.panel-flagge {
+  font-size: 2rem;
+}
+
+.panel-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.panel-aktuell-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.panel-aktuell-wert {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+#panel-chart {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.panel-top3-titel {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.firma-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+  background: var(--bg);
+}
+
+.firma-rang {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--accent);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.firma-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.firma-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.firma-fokus {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.firma-kap {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 1024px) {
+  .land-panel {
+    max-width: 100%;
+  }
+}
+
+/* ==========================================================================
+   9. POLITIK-TOGGLE (MRD. € vs. % DES BIP)
+   ========================================================================== */
+.politik-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--border);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.politik-toggle button {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 8px 18px;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.politik-toggle button.aktiv {
+  background: var(--bg-side);
+  color: var(--accent);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}

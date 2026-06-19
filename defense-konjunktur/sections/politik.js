@@ -3,6 +3,7 @@ import Highcharts from 'highcharts';
 let chart = null;
 let observer = null;
 let cachedData = null;
+let modus = 'absolut'; // 'absolut' oder 'bip'
 
 export function initPolitik(force = false) {
   if (chart && !force) return;
@@ -17,6 +18,18 @@ export function initPolitik(force = false) {
   function buildChart(data) {
     if (chart) { chart.destroy(); chart = null; }
 
+    const istBip = modus === 'bip';
+
+    const serienDaten = istBip
+      ? { de: data.zeitverlauf.deutschland_bip, eu: data.zeitverlauf.eu27_bip }
+      : { de: data.zeitverlauf.deutschland, eu: data.zeitverlauf.eu27 };
+
+    const einheit = istBip ? '% des BIP' : 'Mrd. €';
+    const yTitel = istBip ? '% des BIP' : 'Milliarden Euro';
+    const titelText = istBip
+      ? 'Verteidigungsausgaben Deutschland & EU-27 (% des BIP)'
+      : 'Verteidigungsausgaben Deutschland & EU-27 (Mrd. €)';
+
     chart = Highcharts.chart('chart-politik', {
       chart: {
         type: 'column',
@@ -24,7 +37,7 @@ export function initPolitik(force = false) {
         animation: { duration: 1200 }
       },
       title: {
-        text: 'Verteidigungsausgaben Deutschland & EU-27 (Mrd. €)',
+        text: titelText,
         style: { color: textColor, fontSize: '16px' }
       },
       xAxis: {
@@ -35,9 +48,20 @@ export function initPolitik(force = false) {
         lineColor: gridColor
       },
       yAxis: {
-        title: { text: 'Milliarden Euro', style: { color: mutedColor } },
+        title: { text: yTitel, style: { color: mutedColor } },
         labels: { style: { color: mutedColor } },
-        gridLineWidth: 0
+        gridLineWidth: 0,
+        plotLines: istBip ? [{
+          color: '#f59e0b',
+          dashStyle: 'Dash',
+          width: 1.5,
+          value: 2,
+          label: {
+            text: 'NATO-Ziel 2 %',
+            style: { color: '#f59e0b', fontSize: '10px' }
+          },
+          zIndex: 5
+        }] : []
       },
       tooltip: {
         headerFormat: `<div style="display: flex; flex-direction: column; gap: 4px; padding: 4px;">
@@ -49,7 +73,7 @@ export function initPolitik(force = false) {
                             <rect width="10" height="12" fill="{series.color}" rx="2" />
                         </svg>
                         <span style="color: ${mutedColor}">{series.name}:</span>
-                        <b style="margin-left: auto; padding-left: 0.5em">{point.y} Mrd. €</b>
+                        <b style="margin-left: auto; padding-left: 0.5em">{point.y} ${einheit}</b>
                       </div>`,
         footerFormat: '</div>',
         useHTML: true,
@@ -64,7 +88,8 @@ export function initPolitik(force = false) {
           animation: { duration: 1200 },
           dataLabels: {
             enabled: true,
-            style: { color: textColor, textOutline: 'none' }
+            style: { color: textColor, textOutline: 'none' },
+            format: istBip ? '{point.y} %' : '{point.y}'
           },
           groupPadding: 0.2
         }
@@ -72,12 +97,12 @@ export function initPolitik(force = false) {
       series: [
         {
           name: 'Deutschland',
-          data: data.zeitverlauf.deutschland,
+          data: serienDaten.de,
           color: '#1d4ed8'
         },
         {
           name: 'EU-27',
-          data: data.zeitverlauf.eu27,
+          data: serienDaten.eu,
           color: '#059669'
         }
       ],
@@ -85,10 +110,27 @@ export function initPolitik(force = false) {
     });
   }
 
+  function setupToggle(data) {
+    const btnAbsolut = document.getElementById('toggle-absolut');
+    const btnBip = document.getElementById('toggle-bip');
+    if (!btnAbsolut || !btnBip) return;
+
+    function aktualisiere() {
+      btnAbsolut.classList.toggle('aktiv', modus === 'absolut');
+      btnBip.classList.toggle('aktiv', modus === 'bip');
+    }
+
+    btnAbsolut.onclick = () => { modus = 'absolut'; aktualisiere(); buildChart(data); };
+    btnBip.onclick = () => { modus = 'bip'; aktualisiere(); buildChart(data); };
+
+    aktualisiere();
+  }
+
   function setupObserver(data) {
     const target = document.getElementById('chart-politik');
     if (!target) return;
 
+    setupToggle(data);
     buildChart(data);
 
     observer = new IntersectionObserver((entries) => {

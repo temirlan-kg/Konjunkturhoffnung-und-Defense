@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
+import { openLandPanel } from './laender-panel.js';
 
 // Verteidigungsausgaben 2024 (Mrd. €) — EDA / NATO Defence Data
 const ausgaben = {
@@ -22,6 +23,9 @@ const ausgaben = {
   'Austria': 4,
   'Hungary': 3,
 };
+
+// Klickbare Länder (Schritt 04)
+const klickbareLaender = ['Germany', 'France', 'United Kingdom', 'Italy', 'Poland', 'Spain', 'Switzerland', 'Austria'];
 
 const countryCodes = {
   'Germany': 'DE', 'France': 'FR', 'United Kingdom': 'GB', 'Italy': 'IT',
@@ -54,9 +58,10 @@ const stepConfigs = {
     center: [8, 50]
   },
   '3': {
-    highlight: ['Germany', 'France', 'United Kingdom', 'Poland', 'Italy', 'Sweden', 'Netherlands'],
-    scale: 1.1,
-    center: [12, 53]
+    highlight: null,
+    scale: 1,
+    center: [15, 52],
+    klickbar: true
   }
 };
 
@@ -67,6 +72,7 @@ let pathsSelection = null;
 let labelsSelection = null;
 let projection = null;
 let path = null;
+let aktuellerStep = '0';
 const baseScale = 560;
 const baseCenter = [15, 52];
 const width = 600;
@@ -107,13 +113,21 @@ export function initEuropeMap() {
         .data(countries)
         .join('path')
         .attr('d', path)
+        .attr('class', d => 'country-path country-' + (countryCodes[d.properties.name] || 'xx'))
         .attr('fill', d => {
           const val = ausgaben[d.properties.name];
           return val ? colorScale(val) : noDataColor;
         })
         .attr('stroke', strokeColor)
         .attr('stroke-width', 0.8)
-        .style('transition', 'fill 0.6s ease, opacity 0.8s ease, stroke-width 0.8s ease');
+        .style('transition', 'fill 0.6s ease, opacity 0.8s ease, stroke-width 0.8s ease')
+        .on('click', function(event, d) {
+          // Nur in Schritt 04 (klickbar) und nur die 8 Länder
+          if (!stepConfigs[aktuellerStep] || !stepConfigs[aktuellerStep].klickbar) return;
+          if (!klickbareLaender.includes(d.properties.name)) return;
+          openLandPanel(d.properties.name);
+          markiereAktivesLand(d.properties.name);
+        });
 
       pathsSelection.append('title')
         .text(d => {
@@ -196,6 +210,16 @@ export function initEuropeMap() {
   }
 }
 
+// Hebt das aktuell ausgewählte Land optisch hervor
+export function markiereAktivesLand(name) {
+  if (!pathsSelection) return;
+  pathsSelection
+    .style('stroke-width', d => d.properties.name === name ? 2.5 : 0.8)
+    .attr('stroke', d => d.properties.name === name
+      ? '#f59e0b'
+      : (document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'));
+}
+
 // Setzt Karte auf "rausgezoomt + unsichtbar" zurück
 function resetMap() {
   if (!mapGroup) return;
@@ -226,6 +250,7 @@ function setupScrollHighlight() {
 function applyStep(stepIndex) {
   if (!pathsSelection || !labelsSelection || !mapGroup) return;
 
+  aktuellerStep = stepIndex;
   const config = stepConfigs[stepIndex];
   if (!config) return;
 
@@ -244,6 +269,19 @@ function applyStep(stepIndex) {
   mapGroup.style('transform-origin', `0 0`);
 
   const highlight = config.highlight;
+
+  // In Schritt 04: klickbare Länder dezent hervorheben + Cursor
+  if (config.klickbar) {
+    pathsSelection
+      .style('opacity', 1)
+      .style('stroke-width', d => klickbareLaender.includes(d.properties.name) ? 1.5 : 0.8)
+      .style('cursor', d => klickbareLaender.includes(d.properties.name) ? 'pointer' : 'default');
+    labelsSelection.style('opacity', 1);
+    return;
+  }
+
+  // Cursor zurücksetzen, wenn nicht klickbar
+  pathsSelection.style('cursor', 'default');
 
   if (!highlight) {
     pathsSelection
