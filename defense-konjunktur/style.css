@@ -86,19 +86,19 @@ nav a:hover {
    3. HERO SECTION
    ========================================================================== */
 .hero {
-  min-height: 80vh; /* Genug Platz für die Einleitung */
+  min-height: 100vh !important;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 12rem 2rem 6rem;
-  background: radial-gradient(ellipse at 50% 50%, rgba(29, 78, 216, 0.05) 0%, transparent 70%), var(--bg);
-  position: relative;
-  z-index: 10; /* Bleibt sauber über der fixierten Karte */
+  padding: 8rem 2rem 4rem;
+  background: radial-gradient(ellipse at 50% 50%, rgba(29, 78, 216, 0.05) 0%, transparent 70%), var(--bg) !important;
+  position: relative !important;
+  z-index: 100 !important;
 }
 
 :root.dark .hero {
-  background: radial-gradient(ellipse at 50% 50%, rgba(29, 78, 216, 0.12) 0%, transparent 70%), #080c14;
+  background: radial-gradient(ellipse at 50% 50%, rgba(29, 78, 216, 0.12) 0%, transparent 70%), #080c14 !important;
 }
 
 .hero-content {
@@ -135,7 +135,7 @@ nav a:hover {
   border-bottom: 1px solid var(--border);
   position: relative;
   background: var(--bg);
-  z-index: 20; /* Überdeckt das Scrollytelling, wenn man weiterblättert */
+  z-index: 20;
 }
 
 .content {
@@ -167,20 +167,21 @@ nav a:hover {
 }
 
 /* ==========================================================================
-   5. SCROLLYTELLING-LAYOUT (ZURÜCKGESETZT AUF DEINEN LIEBLINGSSTAND)
+   5. SCROLLYTELLING-LAYOUT
    ========================================================================== */
 .allgemeines-scrolly {
   display: block;
   padding: 0;
   position: relative;
   z-index: 5;
+  margin-top: 0 !important;
 }
 
 .scrolly-grid {
   display: flex;
   position: relative;
   width: 100%;
-  align-items: flex-start; /* Verhindert das unkontrollierte Hochschießen */
+  align-items: flex-start;
 }
 
 /* Linke Seite: Scrollbarer Textfluss */
@@ -188,7 +189,7 @@ nav a:hover {
   flex: 1;
   max-width: 50%;
   padding: 0 4rem;
-  margin-top: 20vh; /* 🚀 FIX: Drückt den ersten Text weit genug nach unten weg vom Hero */
+  margin-top: 20vh;
   margin-bottom: 30vh;
 }
 
@@ -244,18 +245,14 @@ nav a:hover {
   color: var(--text-secondary);
 }
 
-/* Rechte Seite: Fixierte Europa-Karte (FARBLICH ANGEPASST) */
+/* Rechte Seite: Fixierte Europa-Karte */
 .scrolly-map-wrap {
   flex: 1;
   max-width: 50%;
   position: sticky;
-  top: 60px; /* Dockt exakt unter der fixierten Nav an */
+  top: 60px;
   height: calc(100vh - 60px);
-
-  /* 🚀 FIX 1: Nutzt jetzt exakt dieselbe Hintergrundfarbe wie die linke Seite */
   background: var(--bg) !important;
-
-  /* 🚀 FIX 2: Entfernt die graue Trennlinie, damit der Übergang unsichtbar wird */
   border-left: none !important;
 }
 
@@ -266,24 +263,7 @@ nav a:hover {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-
-  /* 🚀 FIX 3: Sicherheitshalber auch hier den Hintergrund nahtlos anpassen */
   background: var(--bg) !important;
-}
-
-//* Dockt exakt unter der fixierten Nav an */
-  height: calc(100vh - 60px);
-  background: var(--map-bg);
-  border-left: 1px solid var(--border);
-}
-
-.scrolly-map-inner {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
 }
 
 #europe-map {
@@ -339,7 +319,7 @@ nav a:hover {
 
 .metric-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04);
 }
 
 .metric-label {
@@ -406,28 +386,4 @@ nav a:hover {
 
 @media (max-width: 640px) {
   .metric-grid { grid-template-columns: 1fr; }
-}
-
-
-
-/* ==========================================================================
-   HERO-SECTION FIX: MAP DARF NICHT DURCHBLITZEN
-   ========================================================================== */
-.hero {
-  min-height: 100vh !important; /* 🚀 Erzwingt die exakt volle Fensterhöhe */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 8rem 2rem 4rem;
-  background: radial-gradient(ellipse at 50% 50%, rgba(29, 78, 216, 0.05) 0%, transparent 70%), var(--bg) !important;
-
-  /* 🚀 WICHTIG: Macht die Hero-Sektion absolut blickdicht, damit die Karte dahinter versteckt bleibt */
-  position: relative !important;
-  z-index: 100 !important;
-}
-
-/* Verhindert, dass das Scrollytelling-Grid zu weit nach oben rutscht */
-.allgemeines-scrolly {
-  margin-top: 0 !important;
 }

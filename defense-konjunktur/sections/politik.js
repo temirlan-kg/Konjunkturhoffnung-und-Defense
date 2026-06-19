@@ -105,7 +105,7 @@ export function initPolitik(force = false) {
   if (cachedData) {
     setupObserver(cachedData);
   } else {
-    fetch('/data/politik.json')
+    fetch(`${import.meta.env.BASE_URL}data/politik.json`)
       .then(res => res.json())
       .then(data => {
         cachedData = data;
