@@ -1,0 +1,98 @@
+{
+  "Germany": {
+    "code": "DE",
+    "flagge": "🇩🇪",
+    "name": "Deutschland",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [55, 64, 72, 86, 108],
+    "top3": [
+      { "name": "Rheinmetall", "fokus": "Munition, Panzer, Systeme", "marktkap": "28 Mrd. €" },
+      { "name": "Hensoldt", "fokus": "Sensorik, Radar", "marktkap": "6 Mrd. €" },
+      { "name": "RENK", "fokus": "Antriebstechnik", "marktkap": "4 Mrd. €" }
+    ]
+  },
+  "France": {
+    "code": "FR",
+    "flagge": "🇫🇷",
+    "name": "Frankreich",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [44, 51, 59, 64, 70],
+    "top3": [
+      { "name": "Thales", "fokus": "Elektronik, Verteidigung", "marktkap": "32 Mrd. €" },
+      { "name": "Dassault Aviation", "fokus": "Kampfflugzeuge (Rafale)", "marktkap": "24 Mrd. €" },
+      { "name": "Naval Group", "fokus": "Marine, U-Boote", "marktkap": "n. v." }
+    ]
+  },
+  "United Kingdom": {
+    "code": "GB",
+    "flagge": "🇬🇧",
+    "name": "Vereinigtes Königreich",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [58, 62, 68, 74, 80],
+    "top3": [
+      { "name": "BAE Systems", "fokus": "Systeme, Luft, See", "marktkap": "48 Mrd. €" },
+      { "name": "Rolls-Royce Defence", "fokus": "Antriebe, Triebwerke", "marktkap": "35 Mrd. €" },
+      { "name": "Babcock International", "fokus": "Marine, Support", "marktkap": "3 Mrd. €" }
+    ]
+  },
+  "Italy": {
+    "code": "IT",
+    "flagge": "🇮🇹",
+    "name": "Italien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [28, 30, 33, 38, 42],
+    "top3": [
+      { "name": "Leonardo", "fokus": "Luftfahrt, Elektronik", "marktkap": "26 Mrd. €" },
+      { "name": "Fincantieri", "fokus": "Marine, Schiffbau", "marktkap": "4 Mrd. €" },
+      { "name": "Avio", "fokus": "Antriebe, Raumfahrt", "marktkap": "2 Mrd. €" }
+    ]
+  },
+  "Poland": {
+    "code": "PL",
+    "flagge": "🇵🇱",
+    "name": "Polen",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [17, 25, 35, 42, 48],
+    "top3": [
+      { "name": "PGZ (Polska Grupa Zbrojeniowa)", "fokus": "Staatlicher Rüstungskonzern", "marktkap": "n. v." },
+      { "name": "WB Group", "fokus": "Drohnen, Elektronik", "marktkap": "n. v." },
+      { "name": "Lubawa", "fokus": "Schutzausrüstung", "marktkap": "n. v." }
+    ]
+  },
+  "Spain": {
+    "code": "ES",
+    "flagge": "🇪🇸",
+    "name": "Spanien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [15, 18, 20, 23, 27],
+    "top3": [
+      { "name": "Indra Sistemas", "fokus": "Elektronik, IT-Defense", "marktkap": "3 Mrd. €" },
+      { "name": "Navantia", "fokus": "Marine, Schiffbau", "marktkap": "n. v." },
+      { "name": "Airbus Defence (ES)", "fokus": "Luftfahrt", "marktkap": "n. v." }
+    ]
+  },
+  "Switzerland": {
+    "code": "CH",
+    "flagge": "🇨🇭",
+    "name": "Schweiz",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [5, 5, 6, 7, 8],
+    "top3": [
+      { "name": "RUAG", "fokus": "Munition, Systeme", "marktkap": "n. v." },
+      { "name": "Pilatus Aircraft", "fokus": "Trainingsflugzeuge", "marktkap": "n. v." },
+      { "name": "Mowag (GDELS)", "fokus": "Radfahrzeuge", "marktkap": "n. v." }
+    ]
+  },
+  "Austria": {
+    "code": "AT",
+    "flagge": "🇦🇹",
+    "name": "Österreich",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [3, 3, 4, 5, 6],
+    "top3": [
+      { "name": "Steyr Arms", "fokus": "Handfeuerwaffen", "marktkap": "n. v." },
+      { "name": "Glock", "fokus": "Pistolen", "marktkap": "n. v." },
+      { "name": "Hirtenberger Defence", "fokus": "Munition", "marktkap": "n. v." }
+    ]
+  }
+}

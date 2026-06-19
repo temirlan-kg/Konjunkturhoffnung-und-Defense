@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Konjunkturhoffnung und Defense</title>
-  <script type="module" crossorigin src="/Konjunkturhoffnung-und-Defense/assets/index-BGyH0f6_.js"></script>
-  <link rel="stylesheet" crossorigin href="/Konjunkturhoffnung-und-Defense/assets/index-C1xdrcHX.css">
+  <script type="module" crossorigin src="/Konjunkturhoffnung-und-Defense/assets/index-Chp0DgKH.js"></script>
+  <link rel="stylesheet" crossorigin href="/Konjunkturhoffnung-und-Defense/assets/index-BugPUg5s.css">
 </head>
 <body>
 
@@ -13,7 +13,7 @@
     <a href="#section-allgemeines">Allgemeines</a>
     <a href="#section-mittelstand">Mittelstand</a>
     <a href="#section-konzerne">Unternehmen</a>
-    <a href="#section-politik">Politik</a> <button class="toggle-btn" id="themeToggle">🌙</button>
+    <a href="#section-politik">Politik</a> <button class="toggle-btn" id="themeToggle">🌙 Dark Mode</button>
   </nav>
 
   <div class="hero">
@@ -55,7 +55,10 @@
         <div class="scrolly-step" data-step="3">
           <span class="scrolly-num">04</span>
           <h3>Innovationslandschaft</h3>
-          <p>Etablierte Konzerne bauen ihr Geschäft aus, der Mittelstand sucht Einstiegswege, und neue DefTech-Start-ups bringen Innovationsgeschwindigkeit in einen traditionell trägen Sektor.</p>
+          <p>Etablierte Konzerne bauen ihr Geschäft aus, der Mittelstand sucht Einstiegswege, und neue DefTech-Start-ups bringen Innovationsgeschwindigkeit in einen traditionell trägen Sektor. Wähle ein Land auf der Karte oder im Menü, um Details zu sehen.</p>
+          <select class="land-dropdown" id="land-dropdown">
+            <option value="">Land auswählen …</option>
+          </select>
         </div>
       </div>
 
@@ -64,6 +67,21 @@
           <div id="europe-map"></div>
           <div class="map-legend" id="map-legend"></div>
         </div>
+
+        <!-- Detail-Panel für Schritt 04 -->
+        <aside class="land-panel" id="land-panel">
+          <button class="panel-close" id="panel-close">×</button>
+          <div class="panel-kopf">
+            <span class="panel-flagge" id="panel-flagge">🇩🇪</span>
+            <span class="panel-name" id="panel-name">Land</span>
+          </div>
+          <p class="panel-aktuell-label">
+            Aktuelle Ausgaben: <span class="panel-aktuell-wert" id="panel-aktuell">–</span>
+          </p>
+          <div id="panel-chart"></div>
+          <div class="panel-top3-titel">Top 3 Unternehmen</div>
+          <div id="panel-top3"></div>
+        </aside>
       </div>
 
     </div>
