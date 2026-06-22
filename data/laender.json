@@ -94,5 +94,197 @@
       { "name": "Glock", "fokus": "Pistolen", "marktkap": "n. v." },
       { "name": "Hirtenberger Defence", "fokus": "Munition", "marktkap": "n. v." }
     ]
+  },
+  "Norway": {
+    "code": "NO",
+    "flagge": "🇳🇴",
+    "name": "Norwegen",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [7, 8, 9, 11, 13],
+    "top3": [
+      { "name": "Kongsberg Defence", "fokus": "Raketen, Systeme", "marktkap": "n. v." },
+      { "name": "Nammo", "fokus": "Munition, Antriebe", "marktkap": "n. v." },
+      { "name": "Norsk Titanium", "fokus": "Luftfahrt-Komponenten", "marktkap": "n. v." }
+    ]
+  },
+  "Sweden": {
+    "code": "SE",
+    "flagge": "🇸🇪",
+    "name": "Schweden",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [8, 10, 12, 14, 16],
+    "top3": [
+      { "name": "Saab", "fokus": "Kampfjets (Gripen), Systeme", "marktkap": "20 Mrd. €" },
+      { "name": "BAE Systems Hägglunds", "fokus": "Schützenpanzer", "marktkap": "n. v." },
+      { "name": "FMV", "fokus": "Staatliche Beschaffung", "marktkap": "n. v." }
+    ]
+  },
+  "Finland": {
+    "code": "FI",
+    "flagge": "🇫🇮",
+    "name": "Finnland",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [5, 6, 7, 8, 10],
+    "top3": [
+      { "name": "Patria", "fokus": "Panzer, Systeme", "marktkap": "n. v." },
+      { "name": "Insta Defence", "fokus": "Elektronik, C4I", "marktkap": "n. v." },
+      { "name": "Forcit", "fokus": "Munition, Sprengstoffe", "marktkap": "n. v." }
+    ]
+  },
+  "Denmark": {
+    "code": "DK",
+    "flagge": "🇩🇰",
+    "name": "Dänemark",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [5, 6, 8, 9, 11],
+    "top3": [
+      { "name": "Terma", "fokus": "Elektronik, Luft- & Seeverteidigung", "marktkap": "n. v." },
+      { "name": "Per Udsen", "fokus": "Flugzeugkomponenten", "marktkap": "n. v." },
+      { "name": "Weibel Scientific", "fokus": "Doppler-Radar", "marktkap": "n. v." }
+    ]
+  },
+  "Netherlands": {
+    "code": "NL",
+    "flagge": "🇳🇱",
+    "name": "Niederlande",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [13, 17, 21, 24, 27],
+    "top3": [
+      { "name": "Thales Netherlands", "fokus": "Radar, Sensorik", "marktkap": "n. v." },
+      { "name": "Damen Shipyards", "fokus": "Marine, Schiffbau", "marktkap": "n. v." },
+      { "name": "Dutch Space (Airbus)", "fokus": "Raumfahrt, Verteidigung", "marktkap": "n. v." }
+    ]
+  },
+  "Belgium": {
+    "code": "BE",
+    "flagge": "🇧🇪",
+    "name": "Belgien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [5, 6, 7, 8, 9],
+    "top3": [
+      { "name": "FN Herstal", "fokus": "Handfeuerwaffen", "marktkap": "n. v." },
+      { "name": "CMI Defence", "fokus": "Turmsysteme, Panzer", "marktkap": "n. v." },
+      { "name": "Sabca", "fokus": "Luft- und Raumfahrt", "marktkap": "n. v." }
+    ]
+  },
+  "Greece": {
+    "code": "GR",
+    "flagge": "🇬🇷",
+    "name": "Griechenland",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [7, 7, 8, 9, 10],
+    "top3": [
+      { "name": "Hellenic Aerospace Industry", "fokus": "Wartung, Luftfahrt", "marktkap": "n. v." },
+      { "name": "EAS (Elviemek)", "fokus": "Marine-Elektronik", "marktkap": "n. v." },
+      { "name": "Pyrkal", "fokus": "Munition", "marktkap": "n. v." }
+    ]
+  },
+  "Romania": {
+    "code": "RO",
+    "flagge": "🇷🇴",
+    "name": "Rumänien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [5, 7, 9, 11, 13],
+    "top3": [
+      { "name": "Romarm", "fokus": "Munition, Waffen", "marktkap": "n. v." },
+      { "name": "IAR Brasov", "fokus": "Hubschrauber", "marktkap": "n. v." },
+      { "name": "Romaero", "fokus": "Luft- und Raumfahrt", "marktkap": "n. v." }
+    ]
+  },
+  "Czechia": {
+    "code": "CZ",
+    "flagge": "🇨🇿",
+    "name": "Tschechien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [4, 5, 6, 7, 8],
+    "top3": [
+      { "name": "Czechoslovak Group", "fokus": "Fahrzeuge, Munition", "marktkap": "n. v." },
+      { "name": "Excalibur Army", "fokus": "Gepanzerte Fahrzeuge", "marktkap": "n. v." },
+      { "name": "ERA a.s.", "fokus": "Passive Radarsysteme", "marktkap": "n. v." }
+    ]
+  },
+  "Portugal": {
+    "code": "PT",
+    "flagge": "🇵🇹",
+    "name": "Portugal",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [3, 3, 4, 5, 6],
+    "top3": [
+      { "name": "OGMA", "fokus": "Luftfahrt-Wartung", "marktkap": "n. v." },
+      { "name": "Empordef", "fokus": "Staatlicher Rüstungsholding", "marktkap": "n. v." },
+      { "name": "EID", "fokus": "Militärelektronik", "marktkap": "n. v." }
+    ]
+  },
+  "Hungary": {
+    "code": "HU",
+    "flagge": "🇭🇺",
+    "name": "Ungarn",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [2, 3, 3, 4, 5],
+    "top3": [
+      { "name": "Rheinmetall Hungary", "fokus": "Panzer, Fahrzeuge", "marktkap": "n. v." },
+      { "name": "H-Force", "fokus": "Drohnen", "marktkap": "n. v." },
+      { "name": "Airbus Helicopters (HU)", "fokus": "Hubschrauber", "marktkap": "n. v." }
+    ]
+  },
+  "Slovakia": {
+    "code": "SK",
+    "flagge": "🇸🇰",
+    "name": "Slowakei",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [2, 2, 3, 4, 5],
+    "top3": [
+      { "name": "ZTS Špeciál", "fokus": "Munition, Waffen", "marktkap": "n. v." },
+      { "name": "Konštrukta Defence", "fokus": "Artillerie", "marktkap": "n. v." },
+      { "name": "DMD Group", "fokus": "Fahrzeuge, Waffen", "marktkap": "n. v." }
+    ]
+  },
+  "Slovenia": {
+    "code": "SI",
+    "flagge": "🇸🇮",
+    "name": "Slowenien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [1, 1, 1, 2, 2],
+    "top3": [
+      { "name": "Arex", "fokus": "Handfeuerwaffen", "marktkap": "n. v." },
+      { "name": "Fotona", "fokus": "Laser-Systeme", "marktkap": "n. v." },
+      { "name": "STO (staatlich)", "fokus": "Beschaffung", "marktkap": "n. v." }
+    ]
+  },
+  "Croatia": {
+    "code": "HR",
+    "flagge": "🇭🇷",
+    "name": "Kroatien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [1, 1, 2, 2, 3],
+    "top3": [
+      { "name": "HS Produkt", "fokus": "Handfeuerwaffen", "marktkap": "n. v." },
+      { "name": "Đuro Đaković", "fokus": "Fahrzeuge, Behälter", "marktkap": "n. v." },
+      { "name": "Alan", "fokus": "Elektronik", "marktkap": "n. v." }
+    ]
+  },
+  "Bulgaria": {
+    "code": "BG",
+    "flagge": "🇧🇬",
+    "name": "Bulgarien",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [2, 2, 3, 3, 4],
+    "top3": [
+      { "name": "VMZ Sopot", "fokus": "Munition, Raketen", "marktkap": "n. v." },
+      { "name": "Arsenal", "fokus": "Munition, Waffen", "marktkap": "n. v." },
+      { "name": "Dunarit", "fokus": "Sprengstoffe", "marktkap": "n. v." }
+    ]
+  },
+  "Ireland": {
+    "code": "IE",
+    "flagge": "🇮🇪",
+    "name": "Irland",
+    "jahre": ["2022", "2023", "2024", "2025", "2026"],
+    "ausgaben": [1, 1, 1, 2, 2],
+    "top3": [
+      { "name": "FLIR Systems (IE)", "fokus": "Wärmebildkameras", "marktkap": "n. v." },
+      { "name": "Curtiss-Wright (IE)", "fokus": "Elektronik", "marktkap": "n. v." },
+      { "name": "Irish Defence Forces", "fokus": "Staatliche Beschaffung", "marktkap": "n. v." }
+    ]
   }
 }
