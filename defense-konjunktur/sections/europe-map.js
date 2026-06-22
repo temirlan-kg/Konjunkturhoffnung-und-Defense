@@ -25,8 +25,13 @@ const ausgaben = {
 };
 
 // Klickbare Länder (Schritt 04)
-const klickbareLaender = ['Germany', 'France', 'United Kingdom', 'Italy', 'Poland', 'Spain', 'Switzerland', 'Austria'];
-
+const klickbareLaender = [
+  'Germany', 'France', 'United Kingdom', 'Italy', 'Poland', 'Spain',
+  'Netherlands', 'Sweden', 'Norway', 'Denmark', 'Finland',
+  'Belgium', 'Greece', 'Romania', 'Czechia', 'Portugal',
+  'Hungary', 'Austria', 'Switzerland', 'Slovakia', 'Slovenia',
+  'Croatia', 'Bulgaria', 'Ireland'
+];
 const countryCodes = {
   'Germany': 'DE', 'France': 'FR', 'United Kingdom': 'GB', 'Italy': 'IT',
   'Spain': 'ES', 'Poland': 'PL', 'Netherlands': 'NL', 'Sweden': 'SE',

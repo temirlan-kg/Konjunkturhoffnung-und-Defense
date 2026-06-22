@@ -6,8 +6,11 @@ let panelChart = null;
 
 // Reihenfolge im Dropdown
 const laenderReihenfolge = [
-  'Germany', 'France', 'United Kingdom', 'Italy',
-  'Poland', 'Spain', 'Switzerland', 'Austria'
+  'Germany', 'France', 'United Kingdom', 'Italy', 'Poland', 'Spain',
+  'Netherlands', 'Sweden', 'Norway', 'Denmark', 'Finland',
+  'Belgium', 'Greece', 'Romania', 'Czechia', 'Portugal',
+  'Hungary', 'Austria', 'Switzerland', 'Slovakia', 'Slovenia',
+  'Croatia', 'Bulgaria', 'Ireland'
 ];
 
 // Lädt die Länderdaten und baut das Dropdown auf
