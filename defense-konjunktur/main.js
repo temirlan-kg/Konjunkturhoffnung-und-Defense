@@ -5,48 +5,69 @@ import { initKonzerne }    from './sections/konzerne.js';
 import { initEuropeMap }   from './sections/europe-map.js';
 import { initLaenderPanel } from './sections/laender-panel.js';
 
+// Dark/Light Mode Elemente holen
 const toggleBtn = document.getElementById('themeToggle');
 const root = document.documentElement;
 
-// Dark Mode als Standard
+// Standardmäßig Dark Mode setzen (wie in deiner Config)
 root.classList.add('dark');
-toggleBtn.textContent = '☀️ Light Mode';
+if (toggleBtn) {
+  toggleBtn.textContent = '☀️ Light Mode';
+}
 
+// Status, welche Sektionen bereits betreten wurden (für Redraws)
 const visible = { politik: false, mittelstand: false, konzerne: false };
 
+// Hilfsfunktion zum Neuzeichnen der Charts bei Theme-Wechsel
 function redrawCharts() {
   if (visible.politik)     initPolitik(true);
   if (visible.mittelstand) initMittelstand(true);
   if (visible.konzerne)    initKonzerne(true);
 }
 
-toggleBtn.addEventListener('click', () => {
-  root.classList.toggle('dark');
-  toggleBtn.textContent = root.classList.contains('dark') ? '☀️ Light Mode' : '🌙 Dark Mode';
-  redrawCharts();
-});
+// Event Listener für den Theme-Toggle
+if (toggleBtn) {
+  toggleBtn.addEventListener('click', () => {
+    root.classList.toggle('dark');
+    toggleBtn.textContent = root.classList.contains('dark') ? '☀️ Light Mode' : '🌙 Dark Mode';
+    redrawCharts();
+  });
+}
 
+// ——————————————————————————————————————————————————————————————————————————
+// SCROLLAMA SETUP (Für die großen Hauptsektionen)
+// ——————————————————————————————————————————————————————————————————————————
 const scroller = scrollama();
 
 scroller
-  .setup({ step: '.scroll-section, .konzerne-scrolly', offset: 0.3 })
+  .setup({
+    step: '.scroll-section, .konzerne-scrolly', // Beide Sektions-Typen werden überwacht
+    offset: 0.3
+  })
   .onStepEnter(({ element }) => {
     element.classList.add('is-active');
-    if (element.id === 'section-politik')     { visible.politik = true;     initPolitik(); }
-    if (element.id === 'section-mittelstand') { visible.mittelstand = true; initMittelstand(); }
-    if (element.id === 'section-konzerne')    { visible.konzerne = true;    initKonzerne(); }
+
+    // Initialisiere die jeweiligen Sektionen punktgenau beim Betreten
+    if (element.id === 'section-politik') {
+      visible.politik = true;
+      initPolitik();
+    }
+    if (element.id === 'section-mittelstand') {
+      visible.mittelstand = true;
+      initMittelstand();
+    }
+    if (element.id === 'section-konzerne') {
+      visible.konzerne = true;
+      initKonzerne(); // Startet das Bubble-Chart
+    }
   })
   .onStepExit(({ element }) => {
     element.classList.remove('is-active');
   });
 
-// Europa-Karte zeichnen
-initEuropeMap();
-
-// Land-Dropdown & Detail-Panel
-initLaenderPanel();
-
-// Aktiver-Zustand der Scrollytelling-Steps für die Europa-Karte (Allgemeines)
+// ——————————————————————————————————————————————————————————————————————————
+// NATIVER INTERSECTION OBSERVER (Für die Textschritte der Europa-Karte)
+// ——————————————————————————————————————————————————————————————————————————
 const scrollyObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -54,8 +75,24 @@ const scrollyObserver = new IntersectionObserver((entries) => {
       entry.target.classList.add('is-active');
     }
   });
-}, { rootMargin: '-20% 0px -40% 0px', threshold: 0.1 });
+}, {
+  root: null,
+  rootMargin: '-20% 0px -40% 0px',
+  threshold: 0.1
+});
 
+// Beobachtet die Textblöcke im Bereich "Allgemeines" (Europa-Karte)
 document.querySelectorAll('.scrolly-step').forEach(el => {
   scrollyObserver.observe(el);
+});
+
+// ——————————————————————————————————————————————————————————————————————————
+// INITIALISIERUNG BEIM SEITENSTART
+// ——————————————————————————————————————————————————————————————————————————
+initEuropeMap();
+initLaenderPanel();
+
+// Automatisches Resize-Handling für Highcharts bei Fensteränderungen
+window.addEventListener('resize', () => {
+  redrawCharts();
 });

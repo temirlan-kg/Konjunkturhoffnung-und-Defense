@@ -564,53 +564,41 @@ nav a:hover {
   color: var(--accent);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
 /* ==========================================================================
-   9. KONZERNE SCROLLYTELLING (ABSOLUTE PLACEMENT - REPARIERT)
+   9. KONZERNE SCROLLYTELLING
    ========================================================================== */
 .konzerne-scrolly {
   display: block;
+  padding: 0;
   position: relative;
-  width: 100%;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
   z-index: 5;
+  border-bottom: 1px solid var(--border); /* <-- HIER den Zeilenumbruch entfernen! */
+  background: var(--bg);
 }
 
 .konzerne-grid {
-  display: block; /* Von Flex auf Block gewechselt für absolute Kontrolle */
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  left: 0;
+  display: flex;
+  position: relative;
   width: 100%;
-  height: 100vh;
-  padding: 80px 2rem 2rem 2rem;
-  box-sizing: border-box;
-  overflow: hidden;
+  align-items: flex-start; /* Richtet Text und Chart oben bündig aus */
+  padding-top: 2rem;       /* Verringert von 6rem, damit es direkt oben startet */
 }
 
-/* Das Textband gleitet autark auf der linken Seite (Breite gekapselt auf 40%) */
 .konzerne-text {
-  display: flex;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  gap: 15rem;
-  width: max-content !important;
-  height: calc(100vh - 100px);
-  will-change: transform;
-  transition: transform 0.1s ease-out;
-  position: relative;
-  z-index: 6;
+  flex: 1;
+  max-width: 45%;
+  padding: 0 3rem;
+  margin-top: 0;           /* Entfernt das 15vh Loch nach oben */
+  margin-bottom: 30vh;
 }
 
 .konzerne-intro {
-  width: 420px !important;
-  min-width: 420px !important;
-  flex-shrink: 0;
+  min-height: auto;        /* Verringert von 50vh, damit die Überschrift direkt oben steht */
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 8vh;
+  padding-top: 2rem;       /* Sanfter oberer Abstand für den Titel */
 }
 
 .konzerne-intro h2 {
@@ -621,18 +609,18 @@ nav a:hover {
 }
 
 .konzerne-step {
-  width: 400px !important;
-  min-width: 400px !important;
-  flex-shrink: 0;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  opacity: 0.15;
-  transition: opacity 0.4s ease;
+  opacity: 0.2;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(15px);
 }
 
 .konzerne-step.is-active {
-  opacity: 1 !important;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .konzerne-step h3 {
@@ -647,32 +635,27 @@ nav a:hover {
   color: var(--text-secondary);
 }
 
-/* HIER IST DIE RETTUNG: Das Chart wird absolut rechts verankert und kann NICHT mehr weggedrückt werden */
 .konzerne-chart-wrap {
-  position: absolute !important;
-  top: 80px;
-  right: 2rem;
-  width: 50% !important; /* Nimmt sich exakt die rechte Hälfte */
-  height: calc(100vh - 100px) !important;
+  flex: 1;
+  max-width: 55%;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
   background: var(--bg);
+  padding: 1rem 2rem 1rem 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10; /* Liegt sicher über dem ausbrechenden Textraum */
-  box-sizing: border-box;
-  padding-left: 2rem;
+  align-items: flex-start; /* Verhindert, dass der Container das Chart staucht */
 }
 
 .konzerne-chart-wrap #chart-bubble {
-  width: 100% !important;
-  height: 550px !important;
+  width: 100%;
+  height: 650px !important; /* Muss mit dem Wert aus der JS-Datei übereinstimmen */
 }
 
-/* Mobil-Modus schaltet alles sauber untereinander */
 @media (max-width: 1024px) {
-  .konzerne-scrolly { height: auto !important; }
-  .konzerne-grid { position: relative; height: auto; padding-top: 80px; overflow: visible; display: flex; flex-direction: column-reverse; }
-  .konzerne-text { flex-direction: column !important; gap: 3rem; width: 100% !important; transform: none !important; height: auto !important; }
-  .konzerne-intro, .konzerne-step { width: 100% !important; min-width: 100% !important; opacity: 1 !important; }
-  .konzerne-chart-wrap { position: relative !important; top: 0 !important; right: 0 !important; width: 100% !important; height: 50vh !important; padding: 1rem 0; }
+  .konzerne-grid { flex-direction: column-reverse; }
+  .konzerne-text, .konzerne-chart-wrap { max-width: 100%; width: 100%; padding: 0 1.5rem; }
+  .konzerne-chart-wrap { position: sticky; top: 60px; height: 45vh; padding: 1rem; }
+  .konzerne-step { min-height: auto; padding: 3rem 0; opacity: 1; }
+  .konzerne-intro { min-height: auto; padding-top: 2rem; }
 }
