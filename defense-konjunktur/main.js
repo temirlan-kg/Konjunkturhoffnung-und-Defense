@@ -29,7 +29,7 @@ toggleBtn.addEventListener('click', () => {
 const scroller = scrollama();
 
 scroller
-  .setup({ step: '.scroll-section', offset: 0.4 })
+  .setup({ step: '.scroll-section, .konzerne-scrolly', offset: 0.3 })
   .onStepEnter(({ element }) => {
     element.classList.add('is-active');
     if (element.id === 'section-politik')     { visible.politik = true;     initPolitik(); }
@@ -40,13 +40,13 @@ scroller
     element.classList.remove('is-active');
   });
 
-// Europa-Karte zeichnen (steuert Fokus & Highlights selbst)
+// Europa-Karte zeichnen
 initEuropeMap();
 
-// Land-Dropdown & Detail-Panel (Schritt 04)
+// Land-Dropdown & Detail-Panel
 initLaenderPanel();
 
-// Aktiver-Zustand der Scrollytelling-Steps (nur Textanimation links)
+// Aktiver-Zustand der Scrollytelling-Steps für die Europa-Karte (Allgemeines)
 const scrollyObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
