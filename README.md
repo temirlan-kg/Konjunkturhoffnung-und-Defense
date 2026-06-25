@@ -86,10 +86,10 @@ Seit der Zeitenwende 2022 hat sich die sicherheitspolitische Lage in Europa grun
 
 ```bash
 # Repository klonen
-git clone https://github.com/dein-username/defense-konjunktur.git
+git clone https://github.com/temirlan-kg/Konjunkturhoffnung-und-Defense.git
 
 # Ins Projektverzeichnis wechseln
-cd defense-konjunktur
+cd Konjunkturhoffnung-und-Defense/defense-konjunktur
 
 # Abhängigkeiten installieren
 npm install
@@ -98,12 +98,20 @@ npm install
 npm run dev
 ```
 
-Die Website ist anschließend unter `http://localhost:5173/` erreichbar.
+Während der Entwicklung läuft die Website lokal unter `http://localhost:5173/Konjunkturhoffnung-und-Defense/`.
 
-### Production-Build
+### 🌐 Live-Version
+
+Die veröffentlichte Website ist über GitHub Pages erreichbar:
+
+**https://temirlan-kg.github.io/Konjunkturhoffnung-und-Defense/**
+
+### Build & Deployment
+
+Production-Build erstellen und auf GitHub Pages veröffentlichen:
 
 ```bash
-npm run build
+npm run build && npm run deploy
 ```
 
 ---
