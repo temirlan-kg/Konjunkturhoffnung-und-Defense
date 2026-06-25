@@ -3,7 +3,7 @@ import Highcharts from 'highcharts';
 let chart = null;
 let observer = null;
 let cachedData = null;
-let modus = 'absolut'; // 'absolut' oder 'bip'
+let modus = 'absolut'; // 'absolut', 'bip' oder 'wachstum'
 
 export function initPolitik(force = false) {
   if (chart && !force) return;
@@ -19,16 +19,31 @@ export function initPolitik(force = false) {
     if (chart) { chart.destroy(); chart = null; }
 
     const istBip = modus === 'bip';
+    const istWachstum = modus === 'wachstum';
 
-    const serienDaten = istBip
-      ? { de: data.zeitverlauf.deutschland_bip, eu: data.zeitverlauf.eu27_bip }
-      : { de: data.zeitverlauf.deutschland, eu: data.zeitverlauf.eu27 };
+    const abs = { de: data.zeitverlauf.deutschland, eu: data.zeitverlauf.eu27 };
 
-    const einheit = istBip ? '% des BIP' : 'Mrd. €';
-    const yTitel = istBip ? '% des BIP' : 'Milliarden Euro';
-    const titelText = istBip
-      ? 'Verteidigungsausgaben Deutschland & EU-27 (% des BIP)'
-      : 'Verteidigungsausgaben Deutschland & EU-27 (Mrd. €)';
+    let serienDaten, einheit, yTitel, titelText;
+    if (istWachstum) {
+      // Index: jeder Wert relativ zum Startjahr (2023 = 100)
+      serienDaten = {
+        de: abs.de.map(v => Math.round((v / abs.de[0]) * 100)),
+        eu: abs.eu.map(v => Math.round((v / abs.eu[0]) * 100))
+      };
+      einheit = '';
+      yTitel = 'Index (2023 = 100)';
+      titelText = 'Wachstum der Verteidigungsausgaben (Index, 2023 = 100)';
+    } else if (istBip) {
+      serienDaten = { de: data.zeitverlauf.deutschland_bip, eu: data.zeitverlauf.eu27_bip };
+      einheit = '% des BIP';
+      yTitel = '% des BIP';
+      titelText = 'Verteidigungsausgaben Deutschland & EU-27 (% des BIP)';
+    } else {
+      serienDaten = { de: abs.de, eu: abs.eu };
+      einheit = 'Mrd. €';
+      yTitel = 'Milliarden Euro';
+      titelText = 'Verteidigungsausgaben Deutschland & EU-27 (Mrd. €)';
+    }
 
     chart = Highcharts.chart('chart-politik', {
       chart: {
@@ -61,7 +76,17 @@ export function initPolitik(force = false) {
             style: { color: '#f59e0b', fontSize: '10px' }
           },
           zIndex: 5
-        }] : []
+        }] : (istWachstum ? [{
+          color: mutedColor,
+          dashStyle: 'Dash',
+          width: 1,
+          value: 100,
+          label: {
+            text: 'Basis 2023',
+            style: { color: mutedColor, fontSize: '10px' }
+          },
+          zIndex: 5
+        }] : [])
       },
       tooltip: {
         headerFormat: `<div style="display: flex; flex-direction: column; gap: 4px; padding: 4px;">
@@ -113,15 +138,18 @@ export function initPolitik(force = false) {
   function setupToggle(data) {
     const btnAbsolut = document.getElementById('toggle-absolut');
     const btnBip = document.getElementById('toggle-bip');
+    const btnWachstum = document.getElementById('toggle-wachstum');
     if (!btnAbsolut || !btnBip) return;
 
     function aktualisiere() {
       btnAbsolut.classList.toggle('aktiv', modus === 'absolut');
       btnBip.classList.toggle('aktiv', modus === 'bip');
+      if (btnWachstum) btnWachstum.classList.toggle('aktiv', modus === 'wachstum');
     }
 
     btnAbsolut.onclick = () => { modus = 'absolut'; aktualisiere(); buildChart(data); };
     btnBip.onclick = () => { modus = 'bip'; aktualisiere(); buildChart(data); };
+    if (btnWachstum) btnWachstum.onclick = () => { modus = 'wachstum'; aktualisiere(); buildChart(data); };
 
     aktualisiere();
   }
