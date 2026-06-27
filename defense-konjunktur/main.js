@@ -5,11 +5,31 @@ import { initKonzerne }    from './sections/konzerne.js';
 import { initEuropeMap }   from './sections/europe-map.js';
 import { initLaenderPanel } from './sections/laender-panel.js';
 
+// Hamburger-Menü
+const hamburger = document.getElementById('navHamburger');
+const navLinks  = document.getElementById('navLinks');
+
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
 // Dark/Light Mode Elemente holen
 const toggleBtn = document.getElementById('themeToggle');
 const root = document.documentElement;
 
-// Standardmäßig Dark Mode setzen (wie in deiner Config)
+// Standardmäßig Dark Mode setzen
 root.classList.add('dark');
 if (toggleBtn) {
   toggleBtn.textContent = '☀️ Light Mode';
@@ -34,20 +54,16 @@ if (toggleBtn) {
   });
 }
 
-// ——————————————————————————————————————————————————————————————————————————
-// SCROLLAMA SETUP (Für die großen Hauptsektionen)
-// ——————————————————————————————————————————————————————————————————————————
 const scroller = scrollama();
 
 scroller
   .setup({
-    step: '.scroll-section, .konzerne-scrolly', // Beide Sektions-Typen werden überwacht
+    step: '.scroll-section, .konzerne-scrolly',
     offset: 0.3
   })
   .onStepEnter(({ element }) => {
     element.classList.add('is-active');
 
-    // Initialisiere die jeweiligen Sektionen punktgenau beim Betreten
     if (element.id === 'section-politik') {
       visible.politik = true;
       initPolitik();
@@ -58,16 +74,13 @@ scroller
     }
     if (element.id === 'section-konzerne') {
       visible.konzerne = true;
-      initKonzerne(); // Startet das Bubble-Chart
+      initKonzerne();
     }
   })
   .onStepExit(({ element }) => {
     element.classList.remove('is-active');
   });
 
-// ——————————————————————————————————————————————————————————————————————————
-// NATIVER INTERSECTION OBSERVER (Für die Textschritte der Europa-Karte)
-// ——————————————————————————————————————————————————————————————————————————
 const scrollyObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -81,18 +94,13 @@ const scrollyObserver = new IntersectionObserver((entries) => {
   threshold: 0.1
 });
 
-// Beobachtet die Textblöcke im Bereich "Allgemeines" (Europa-Karte)
 document.querySelectorAll('.scrolly-step').forEach(el => {
   scrollyObserver.observe(el);
 });
 
-// ——————————————————————————————————————————————————————————————————————————
-// INITIALISIERUNG BEIM SEITENSTART
-// ——————————————————————————————————————————————————————————————————————————
 initEuropeMap();
 initLaenderPanel();
 
-// Automatisches Resize-Handling für Highcharts bei Fensteränderungen
 window.addEventListener('resize', () => {
   redrawCharts();
 });

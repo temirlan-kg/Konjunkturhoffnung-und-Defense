@@ -692,3 +692,263 @@ nav a:hover {
   .konzerne-step { min-height: auto; padding: 3rem 0; opacity: 1; }
   .konzerne-intro { min-height: auto; padding-top: 2rem; }
 }
+
+/* ==========================================================================
+   10. HAMBURGER-NAVIGATION
+   ========================================================================== */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-hamburger.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex: 1;
+}
+
+/* ==========================================================================
+   11. TABLET (max-width: 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Navigation */
+  nav {
+    padding: 0.85rem 1.25rem;
+    gap: 1rem;
+  }
+
+  .nav-hamburger {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    background: rgba(248, 250, 255, 0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0;
+    z-index: 999;
+  }
+
+  :root.dark .nav-links {
+    background: rgba(8, 12, 20, 0.97);
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 1rem;
+  }
+
+  .nav-links a:last-child {
+    border-bottom: none;
+  }
+
+  /* Hero – Größen anpassen (min-height & position im Bugfix-Block unten) */
+  .hero-title { font-size: 2.8rem; }
+  .hero-sub { font-size: 1.1rem; }
+
+  /* Sektionen */
+  .scroll-section {
+    padding: 4rem 1.5rem;
+    min-height: auto;
+  }
+
+  .scroll-section h2 { font-size: 2rem; }
+
+  /* Scrolly Allgemeines – position & height im Bugfix-Block */
+  .scrolly-text { padding: 0 1.25rem; margin-top: 2rem; margin-bottom: 10vh; }
+  .scrolly-step { min-height: auto; padding: 2.5rem 0; }
+  .scrolly-step h3 { font-size: 1.5rem; }
+  .scrolly-step p { font-size: 1rem; }
+
+  /* Konzerne – position & height im Bugfix-Block */
+  .konzerne-text { padding: 0 1.25rem; margin-bottom: 10vh; }
+  .konzerne-intro h2 { font-size: 2rem; }
+  .konzerne-step h3 { font-size: 1.4rem; }
+  .konzerne-step p { font-size: 1rem; }
+  .konzerne-chart-wrap #chart-bubble { height: 100% !important; }
+
+  /* Metric Grid */
+  .metric-grid { grid-template-columns: repeat(2, 1fr); }
+  .metric-value { font-size: 1.3rem; }
+
+  /* Charts */
+  #chart-politik,
+  #chart-mittelstand { height: 320px; }
+
+  /* Politik Toggle */
+  .politik-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .politik-toggle button {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 0.82rem;
+    text-align: center;
+  }
+
+  /* Land Dropdown */
+  .land-dropdown { max-width: 100%; }
+
+  /* Land Panel */
+  .land-panel { max-width: 100%; }
+}
+
+/* ==========================================================================
+   12. MOBIL (max-width: 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+  /* Hero – padding hier, min-height & position im Bugfix-Block */
+  .hero-title { font-size: 2rem; letter-spacing: -0.01em; }
+  .hero-sub { font-size: 0.95rem; }
+
+  .scroll-section { padding: 3rem 1rem; }
+  .scroll-section h2 { font-size: 1.75rem; }
+  .intro { font-size: 1rem; }
+
+  .scrolly-text { padding: 0 1rem; }
+  .scrolly-num { font-size: 1.5rem; }
+  .scrolly-step h3 { font-size: 1.3rem; }
+  .scrolly-step p { font-size: 0.95rem; line-height: 1.7; }
+  .scrolly-map-inner { padding: 0.75rem; }
+
+  .konzerne-text { padding: 0 1rem; }
+  .konzerne-intro h2 { font-size: 1.75rem; }
+  .konzerne-chart-wrap { padding: 0.5rem; }
+  .konzerne-step h3 { font-size: 1.2rem; }
+  .konzerne-step p { font-size: 0.95rem; line-height: 1.7; }
+
+  .metric-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+  .metric-card { padding: 1rem; }
+  .metric-value { font-size: 1.2rem; }
+
+  #chart-politik,
+  #chart-mittelstand { height: 260px; }
+
+  .politik-toggle button { padding: 7px 8px; font-size: 0.78rem; }
+}
+
+/* ==========================================================================
+   14. MOBILE BUGFIXES – NUR innerhalb von Media Queries, Desktop unberührt
+   ========================================================================== */
+
+/* Einzige globale Regel: horizontalen Scroll verhindern (schadet Desktop nicht) */
+html {
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  /* Hero vollständige Höhe, nie abschneiden */
+  .hero {
+    padding: 6rem 1.5rem 3rem;
+    min-height: 100svh !important;
+    min-height: 100vh !important;
+    overflow: visible !important;
+    z-index: 100 !important;
+  }
+
+  /* Karte: sticky deaktivieren, sonst überlagert sie den Hero */
+  .scrolly-map-wrap {
+    position: relative !important;
+    top: 0 !important;
+    height: 35vh;
+    z-index: 1 !important;
+    overflow: hidden;
+  }
+
+  .scrolly-map-inner {
+    overflow: hidden;
+  }
+
+  /* SVG-Karte auf Breite begrenzen */
+  #europe-map,
+  #europe-map svg {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Legende: kein Überlauf */
+  .map-legend {
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 0.7rem;
+    gap: 6px;
+  }
+
+  /* Land-Panel: Vollbild-Overlay statt absolute im Map-Container */
+  .land-panel {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    z-index: 9999 !important;
+  }
+
+  /* Konzerne-Chart: sticky deaktivieren */
+  .konzerne-chart-wrap {
+    position: relative !important;
+    top: 0 !important;
+    height: 40vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 5rem 1rem 2.5rem;
+    min-height: 100svh !important;
+    min-height: 100vh !important;
+  }
+
+  .scrolly-map-wrap {
+    position: relative !important;
+    top: 0 !important;
+    height: 30vh;
+  }
+
+  .konzerne-chart-wrap {
+    position: relative !important;
+    top: 0 !important;
+    height: 35vh;
+  }
+}
