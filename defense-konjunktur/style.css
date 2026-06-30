@@ -1,34 +1,34 @@
 /* inter-300 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 300;
-  src: url('./public/fonts/inter-v20-latin-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('./public/fonts/inter-v20-latin-300.woff2') format('woff2');
 }
 /* inter-regular - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 400;
-  src: url('./public/fonts/inter-v20-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('./public/fonts/inter-v20-latin-regular.woff2') format('woff2');
 }
 /* inter-700 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 700;
-  src: url('./public/fonts/inter-v20-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('./public/fonts/inter-v20-latin-700.woff2') format('woff2');
 }
 /* inter-800 - latin */
 @font-face {
-  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-display: swap;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 800;
-  src: url('./public/fonts/inter-v20-latin-800.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  src: url('./public/fonts/inter-v20-latin-800.woff2') format('woff2');
 }
 /* ==========================================================================
    1. RESET & GLOBALE VARIABLEN
@@ -597,6 +597,7 @@ nav a:hover {
   color: var(--accent);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 /* ==========================================================================
    9. KONZERNE SCROLLYTELLING
    ========================================================================== */
@@ -605,7 +606,7 @@ nav a:hover {
   padding: 0;
   position: relative;
   z-index: 5;
-  border-bottom: 1px solid var(--border); /* <-- HIER den Zeilenumbruch entfernen! */
+  border-bottom: 1px solid var(--border);
   background: var(--bg);
 }
 
@@ -613,25 +614,25 @@ nav a:hover {
   display: flex;
   position: relative;
   width: 100%;
-  align-items: flex-start; /* Richtet Text und Chart oben bündig aus */
-  padding-top: 2rem;       /* Verringert von 6rem, damit es direkt oben startet */
+  align-items: flex-start;
+  padding-top: 2rem;
 }
 
 .konzerne-text {
   flex: 1;
   max-width: 45%;
   padding: 0 3rem;
-  margin-top: 0;           /* Entfernt das 15vh Loch nach oben */
+  margin-top: 0;
   margin-bottom: 30vh;
 }
 
 .konzerne-intro {
-  min-height: auto;        /* Verringert von 50vh, damit die Überschrift direkt oben steht */
+  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-bottom: 8vh;
-  padding-top: 2rem;       /* Sanfter oberer Abstand für den Titel */
+  padding-top: 2rem;
 }
 
 .konzerne-intro h2 {
@@ -677,12 +678,12 @@ nav a:hover {
   background: var(--bg);
   padding: 1rem 2rem 1rem 0;
   display: flex;
-  align-items: flex-start; /* Verhindert, dass der Container das Chart staucht */
+  align-items: flex-start;
 }
 
 .konzerne-chart-wrap #chart-bubble {
   width: 100%;
-  height: 650px !important; /* Muss mit dem Wert aus der JS-Datei übereinstimmen */
+  height: 650px !important;
 }
 
 @media (max-width: 1024px) {
@@ -733,7 +734,6 @@ nav a:hover {
    11. TABLET (max-width: 768px)
    ========================================================================== */
 @media (max-width: 768px) {
-  /* Navigation */
   nav {
     padding: 0.85rem 1.25rem;
     gap: 1rem;
@@ -778,11 +778,9 @@ nav a:hover {
     border-bottom: none;
   }
 
-  /* Hero – Größen anpassen (min-height & position im Bugfix-Block unten) */
   .hero-title { font-size: 2.8rem; }
   .hero-sub { font-size: 1.1rem; }
 
-  /* Sektionen */
   .scroll-section {
     padding: 4rem 1.5rem;
     min-height: auto;
@@ -790,28 +788,23 @@ nav a:hover {
 
   .scroll-section h2 { font-size: 2rem; }
 
-  /* Scrolly Allgemeines – position & height im Bugfix-Block */
   .scrolly-text { padding: 0 1.25rem; margin-top: 2rem; margin-bottom: 10vh; }
   .scrolly-step { min-height: auto; padding: 2.5rem 0; }
   .scrolly-step h3 { font-size: 1.5rem; }
   .scrolly-step p { font-size: 1rem; }
 
-  /* Konzerne – position & height im Bugfix-Block */
   .konzerne-text { padding: 0 1.25rem; margin-bottom: 10vh; }
   .konzerne-intro h2 { font-size: 2rem; }
   .konzerne-step h3 { font-size: 1.4rem; }
   .konzerne-step p { font-size: 1rem; }
   .konzerne-chart-wrap #chart-bubble { height: 100% !important; }
 
-  /* Metric Grid */
   .metric-grid { grid-template-columns: repeat(2, 1fr); }
   .metric-value { font-size: 1.3rem; }
 
-  /* Charts */
   #chart-politik,
   #chart-mittelstand { height: 320px; }
 
-  /* Politik Toggle */
   .politik-toggle {
     display: flex;
     flex-wrap: wrap;
@@ -825,10 +818,7 @@ nav a:hover {
     text-align: center;
   }
 
-  /* Land Dropdown */
   .land-dropdown { max-width: 100%; }
-
-  /* Land Panel */
   .land-panel { max-width: 100%; }
 }
 
@@ -836,7 +826,6 @@ nav a:hover {
    12. MOBIL (max-width: 480px)
    ========================================================================== */
 @media (max-width: 480px) {
-  /* Hero – padding hier, min-height & position im Bugfix-Block */
   .hero-title { font-size: 2rem; letter-spacing: -0.01em; }
   .hero-sub { font-size: 0.95rem; }
 
@@ -869,14 +858,7 @@ nav a:hover {
 /* ==========================================================================
    14. MOBILE BUGFIXES – NUR innerhalb von Media Queries, Desktop unberührt
    ========================================================================== */
-
-/* Einzige globale Regel: horizontalen Scroll verhindern (schadet Desktop nicht) */
-html {
-  overflow-x: hidden;
-}
-
 @media (max-width: 768px) {
-  /* Hero vollständige Höhe, nie abschneiden */
   .hero {
     padding: 6rem 1.5rem 3rem;
     min-height: 100svh !important;
@@ -885,7 +867,6 @@ html {
     z-index: 100 !important;
   }
 
-  /* Karte: sticky deaktivieren, sonst überlagert sie den Hero */
   .scrolly-map-wrap {
     position: relative !important;
     top: 0 !important;
@@ -898,7 +879,6 @@ html {
     overflow: hidden;
   }
 
-  /* SVG-Karte auf Breite begrenzen */
   #europe-map,
   #europe-map svg {
     max-width: 100% !important;
@@ -906,7 +886,6 @@ html {
     height: auto !important;
   }
 
-  /* Legende: kein Überlauf */
   .map-legend {
     max-width: 100%;
     overflow: hidden;
@@ -914,7 +893,6 @@ html {
     gap: 6px;
   }
 
-  /* Land-Panel: Vollbild-Overlay statt absolute im Map-Container */
   .land-panel {
     position: fixed !important;
     top: 0 !important;
@@ -925,7 +903,6 @@ html {
     z-index: 9999 !important;
   }
 
-  /* Konzerne-Chart: sticky deaktivieren */
   .konzerne-chart-wrap {
     position: relative !important;
     top: 0 !important;
