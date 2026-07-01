@@ -1034,20 +1034,21 @@ nav a:hover::after {
   font-weight: 600;
   border-radius: 12px;
   border: 1.5px solid var(--hero-accent);
-  background: var(--bg-side);
-  color: var(--hero-accent);
+  background: var(--hero-accent);
+  color: #06120c;
   cursor: pointer;
-  transition: background 0.2s ease, box-shadow 0.2s ease;
+  transition: filter 0.2s ease, box-shadow 0.2s ease;
 }
 
 .land-select-trigger:hover {
-  box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.15);
+  filter: brightness(1.05);
+  box-shadow: 0 0 0 4px rgba(110, 231, 183, 0.2);
 }
 
 .land-select-chevron {
   width: 18px;
   height: 18px;
-  color: var(--hero-accent);
+  color: #06120c;
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
@@ -1196,9 +1197,22 @@ nav a:hover::after {
 .stat-section {
   text-align: center;
   padding: 8rem 2rem !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .stat-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1232,45 +1246,40 @@ nav a:hover::after {
 }
 
 .stat-row {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
-  flex-wrap: wrap;
-  justify-content: center;
+  width: 100%;
+  max-width: 980px;
 }
 
 .stat-item {
-  padding: 1.5rem 2.5rem;
+  padding: 1.5rem 1.5rem;
   border: 1.5px solid rgba(255, 255, 255, 0.14);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.05);
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
 }
 
-:root:not(.dark) .stat-item {
-  border: 1.5px solid var(--border);
-  background: var(--bg-side);
+.stat-item:hover {
+  border-color: var(--hero-accent);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(110, 231, 183, 0.15);
 }
 
 .stat-value {
-  font-size: 2.3rem;
+  font-size: 1.9rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 0.4rem;
 }
 
 .stat-label {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-primary);
   opacity: 0.75;
 }
-
-@media (max-width: 640px) {
-  .stat-row {
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-}
-
 /* ==========================================================================
    17. TECHNOLOGIE-SEKTION
    ========================================================================== */

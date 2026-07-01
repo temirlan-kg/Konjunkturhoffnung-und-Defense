@@ -280,14 +280,14 @@ function applyStep(stepIndex) {
 
   const highlight = config.highlight;
 
-  // Schritt 04: nur die im Fokus stehenden Länder hell + klickbar, Rest abgedunkelt
+  // Schritt 04: nur die im Fokus stehenden Länder hell + klickbar, Labels der anderen komplett ausblenden
   if (config.klickbar) {
     const fokus = highlight || klickbareLaender;
     pathsSelection
       .style('opacity', d => fokus.includes(d.properties.name) ? 1 : 0.15)
       .style('stroke-width', d => fokus.includes(d.properties.name) ? 1.5 : 0.6)
       .style('cursor', d => fokus.includes(d.properties.name) ? 'pointer' : 'default');
-    labelsSelection.style('opacity', d => fokus.includes(d.properties.name) ? 1 : 0.15);
+    labelsSelection.style('opacity', d => fokus.includes(d.properties.name) ? 1 : 0);
     return;
   }
 
@@ -304,31 +304,39 @@ function applyStep(stepIndex) {
       .style('opacity', d => highlight.includes(d.properties.name) ? 1 : 0.2)
       .style('stroke-width', d => highlight.includes(d.properties.name) ? 1.5 : 0.5);
 
+    // Labels nicht hervorgehobener Länder komplett ausblenden statt nur dimmen (verhindert Überlappungen wie "LU")
     labelsSelection
-      .style('opacity', d => highlight.includes(d.properties.name) ? 1 : 0.25);
+      .style('opacity', d => highlight.includes(d.properties.name) ? 1 : 0);
   }
 }
 
 function setupIntroAnimation() {
   const section = document.getElementById('section-allgemeines');
+  const legendEl = document.getElementById('map-legend');
   if (!section || !mapGroup) return;
+
+  if (legendEl) {
+    legendEl.style.transition = 'opacity 0.5s ease';
+    legendEl.style.opacity = '0';
+  }
 
   const introObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Reset und neue Animation jedes Mal
         resetMap();
+        if (legendEl) legendEl.style.opacity = '0';
 
         setTimeout(() => {
           mapGroup.style('opacity', '1');
+          if (legendEl) legendEl.style.opacity = '1';
           applyStep('0');
         }, 100);
       } else {
-        // Beim Verlassen: Karte ausblenden für nächste Intro
         if (mapGroup) {
           mapGroup.style('transition', 'opacity 0.5s ease');
           mapGroup.style('opacity', '0');
         }
+        if (legendEl) legendEl.style.opacity = '0';
       }
     });
   }, { threshold: 0.15 });

@@ -33,10 +33,10 @@ function initHeroCanvas() {
       x: initial ? Math.random() * w : -8,
       y: baseY + (Math.random() - 0.5) * h * 0.04,
       speed: 0.4 + Math.random() * 0.6,
-      r: 1.1 + Math.random() * 1.6,
+      r: 0.8 + Math.random() * 1.2,
       phase: Math.random() * Math.PI * 2,
       amp: 3 + Math.random() * 6,
-      alpha: 0.38 + Math.random() * 0.4
+      alpha: 0.3 + Math.random() * 0.35
     });
   }
 
@@ -78,6 +78,58 @@ function initHeroCanvas() {
   window.addEventListener('resize', () => {
     resize();
   });
+}
+
+// Stat-Canvas: dezente, fließend bewegte Linien im Hintergrund der "Europas Antwort"-Section
+function initStatCanvas() {
+  const canvas = document.getElementById('statCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let w, h;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    w = rect.width;
+    h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  const waves = [
+    { baseY: 0.3, amp: 28, speed: 0.00018, phase: 0 },
+    { baseY: 0.55, amp: 22, speed: 0.00014, phase: 2.1 },
+    { baseY: 0.78, amp: 32, speed: 0.00011, phase: 4.4 }
+  ];
+
+  function draw(time) {
+    ctx.clearRect(0, 0, w, h);
+
+    waves.forEach(wave => {
+      const t = time * wave.speed;
+      ctx.beginPath();
+      const points = 60;
+      for (let i = 0; i <= points; i++) {
+        const x = (i / points) * w;
+        const y = wave.baseY * h
+          + Math.sin((i / points) * Math.PI * 2.4 + t + wave.phase) * wave.amp;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = 'rgba(110, 231, 183, 0.07)';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
 }
 
 // Hamburger-Menü
@@ -177,6 +229,7 @@ document.querySelectorAll('.scrolly-step').forEach(el => {
 });
 
 initHeroCanvas();
+initStatCanvas();
 initEuropeMap();
 initLaenderPanel();
 
