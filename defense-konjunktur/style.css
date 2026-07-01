@@ -235,10 +235,7 @@ nav a:hover::after {
 }
 
 .hero-title-accent {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--hero-accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--hero-accent);
 }
 
 .hero-sub {
@@ -1195,6 +1192,7 @@ nav a:hover::after {
    ========================================================================== */
 .stat-section {
   text-align: center;
+  padding: 8rem 2rem !important;
 }
 
 .stat-content {
@@ -1204,28 +1202,28 @@ nav a:hover::after {
 }
 
 .stat-eyebrow {
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
   font-weight: 600;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .stat-big {
-  font-size: clamp(3rem, 8vw, 6rem);
+  font-size: clamp(4rem, 11vw, 8.5rem);
   font-weight: 700;
   color: var(--hero-accent);
   letter-spacing: -0.02em;
   line-height: 1;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .stat-sub {
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   color: var(--text-secondary);
-  max-width: 520px;
-  margin-bottom: 3.5rem;
+  max-width: 620px;
+  margin-bottom: 4.5rem;
 }
 
 .stat-row {
@@ -1237,7 +1235,7 @@ nav a:hover::after {
 }
 
 .stat-item {
-  padding: 0 2.5rem;
+  padding: 0 3.5rem;
   border-right: 1px solid var(--border);
 }
 
@@ -1246,14 +1244,14 @@ nav a:hover::after {
 }
 
 .stat-value {
-  font-size: 1.7rem;
+  font-size: 2.3rem;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
 }
 
 .stat-label {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: var(--text-muted);
 }
 
