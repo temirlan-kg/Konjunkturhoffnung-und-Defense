@@ -233,6 +233,9 @@ nav a:hover::after {
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
+.hero-title-white {
+  color: var(--text-primary);
+}
 
 .hero-title-accent {
   color: var(--hero-accent);
@@ -1205,9 +1208,10 @@ nav a:hover::after {
   font-size: 1rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 600;
+  color: var(--text-primary);
+  font-weight: 700;
   margin-bottom: 2rem;
+  opacity: 0.85;
 }
 
 .stat-big {
@@ -1221,26 +1225,30 @@ nav a:hover::after {
 
 .stat-sub {
   font-size: 1.6rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   max-width: 620px;
   margin-bottom: 4.5rem;
+  opacity: 0.9;
 }
 
 .stat-row {
   display: flex;
   align-items: center;
-  gap: 0;
+  gap: 1.25rem;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .stat-item {
-  padding: 0 3.5rem;
-  border-right: 1px solid var(--border);
+  padding: 1.5rem 2.5rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.stat-item:last-child {
-  border-right: none;
+:root:not(.dark) .stat-item {
+  border: 1.5px solid var(--border);
+  background: var(--bg-side);
 }
 
 .stat-value {
@@ -1252,17 +1260,14 @@ nav a:hover::after {
 
 .stat-label {
   font-size: 1rem;
-  color: var(--text-muted);
+  color: var(--text-primary);
+  opacity: 0.75;
 }
 
 @media (max-width: 640px) {
   .stat-row {
     flex-direction: column;
-    gap: 1.5rem;
-  }
-  .stat-item {
-    border-right: none;
-    padding: 0;
+    gap: 1.25rem;
   }
 }
 

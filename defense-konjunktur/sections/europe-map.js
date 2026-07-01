@@ -24,7 +24,7 @@ const ausgaben = {
   'Hungary': 3,
 };
 
-// Klickbare Länder (Schritt 04)
+// Klickbare Länder im Dropdown (Schritt 04 – gilt für die Auswahl im Menü)
 const klickbareLaender = [
   'Germany', 'France', 'United Kingdom', 'Italy', 'Poland', 'Spain',
   'Netherlands', 'Sweden', 'Norway', 'Denmark', 'Finland',
@@ -32,6 +32,10 @@ const klickbareLaender = [
   'Hungary', 'Austria', 'Switzerland', 'Slovakia', 'Slovenia',
   'Croatia', 'Bulgaria', 'Ireland'
 ];
+
+// Auf der Karte selbst im Vordergrund/klickbar bei Schritt 04: nur DE, FR, GB
+const kartenFokusLaender = ['Germany', 'France', 'United Kingdom'];
+
 const countryCodes = {
   'Germany': 'DE', 'France': 'FR', 'United Kingdom': 'GB', 'Italy': 'IT',
   'Spain': 'ES', 'Poland': 'PL', 'Netherlands': 'NL', 'Sweden': 'SE',
@@ -63,9 +67,9 @@ const stepConfigs = {
     center: [8, 50]
   },
   '3': {
-    highlight: null,
-    scale: 1,
-    center: [15, 52],
+    highlight: kartenFokusLaender,
+    scale: 1.7,
+    center: [3, 50],
     klickbar: true
   }
 };
@@ -127,9 +131,10 @@ export function initEuropeMap() {
         .attr('stroke-width', 0.8)
         .style('transition', 'fill 0.6s ease, opacity 0.8s ease, stroke-width 0.8s ease')
         .on('click', function(event, d) {
-          // Nur in Schritt 04 (klickbar) und nur die 8 Länder
+          // Nur in Schritt 04 (klickbar) und nur die aktuell im Fokus stehenden Länder
           if (!stepConfigs[aktuellerStep] || !stepConfigs[aktuellerStep].klickbar) return;
-          if (!klickbareLaender.includes(d.properties.name)) return;
+          const erlaubt = stepConfigs[aktuellerStep].highlight || klickbareLaender;
+          if (!erlaubt.includes(d.properties.name)) return;
           openLandPanel(d.properties.name);
           markiereAktivesLand(d.properties.name);
         });
@@ -275,13 +280,14 @@ function applyStep(stepIndex) {
 
   const highlight = config.highlight;
 
-  // In Schritt 04: klickbare Länder dezent hervorheben + Cursor
+  // Schritt 04: nur die im Fokus stehenden Länder hell + klickbar, Rest abgedunkelt
   if (config.klickbar) {
+    const fokus = highlight || klickbareLaender;
     pathsSelection
-      .style('opacity', 1)
-      .style('stroke-width', d => klickbareLaender.includes(d.properties.name) ? 1.5 : 0.8)
-      .style('cursor', d => klickbareLaender.includes(d.properties.name) ? 'pointer' : 'default');
-    labelsSelection.style('opacity', 1);
+      .style('opacity', d => fokus.includes(d.properties.name) ? 1 : 0.15)
+      .style('stroke-width', d => fokus.includes(d.properties.name) ? 1.5 : 0.6)
+      .style('cursor', d => fokus.includes(d.properties.name) ? 'pointer' : 'default');
+    labelsSelection.style('opacity', d => fokus.includes(d.properties.name) ? 1 : 0.15);
     return;
   }
 
