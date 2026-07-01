@@ -3,7 +3,7 @@
 > Eine interaktive Datenvisualisierungs-Website zum Zusammenhang zwischen der europäischen Verteidigungsbranche und der wirtschaftlichen Entwicklung in Deutschland.
 
 **Universitätsprojekt** — TH Nürnberg Georg Simon Ohm
-**Kurs:** Data Motion / Interaction (Prof. Mirko Schramm)
+**Kurs:** Data Motion / Interaction (Mirko Schramm)
 **Sommersemester 2026**
 
 ---
