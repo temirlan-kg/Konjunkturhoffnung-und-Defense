@@ -8,7 +8,7 @@
 
 ---
 
-## 📋 Über das Projekt
+## Über das Projekt
 
 Seit der Zeitenwende 2022 hat sich die sicherheitspolitische Lage in Europa grundlegend verändert. Staaten investieren wieder systematisch in ihre Verteidigungsfähigkeit — nicht nur militärisch, sondern auch industriell. Diese Website analysiert diesen Wandel datenbasiert und visuell zugänglich.
 
@@ -26,18 +26,18 @@ Seit der Zeitenwende 2022 hat sich die sicherheitspolitische Lage in Europa grun
 
 ---
 
-## ✨ Features
+## Features
 
-- 🌍 **Interaktive Europa-Karte** mit Verteidigungsausgaben pro Land
-- 📊 **Vier datengetriebene Visualisierungen** (Karte, Donut, Balken, Bubble)
-- 🎬 **Scroll-getriggerte Animationen** mit Intersection Observer API
-- 🌓 **Dark- und Light-Mode** mit dynamischem Chart-Re-Rendering
-- 📱 **Sticky-Split-Screen-Layout** für Storytelling
-- ⚡ **Hot-Module-Reload** über Vite
+- **Interaktive Europa-Karte** mit Verteidigungsausgaben pro Land
+- **Vier datengetriebene Visualisierungen** (Karte, Donut, Balken, Bubble)
+- **Scroll-getriggerte Animationen** mit Intersection Observer API
+- **Dark- und Light-Mode** mit dynamischem Chart-Re-Rendering
+- **Sticky-Split-Screen-Layout** für Storytelling
+- **Hot-Module-Reload** über Vite
 
 ---
 
-## 🗂️ Sections
+## Sections
 
 | Section | Visualisierung | Quelle |
 |---------|----------------|--------|
@@ -76,7 +76,7 @@ Seit der Zeitenwende 2022 hat sich die sicherheitspolitische Lage in Europa grun
 
 ---
 
-## 🚀 Installation & Start
+## Installation & Start
 
 ### Voraussetzungen
 - Node.js v18 oder höher
@@ -100,7 +100,7 @@ npm run dev
 
 Während der Entwicklung läuft die Website lokal unter `http://localhost:5173/Konjunkturhoffnung-und-Defense/`.
 
-### 🌐 Live-Version
+### Live-Version
 
 Die veröffentlichte Website ist über GitHub Pages erreichbar:
 
@@ -116,7 +116,7 @@ npm run build && npm run deploy
 
 ---
 
-## 📊 Datenquellen
+## Datenquellen
 
 ### Offizielle Statistiken
 - **NATO** — Defence Expenditure Database
