@@ -3,6 +3,7 @@ import { markiereAktivesLand } from './europe-map.js';
 
 let laenderDaten = null;
 let panelChart = null;
+let aktuellesLand = '';
 
 // Reihenfolge im Dropdown
 const laenderReihenfolge = [
@@ -25,23 +26,60 @@ export function initLaenderPanel() {
 }
 
 function baueDropdown() {
-  const select = document.getElementById('land-dropdown');
-  if (!select) return;
+  const trigger = document.getElementById('land-select-trigger');
+  const panel = document.getElementById('land-select-panel');
+  const list = document.getElementById('land-select-list');
+  const backdrop = document.getElementById('land-select-backdrop');
+  const closeBtn = document.getElementById('land-select-close');
+  if (!trigger || !panel || !list || !backdrop) return;
 
-  select.innerHTML = '<option value="">Land auswählen …</option>' +
-    laenderReihenfolge.map(key => {
-      const l = laenderDaten[key];
-      return `<option value="${key}">${l.flagge} ${l.name}</option>`;
-    }).join('');
+  list.innerHTML = laenderReihenfolge.map(key => {
+    const l = laenderDaten[key];
+    return `
+      <button type="button" class="land-select-item" data-key="${key}" role="option">
+        <span class="land-select-flag">${l.flagge}</span>
+        <span>${l.name}</span>
+      </button>
+    `;
+  }).join('');
 
-  select.addEventListener('change', (e) => {
-    const key = e.target.value;
-    if (!key) {
-      schliessePanel();
-      return;
+  function openDropdown() {
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeDropdown() {
+    panel.classList.remove('open');
+    backdrop.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  trigger.addEventListener('click', () => {
+    const isOpen = panel.classList.contains('open');
+    if (isOpen) {
+      closeDropdown();
+    } else {
+      openDropdown();
     }
-    openLandPanel(key);
-    markiereAktivesLand(key);
+  });
+
+  backdrop.addEventListener('click', closeDropdown);
+  if (closeBtn) closeBtn.addEventListener('click', closeDropdown);
+
+  list.querySelectorAll('.land-select-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const key = item.dataset.key;
+      closeDropdown();
+      openLandPanel(key);
+      markiereAktivesLand(key);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('land-select').contains(e.target)) {
+      closeDropdown();
+    }
   });
 }
 
@@ -56,13 +94,19 @@ function baueSchliessenButton() {
 export function openLandPanel(key) {
   if (!laenderDaten || !laenderDaten[key]) return;
   const land = laenderDaten[key];
+  aktuellesLand = key;
 
   const panel = document.getElementById('land-panel');
   if (!panel) return;
 
-  // Dropdown synchron setzen
-  const select = document.getElementById('land-dropdown');
-  if (select) select.value = key;
+  // Trigger-Label synchron setzen
+  const label = document.getElementById('land-select-label');
+  if (label) label.textContent = `${land.flagge} ${land.name}`;
+
+  // Aktives Item in der Liste markieren
+  document.querySelectorAll('.land-select-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.key === key);
+  });
 
   // Kopf füllen
   document.getElementById('panel-flagge').textContent = land.flagge;
@@ -93,8 +137,15 @@ export function openLandPanel(key) {
 function schliessePanel() {
   const panel = document.getElementById('land-panel');
   if (panel) panel.classList.remove('open');
-  const select = document.getElementById('land-dropdown');
-  if (select) select.value = '';
+
+  const label = document.getElementById('land-select-label');
+  if (label) label.textContent = 'Land auswählen …';
+
+  document.querySelectorAll('.land-select-item').forEach(item => {
+    item.classList.remove('active');
+  });
+
+  aktuellesLand = '';
   if (panelChart) { panelChart.destroy(); panelChart = null; }
 }
 

@@ -14,6 +14,7 @@ export function initPolitik(force = false) {
   const textColor = isDark ? '#e6edf3' : '#0f172a';
   const mutedColor = isDark ? '#8b949e' : '#475569';
   const gridColor = isDark ? '#30363d' : '#e2e8f0';
+  const gapColor = isDark ? '#6b7684' : '#94a3b8';
 
   function buildChart(data) {
     if (chart) { chart.destroy(); chart = null; }
@@ -21,12 +22,12 @@ export function initPolitik(force = false) {
     const istBip = modus === 'bip';
     const istWachstum = modus === 'wachstum';
 
+    const rohCategories = data.zeitverlauf.categories;
     const abs = { de: data.zeitverlauf.deutschland, eu: data.zeitverlauf.eu27 };
 
-    let serienDaten, einheit, yTitel, titelText;
+    let roheDaten, einheit, yTitel, titelText;
     if (istWachstum) {
-      // Index: jeder Wert relativ zum Startjahr (2023 = 100)
-      serienDaten = {
+      roheDaten = {
         de: abs.de.map(v => Math.round((v / abs.de[0]) * 100)),
         eu: abs.eu.map(v => Math.round((v / abs.eu[0]) * 100))
       };
@@ -34,30 +35,116 @@ export function initPolitik(force = false) {
       yTitel = 'Index (2023 = 100)';
       titelText = 'Wachstum der Verteidigungsausgaben (Index, 2023 = 100)';
     } else if (istBip) {
-      serienDaten = { de: data.zeitverlauf.deutschland_bip, eu: data.zeitverlauf.eu27_bip };
+      roheDaten = { de: data.zeitverlauf.deutschland_bip, eu: data.zeitverlauf.eu27_bip };
       einheit = '% des BIP';
       yTitel = '% des BIP';
       titelText = 'Verteidigungsausgaben Deutschland & EU-27 (% des BIP)';
     } else {
-      serienDaten = { de: abs.de, eu: abs.eu };
+      roheDaten = { de: abs.de, eu: abs.eu };
       einheit = 'Mrd. €';
       yTitel = 'Milliarden Euro';
       titelText = 'Verteidigungsausgaben Deutschland & EU-27 (Mrd. €)';
     }
 
+    // Lücke in den Jahren finden (z. B. 2026 -> 2029)
+    let lueckeIndex = -1;
+    let lueckeDiff = 0;
+    for (let i = 0; i < rohCategories.length - 1; i++) {
+      const a = parseInt(rohCategories[i], 10);
+      const b = parseInt(rohCategories[i + 1], 10);
+      if (!isNaN(a) && !isNaN(b) && (b - a) > 1) {
+        lueckeIndex = i;
+        lueckeDiff = b - a;
+        break;
+      }
+    }
+
+    // Kategorien & Daten aufbauen, ggf. mit leerer Spacer-Spalte an der Lücke
+    let categories = [...rohCategories];
+    let deData = [...roheDaten.de];
+    let euData = [...roheDaten.eu];
+    let spacerPos = null;
+
+    if (lueckeIndex >= 0) {
+      const insertAt = lueckeIndex + 1;
+      categories.splice(insertAt, 0, '');
+      deData.splice(insertAt, 0, null);
+      euData.splice(insertAt, 0, null);
+      spacerPos = insertAt;
+    }
+
+    // Letzten Punkt (Prognosejahr) optisch abheben, wenn eine Lücke existiert
+    const forecastIndex = spacerPos !== null ? categories.length - 1 : -1;
+    function alsForecast(arr, farbe) {
+      return arr.map((v, i) => {
+        if (i === forecastIndex && v !== null) {
+          return { y: v, color: farbe, borderColor: farbe, borderWidth: 1, dashStyle: 'Dash' };
+        }
+        return v;
+      });
+    }
+
+    const deColor = '#1d4ed8';
+    const euColor = '#059669';
+    const deSeriesData = forecastIndex >= 0 ? alsForecast(deData, 'rgba(29,78,216,0.45)') : deData;
+    const euSeriesData = forecastIndex >= 0 ? alsForecast(euData, 'rgba(5,150,105,0.45)') : euData;
+
+    // Kennzahl für Callout: Wachstum Deutschland seit erstem Jahr
+    const deWachstumProzent = Math.round(((abs.de[abs.de.length - 1] / abs.de[0]) - 1) * 100);
+    const euWachstumProzent = Math.round(((abs.eu[abs.eu.length - 1] / abs.eu[0]) - 1) * 100);
+
     chart = Highcharts.chart('chart-politik', {
       chart: {
         type: 'column',
         backgroundColor: 'transparent',
-        animation: { duration: 1200 }
+        animation: { duration: 1200 },
+        events: {
+          render: function () {
+            const c = this;
+            if (c.__zickzack) { c.__zickzack.destroy(); c.__zickzack = null; }
+            if (spacerPos === null) return;
+
+            const xPos = c.xAxis[0].toPixels(spacerPos, false);
+            const top = c.plotTop;
+            const bottom = c.plotTop + c.plotHeight;
+            const zz = 6;
+            const mid = top + (bottom - top) * 0.5;
+
+            const path = [
+              'M', xPos, top,
+              'L', xPos, mid - 18,
+              'L', xPos - zz, mid - 10,
+              'L', xPos + zz, mid - 2,
+              'L', xPos - zz, mid + 6,
+              'L', xPos + zz, mid + 14,
+              'L', xPos, mid + 22,
+              'L', xPos, bottom
+            ];
+
+            c.__zickzack = c.renderer.path(path)
+              .attr({
+                'stroke-width': 1.5,
+                stroke: gapColor,
+                dashstyle: 'Dash',
+                zIndex: 5
+              })
+              .add();
+          }
+        }
       },
       title: {
         text: titelText,
         style: { color: textColor, fontSize: '16px' }
       },
+
       xAxis: {
-        categories: data.zeitverlauf.categories,
-        labels: { style: { color: mutedColor } },
+        categories: categories,
+        labels: {
+          style: { color: mutedColor },
+          formatter: function () {
+            return this.value === '' ? '' : this.value;
+          }
+        },
         gridLineWidth: 0,
         lineWidth: 1,
         lineColor: gridColor
@@ -66,6 +153,9 @@ export function initPolitik(force = false) {
         title: { text: yTitel, style: { color: mutedColor } },
         labels: { style: { color: mutedColor } },
         gridLineWidth: 0,
+        startOnTick: false,
+        endOnTick: false,
+        maxPadding: 0.1,
         plotLines: istBip ? [{
           color: '#f59e0b',
           dashStyle: 'Dash',
@@ -82,7 +172,7 @@ export function initPolitik(force = false) {
           width: 1,
           value: 100,
           label: {
-            text: 'Basis 2023',
+            text: `Basis ${rohCategories[0]}`,
             style: { color: mutedColor, fontSize: '10px' }
           },
           zIndex: 5
@@ -116,19 +206,20 @@ export function initPolitik(force = false) {
             style: { color: textColor, textOutline: 'none' },
             format: istBip ? '{point.y} %' : '{point.y}'
           },
-          groupPadding: 0.2
+          groupPadding: 0.15,
+          pointPadding: 0.08
         }
       },
       series: [
         {
           name: 'Deutschland',
-          data: serienDaten.de,
-          color: '#1d4ed8'
+          data: deSeriesData,
+          color: deColor
         },
         {
           name: 'EU-27',
-          data: serienDaten.eu,
-          color: '#059669'
+          data: euSeriesData,
+          color: euColor
         }
       ],
       credits: { enabled: false }
