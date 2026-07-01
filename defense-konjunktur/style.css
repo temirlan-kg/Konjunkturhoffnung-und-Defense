@@ -87,7 +87,7 @@ nav {
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   z-index: 1000;
   border-bottom: 1px solid var(--border);
 }
@@ -108,16 +108,17 @@ nav {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2.25rem;
+  gap: 1.75rem;
 }
 
 nav a {
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
   transition: color 0.2s ease;
   position: relative;
+  white-space: nowrap;
 }
 
 nav a:hover {
@@ -140,7 +141,7 @@ nav a:hover::after {
 }
 
 .toggle-btn {
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   background: var(--border);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -152,6 +153,7 @@ nav a:hover::after {
   align-items: center;
   gap: 6px;
   transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
 }
 
 .toggle-btn:hover {
@@ -926,7 +928,7 @@ nav a:hover::after {
   .intro { font-size: 1rem; }
 
   .scrolly-text { padding: 0 1rem; }
-  .scrolly-num { font-size: 1.5rem; }
+  .scrolly-num { font-size: 1.8rem; }
   .scrolly-step h3 { font-size: 1.3rem; }
   .scrolly-step p { font-size: 0.95rem; line-height: 1.7; }
   .scrolly-map-inner { padding: 0.75rem; }
@@ -1019,7 +1021,7 @@ nav a:hover::after {
   position: relative;
   margin-top: 1.5rem;
   width: 100%;
-  max-width: 320px;
+  max-width: 340px;
 }
 
 .land-select-trigger {
@@ -1027,24 +1029,25 @@ nav a:hover::after {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
-  font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid var(--border);
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: 1.5px solid var(--hero-accent);
   background: var(--bg-side);
-  color: var(--text-primary);
+  color: var(--hero-accent);
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .land-select-trigger:hover {
-  border-color: var(--hero-accent);
+  box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.15);
 }
 
 .land-select-chevron {
-  width: 16px;
-  height: 16px;
-  color: var(--text-muted);
+  width: 18px;
+  height: 18px;
+  color: var(--hero-accent);
   flex-shrink: 0;
   transition: transform 0.2s ease;
 }
@@ -1184,5 +1187,154 @@ nav a:hover::after {
   .land-select-backdrop.open {
     opacity: 1;
     visibility: visible;
+  }
+}
+
+/* ==========================================================================
+   16. STAT-SECTION (EUROPAS ANTWORT)
+   ========================================================================== */
+.stat-section {
+  text-align: center;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.stat-big {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 700;
+  color: var(--hero-accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+}
+
+.stat-sub {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin-bottom: 3.5rem;
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.stat-item {
+  padding: 0 2.5rem;
+  border-right: 1px solid var(--border);
+}
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+.stat-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 640px) {
+  .stat-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .stat-item {
+    border-right: none;
+    padding: 0;
+  }
+}
+
+/* ==========================================================================
+   17. TECHNOLOGIE-SEKTION
+   ========================================================================== */
+.tech-eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hero-accent);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.tech-section .intro {
+  margin-bottom: 2.5rem;
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.tech-card {
+  background: var(--bg-side);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.tech-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--hero-accent);
+}
+
+.tech-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--hero-accent);
+  margin-bottom: 1rem;
+}
+
+.tech-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.tech-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.tech-desc {
+  font-size: 0.85rem;
+  color: var(--hero-accent);
+}
+
+@media (max-width: 1024px) {
+  .tech-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .tech-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
