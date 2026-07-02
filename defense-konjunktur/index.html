@@ -109,10 +109,6 @@
               <span class="panel-flagge" id="panel-flagge">🇩🇪</span>
               <span class="panel-name" id="panel-name">Land</span>
             </div>
-            <p class="panel-aktuell-label">
-              Aktuelle Ausgaben: <span class="panel-aktuell-wert" id="panel-aktuell">–</span>
-            </p>
-            <div id="panel-chart"></div>
             <div class="panel-top3-titel">Top 3 Unternehmen</div>
             <div id="panel-top3"></div>
           </aside>
@@ -139,7 +135,7 @@
           <div class="stat-label">Ausgaben DE 2025</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value">~400.000</div>
+          <div class="stat-value">400.000</div>
           <div class="stat-label">Beschäftigte</div>
         </div>
         <div class="stat-item">
@@ -159,15 +155,19 @@
     <div class="content">
       <p class="tech-eyebrow">Technologie</p>
       <h2>Wo Innovation entsteht</h2>
-      <p class="intro">Die gefragtesten Felder der modernen Verteidigung</p>
+      <p class="intro">Die gefragtesten Felder der modernen Verteidigung.</p>
 
-      <div class="tech-info" id="techInfo">
-        <button class="tech-info-close" id="techInfoClose" aria-label="Schließen">×</button>
-        <div class="tech-info-head">
-          <span class="tech-info-icon" id="techInfoIcon"></span>
-          <span class="tech-info-title" id="techInfoTitle"></span>
+      <div class="tech-info-wrap" id="techInfoWrap">
+        <div class="tech-float tech-float-left" id="techFloatLeft"></div>
+        <div class="tech-info" id="techInfo">
+          <button class="tech-info-close" id="techInfoClose" aria-label="Schließen">×</button>
+          <div class="tech-info-head">
+            <span class="tech-info-icon" id="techInfoIcon"></span>
+            <span class="tech-info-title" id="techInfoTitle"></span>
+          </div>
+          <div class="tech-info-body" id="techInfoBody"></div>
         </div>
-        <div class="tech-info-body" id="techInfoBody"></div>
+        <div class="tech-float tech-float-right" id="techFloatRight"></div>
       </div>
 
       <div class="tech-grid" id="techGrid">

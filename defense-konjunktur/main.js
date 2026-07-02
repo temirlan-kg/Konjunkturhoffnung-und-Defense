@@ -187,6 +187,8 @@ function initTechCards() {
   const titleEl = document.getElementById('techInfoTitle');
   const bodyEl = document.getElementById('techInfoBody');
   const iconEl = document.getElementById('techInfoIcon');
+  const floatLeft = document.getElementById('techFloatLeft');
+  const floatRight = document.getElementById('techFloatRight');
   if (!grid || !infoPanel || !section) return;
 
   const cards = grid.querySelectorAll('.tech-card');
@@ -200,11 +202,27 @@ function initTechCards() {
     }).join('');
   }
 
+  function buildFloatIcons(container, iconSvg, count) {
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const wrap = document.createElement('span');
+      wrap.className = 'tech-float-icon tech-float-icon-' + i;
+      wrap.innerHTML = iconSvg;
+      container.appendChild(wrap);
+    }
+  }
+
   function openInfo(card) {
     titleEl.textContent = card.dataset.title || '';
     bodyEl.innerHTML = parseDetail(card.dataset.detail);
     const iconSvg = card.querySelector('.tech-icon svg');
-    iconEl.innerHTML = iconSvg ? iconSvg.outerHTML : '';
+    const iconHtml = iconSvg ? iconSvg.outerHTML : '';
+    iconEl.innerHTML = iconHtml;
+
+    buildFloatIcons(floatLeft, iconHtml, 2);
+    buildFloatIcons(floatRight, iconHtml, 2);
+
     infoPanel.classList.add('open');
     cards.forEach(c => c.classList.toggle('active', c === card));
     activeCard = card;
