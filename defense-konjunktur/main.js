@@ -5,7 +5,6 @@ import { initKonzerne }    from './sections/konzerne.js';
 import { initEuropeMap }   from './sections/europe-map.js';
 import { initLaenderPanel } from './sections/laender-panel.js';
 
-// Hero-Canvas: feine Partikel fließen kontinuierlich von links nach rechts
 function initHeroCanvas() {
   const canvas = document.getElementById('heroCanvas');
   if (!canvas) return;
@@ -80,9 +79,8 @@ function initHeroCanvas() {
   });
 }
 
-// Stat-Canvas: dezente, fließend bewegte Linien im Hintergrund der "Europas Antwort"-Section
-function initStatCanvas() {
-  const canvas = document.getElementById('statCanvas');
+function makeWaveCanvas(canvasId) {
+  const canvas = document.getElementById(canvasId);
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
@@ -107,6 +105,8 @@ function initStatCanvas() {
 
   function draw(time) {
     ctx.clearRect(0, 0, w, h);
+    const isDark = document.documentElement.classList.contains('dark');
+    const strokeAlpha = isDark ? 0.08 : 0.22;
 
     waves.forEach(wave => {
       const t = time * wave.speed;
@@ -119,7 +119,7 @@ function initStatCanvas() {
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
-      ctx.strokeStyle = 'rgba(110, 231, 183, 0.07)';
+      ctx.strokeStyle = `rgba(110, 231, 183, ${strokeAlpha})`;
       ctx.lineWidth = 1.5;
       ctx.stroke();
     });
@@ -132,7 +132,141 @@ function initStatCanvas() {
   window.addEventListener('resize', resize);
 }
 
-// Hamburger-Menü
+function initStatCanvas() {
+  makeWaveCanvas('statCanvas');
+}
+
+function initTechCanvas() {
+  const canvas = document.getElementById('techCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let w, h;
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    w = rect.width;
+    h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  function draw(time) {
+    ctx.clearRect(0, 0, w, h);
+    const isDark = document.documentElement.classList.contains('dark');
+    const alpha = isDark ? 0.05 : 0.14;
+    const spacing = 64;
+    const offset = (time * 0.012) % spacing;
+
+    ctx.strokeStyle = `rgba(110, 231, 183, ${alpha})`;
+    ctx.lineWidth = 1;
+
+    for (let x = -h + offset; x < w + h; x += spacing) {
+      ctx.beginPath();
+      ctx.moveTo(x, h);
+      ctx.lineTo(x + h, 0);
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
+}
+
+function initTechCards() {
+  const grid = document.getElementById('techGrid');
+  const backdrop = document.getElementById('techModalBackdrop');
+  const modal = document.getElementById('techModal');
+  const closeBtn = document.getElementById('techModalClose');
+  const titleEl = document.getElementById('techModalTitle');
+  const bodyEl = document.getElementById('techModalBody');
+  const iconEl = document.getElementById('techModalIcon');
+  if (!grid || !backdrop) return;
+
+  const cards = grid.querySelectorAll('.tech-card');
+
+  function parseDetail(raw) {
+    if (!raw) return '';
+    return raw.split(';;').map(pair => {
+      const [label, text] = pair.split('::');
+      return `<div class="tech-modal-item"><strong>${label}:</strong> ${text}</div>`;
+    }).join('');
+  }
+
+  function openModal(card) {
+    titleEl.textContent = card.dataset.title || '';
+    bodyEl.innerHTML = parseDetail(card.dataset.detail);
+    const iconSvg = card.querySelector('.tech-icon svg');
+    iconEl.innerHTML = iconSvg ? iconSvg.outerHTML : '';
+    backdrop.classList.add('open');
+  }
+
+  function closeModal() {
+    backdrop.classList.remove('open');
+  }
+
+  cards.forEach(card => {
+    card.addEventListener('click', () => openModal(card));
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+}
+
+function initCustomCursor() {
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (isTouch) return;
+
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring) return;
+
+  document.documentElement.classList.add('has-custom-cursor');
+
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+  });
+
+  function loop() {
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  const hoverTargets = 'a, button, .tech-card, .stat-item, .land-select-trigger, .land-select-item';
+
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(hoverTargets)) {
+      ring.classList.add('cursor-hover');
+    }
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(hoverTargets)) {
+      ring.classList.remove('cursor-hover');
+    }
+  });
+}
+
 const hamburger = document.getElementById('navHamburger');
 const navLinks  = document.getElementById('navLinks');
 
@@ -152,28 +286,23 @@ if (hamburger && navLinks) {
   });
 }
 
-// Dark/Light Mode Elemente holen
 const toggleBtn = document.getElementById('themeToggle');
 const toggleText = toggleBtn ? toggleBtn.querySelector('.toggle-text') : null;
 const root = document.documentElement;
 
-// Standardmäßig Dark Mode setzen
 root.classList.add('dark');
 if (toggleText) {
   toggleText.textContent = 'Light Mode';
 }
 
-// Status, welche Sektionen bereits betreten wurden (für Redraws)
 const visible = { politik: false, mittelstand: false, konzerne: false };
 
-// Hilfsfunktion zum Neuzeichnen der Charts bei Theme-Wechsel
 function redrawCharts() {
   if (visible.politik)     initPolitik(true);
   if (visible.mittelstand) initMittelstand(true);
   if (visible.konzerne)    initKonzerne(true);
 }
 
-// Event Listener für den Theme-Toggle
 if (toggleBtn) {
   toggleBtn.addEventListener('click', () => {
     root.classList.toggle('dark');
@@ -230,6 +359,9 @@ document.querySelectorAll('.scrolly-step').forEach(el => {
 
 initHeroCanvas();
 initStatCanvas();
+initTechCanvas();
+initTechCards();
+initCustomCursor();
 initEuropeMap();
 initLaenderPanel();
 

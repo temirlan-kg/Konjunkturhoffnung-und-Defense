@@ -1,4 +1,3 @@
-/* inter-300 - latin */
 @font-face {
   font-display: swap;
   font-family: 'Inter';
@@ -6,7 +5,6 @@
   font-weight: 300;
   src: url('./public/fonts/inter-v20-latin-300.woff2') format('woff2');
 }
-/* inter-regular - latin */
 @font-face {
   font-display: swap;
   font-family: 'Inter';
@@ -14,7 +12,6 @@
   font-weight: 400;
   src: url('./public/fonts/inter-v20-latin-regular.woff2') format('woff2');
 }
-/* inter-700 - latin */
 @font-face {
   font-display: swap;
   font-family: 'Inter';
@@ -22,7 +19,6 @@
   font-weight: 700;
   src: url('./public/fonts/inter-v20-latin-700.woff2') format('woff2');
 }
-/* inter-800 - latin */
 @font-face {
   font-display: swap;
   font-family: 'Inter';
@@ -30,9 +26,8 @@
   font-weight: 800;
   src: url('./public/fonts/inter-v20-latin-800.woff2') format('woff2');
 }
-/* ==========================================================================
-   1. RESET & GLOBALE VARIABLEN
-   ========================================================================== */
+
+/* 1. RESET & VARIABLEN */
 html {
   scrollbar-gutter: stable;
 }
@@ -52,6 +47,8 @@ html {
   --border: rgba(0, 0, 0, 0.06);
   --map-bg: rgba(0, 0, 0, 0.02);
   --hero-accent: #059669;
+  --line-soft: rgba(15, 23, 42, 0.12);
+  --surface-soft: rgba(15, 23, 42, 0.04);
 }
 
 :root.dark {
@@ -64,6 +61,8 @@ html {
   --border: rgba(255, 255, 255, 0.06);
   --map-bg: #161b22;
   --hero-accent: #6ee7b7;
+  --line-soft: rgba(255, 255, 255, 0.14);
+  --surface-soft: rgba(255, 255, 255, 0.05);
 }
 
 body {
@@ -74,9 +73,63 @@ body {
   overflow-x: hidden;
 }
 
-/* ==========================================================================
-   2. NAVIGATION
-   ========================================================================== */
+html.has-custom-cursor,
+html.has-custom-cursor body,
+html.has-custom-cursor a,
+html.has-custom-cursor button {
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--hero-accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  margin-left: 0;
+  margin-top: 0;
+  will-change: transform;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--hero-accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  margin-left: -16px;
+  margin-top: -16px;
+  transition: width 0.2s ease, height 0.2s ease, border-radius 0.2s ease, background 0.2s ease;
+  will-change: transform;
+}
+
+.cursor-ring.cursor-hover {
+  width: 56px;
+  height: 56px;
+  margin-left: -28px;
+  margin-top: -28px;
+  background: rgba(110, 231, 183, 0.1);
+}
+
+@media (pointer: coarse) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* 2. NAVIGATION */
 nav {
   position: fixed;
   top: 0;
@@ -179,9 +232,7 @@ nav a:hover::after {
   display: block;
 }
 
-/* ==========================================================================
-   3. HERO SECTION
-   ========================================================================== */
+/* 3. HERO */
 .hero {
   min-height: 100vh !important;
   display: flex;
@@ -233,6 +284,7 @@ nav a:hover::after {
   letter-spacing: -0.02em;
   color: var(--text-primary);
 }
+
 .hero-title-white {
   color: var(--text-primary);
 }
@@ -285,9 +337,7 @@ nav a:hover::after {
   50% { transform: translateY(4px); opacity: 1; }
 }
 
-/* ==========================================================================
-   4. STANDARD SEKTIONEN (POLITIK, MITTELSTAND ETC.)
-   ========================================================================== */
+/* 4. STANDARD SEKTIONEN */
 .scroll-section {
   min-height: 100vh;
   display: flex;
@@ -303,6 +353,8 @@ nav a:hover::after {
 .content {
   max-width: 860px;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 
 .scroll-section h2 {
@@ -328,9 +380,7 @@ nav a:hover::after {
   border: none;
 }
 
-/* ==========================================================================
-   5. SCROLLYTELLING-LAYOUT
-   ========================================================================== */
+/* 5. SCROLLYTELLING */
 .allgemeines-scrolly {
   display: block;
   padding: 0;
@@ -346,7 +396,6 @@ nav a:hover::after {
   align-items: flex-start;
 }
 
-/* Linke Seite: Scrollbarer Textfluss */
 .scrolly-text {
   flex: 1;
   max-width: 50%;
@@ -407,7 +456,6 @@ nav a:hover::after {
   color: var(--text-secondary);
 }
 
-/* Rechte Seite: Fixierte Europa-Karte */
 .scrolly-map-wrap {
   flex: 1;
   max-width: 50%;
@@ -434,7 +482,6 @@ nav a:hover::after {
   height: auto;
 }
 
-/* Sanfte Übergänge für die Länder-Highlights */
 .country-path {
   transition: fill 0.4s ease, opacity 0.4s ease;
 }
@@ -461,9 +508,7 @@ nav a:hover::after {
   display: inline-block;
 }
 
-/* ==========================================================================
-   6. METRIC GRID (DASHBOARD-KARTEN)
-   ========================================================================== */
+/* 6. METRIC GRID */
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -508,9 +553,7 @@ nav a:hover::after {
   margin-top: 0.4rem;
 }
 
-/* ==========================================================================
-   7. RESPONSIVE DESIGN (MOBIL-BREAKPOINTS)
-   ========================================================================== */
+/* 7. RESPONSIVE 1024px */
 @media (max-width: 1024px) {
   .hero-title { font-size: 3.4rem; }
 
@@ -550,10 +593,7 @@ nav a:hover::after {
   .metric-grid { grid-template-columns: 1fr; }
 }
 
-/* ==========================================================================
-   8. LAND-DROPDOWN & DETAIL-PANEL (SCHRITT 04 – INNOVATIONSLANDSCHAFT)
-   ========================================================================== */
-/* Detail-Panel, erscheint inline unter dem Dropdown */
+/* 8. LAND-DROPDOWN & DETAIL-PANEL */
 .land-panel {
   position: relative;
   margin-top: 1.5rem;
@@ -672,9 +712,7 @@ nav a:hover::after {
   flex-shrink: 0;
 }
 
-/* ==========================================================================
-   9. POLITIK-TOGGLE (MRD. € vs. % DES BIP)
-   ========================================================================== */
+/* 9. POLITIK-TOGGLE */
 .politik-toggle {
   display: inline-flex;
   gap: 4px;
@@ -702,9 +740,7 @@ nav a:hover::after {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* ==========================================================================
-   9. KONZERNE SCROLLYTELLING
-   ========================================================================== */
+/* 10. KONZERNE SCROLLYTELLING */
 .konzerne-scrolly {
   display: block;
   padding: 0;
@@ -798,9 +834,7 @@ nav a:hover::after {
   .konzerne-intro { min-height: auto; padding-top: 2rem; }
 }
 
-/* ==========================================================================
-   10. HAMBURGER-NAVIGATION
-   ========================================================================== */
+/* 11. HAMBURGER-NAVIGATION */
 .nav-hamburger {
   display: none;
   flex-direction: column;
@@ -827,9 +861,7 @@ nav a:hover::after {
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
-/* ==========================================================================
-   11. TABLET (max-width: 768px)
-   ========================================================================== */
+/* 12. TABLET 768px */
 @media (max-width: 768px) {
   nav {
     padding: 0.85rem 1.25rem;
@@ -916,9 +948,7 @@ nav a:hover::after {
   }
 }
 
-/* ==========================================================================
-   12. MOBIL (max-width: 480px)
-   ========================================================================== */
+/* 13. MOBIL 480px */
 @media (max-width: 480px) {
   .hero-title { font-size: 2.2rem; letter-spacing: -0.01em; }
   .hero-sub { font-size: 0.95rem; }
@@ -949,9 +979,7 @@ nav a:hover::after {
   .politik-toggle button { padding: 7px 8px; font-size: 0.78rem; }
 }
 
-/* ==========================================================================
-   14. MOBILE BUGFIXES – NUR innerhalb von Media Queries, Desktop unberührt
-   ========================================================================== */
+/* 14. MOBILE BUGFIXES */
 @media (max-width: 768px) {
   .hero {
     padding: 6rem 1.5rem 3rem;
@@ -1014,9 +1042,7 @@ nav a:hover::after {
   }
 }
 
-/* ==========================================================================
-   15. CUSTOM LAND-DROPDOWN
-   ========================================================================== */
+/* 15. CUSTOM LAND-DROPDOWN */
 .land-select {
   position: relative;
   margin-top: 1.5rem;
@@ -1121,7 +1147,6 @@ nav a:hover::after {
   display: none;
 }
 
-/* Mobile: Bottom-Sheet statt Dropdown-Panel */
 @media (max-width: 768px) {
   .land-select {
     max-width: 100%;
@@ -1191,9 +1216,7 @@ nav a:hover::after {
   }
 }
 
-/* ==========================================================================
-   16. STAT-SECTION (EUROPAS ANTWORT)
-   ========================================================================== */
+/* 16. STAT-SECTION */
 .stat-section {
   text-align: center;
   padding: 8rem 2rem !important;
@@ -1255,9 +1278,9 @@ nav a:hover::after {
 
 .stat-item {
   padding: 1.5rem 1.5rem;
-  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border: 1.5px solid var(--line-soft);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-soft);
   transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   cursor: default;
 }
@@ -1280,44 +1303,90 @@ nav a:hover::after {
   color: var(--text-primary);
   opacity: 0.75;
 }
-/* ==========================================================================
-   17. TECHNOLOGIE-SEKTION
-   ========================================================================== */
+
+@media (max-width: 900px) {
+  .stat-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stat-row {
+    grid-template-columns: 1fr;
+  }
+  .stat-big {
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
+}
+
+/* 17. TECHNOLOGIE-SEKTION */
+.tech-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
 .tech-eyebrow {
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--hero-accent);
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.tech-section .content {
+  max-width: 1100px;
+  text-align: center;
+}
+
+.tech-section h2 {
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
 }
 
 .tech-section .intro {
-  margin-bottom: 2.5rem;
+  margin: 0 auto 4rem;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  max-width: 640px;
 }
 
 .tech-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
+  gap: 1.25rem;
+  align-items: stretch;
 }
 
 .tech-card {
   background: var(--bg-side);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.5rem 1.25rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem 1.25rem;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+  text-align: left;
+  height: 220px;
+  display: flex;
+  flex-direction: column;
 }
 
 .tech-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-4px);
   border-color: var(--hero-accent);
+  box-shadow: 0 12px 30px rgba(110, 231, 183, 0.15);
 }
 
 .tech-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   color: var(--hero-accent);
   margin-bottom: 1rem;
 }
@@ -1329,17 +1398,105 @@ nav a:hover::after {
 
 .tech-name {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.15rem;
   color: var(--text-primary);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
 }
 
 .tech-desc {
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--hero-accent);
 }
 
-@media (max-width: 1024px) {
+/* TECH MODAL */
+.tech-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s;
+  z-index: 5000;
+  padding: 1.5rem;
+}
+
+.tech-modal-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tech-modal {
+  background: var(--bg-side);
+  border: 1.5px solid var(--hero-accent);
+  border-radius: 20px;
+  box-shadow: 0 0 0 1px var(--hero-accent), 0 24px 60px rgba(0, 0, 0, 0.4), 0 0 40px 6px rgba(110, 231, 183, 0.2);
+  max-width: 460px;
+  width: 100%;
+  padding: 2.5rem;
+  position: relative;
+  transform: translateY(20px) scale(0.97);
+  transition: transform 0.3s ease;
+  text-align: left;
+}
+
+.tech-modal-backdrop.open .tech-modal {
+  transform: translateY(0) scale(1);
+}
+
+.tech-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--border);
+  border: none;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.tech-modal-icon {
+  width: 52px;
+  height: 52px;
+  color: var(--hero-accent);
+  margin-bottom: 1.25rem;
+}
+
+.tech-modal-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.tech-modal-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.tech-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.tech-modal-item {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.tech-modal-item strong {
+  color: var(--hero-accent);
+}
+
+@media (max-width: 900px) {
   .tech-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1348,5 +1505,18 @@ nav a:hover::after {
 @media (max-width: 640px) {
   .tech-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .tech-card {
+    height: 190px;
+  }
+}
+
+@media (max-width: 420px) {
+  .tech-grid {
+    grid-template-columns: 1fr;
+  }
+  .tech-card {
+    height: auto;
+    min-height: 160px;
   }
 }
