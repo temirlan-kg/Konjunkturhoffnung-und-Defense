@@ -32,10 +32,10 @@ function initHeroCanvas() {
       x: initial ? Math.random() * w : -8,
       y: baseY + (Math.random() - 0.5) * h * 0.04,
       speed: 0.4 + Math.random() * 0.6,
-      r: 0.8 + Math.random() * 1.2,
+      r: 1.2 + Math.random() * 1.2,
       phase: Math.random() * Math.PI * 2,
       amp: 3 + Math.random() * 6,
-      alpha: 0.3 + Math.random() * 0.35
+      alpha: 0.5 + Math.random() * 0.39
     });
   }
 
@@ -180,48 +180,63 @@ function initTechCanvas() {
 }
 
 function initTechCards() {
+  const section = document.getElementById('section-technologie');
   const grid = document.getElementById('techGrid');
-  const backdrop = document.getElementById('techModalBackdrop');
-  const modal = document.getElementById('techModal');
-  const closeBtn = document.getElementById('techModalClose');
-  const titleEl = document.getElementById('techModalTitle');
-  const bodyEl = document.getElementById('techModalBody');
-  const iconEl = document.getElementById('techModalIcon');
-  if (!grid || !backdrop) return;
+  const infoPanel = document.getElementById('techInfo');
+  const closeBtn = document.getElementById('techInfoClose');
+  const titleEl = document.getElementById('techInfoTitle');
+  const bodyEl = document.getElementById('techInfoBody');
+  const iconEl = document.getElementById('techInfoIcon');
+  if (!grid || !infoPanel || !section) return;
 
   const cards = grid.querySelectorAll('.tech-card');
+  let activeCard = null;
 
   function parseDetail(raw) {
     if (!raw) return '';
     return raw.split(';;').map(pair => {
       const [label, text] = pair.split('::');
-      return `<div class="tech-modal-item"><strong>${label}:</strong> ${text}</div>`;
+      return `<div class="tech-info-item"><strong>${label}:</strong> ${text}</div>`;
     }).join('');
   }
 
-  function openModal(card) {
+  function openInfo(card) {
     titleEl.textContent = card.dataset.title || '';
     bodyEl.innerHTML = parseDetail(card.dataset.detail);
     const iconSvg = card.querySelector('.tech-icon svg');
     iconEl.innerHTML = iconSvg ? iconSvg.outerHTML : '';
-    backdrop.classList.add('open');
+    infoPanel.classList.add('open');
+    cards.forEach(c => c.classList.toggle('active', c === card));
+    activeCard = card;
   }
 
-  function closeModal() {
-    backdrop.classList.remove('open');
+  function closeInfo() {
+    infoPanel.classList.remove('open');
+    cards.forEach(c => c.classList.remove('active'));
+    activeCard = null;
   }
 
   cards.forEach(card => {
-    card.addEventListener('click', () => openModal(card));
+    card.addEventListener('click', () => {
+      if (activeCard === card) {
+        closeInfo();
+        return;
+      }
+      openInfo(card);
+    });
   });
 
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  backdrop.addEventListener('click', (e) => {
-    if (e.target === backdrop) closeModal();
-  });
+  if (closeBtn) closeBtn.addEventListener('click', closeInfo);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') closeInfo();
   });
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) closeInfo();
+    });
+  }, { threshold: 0.1 });
+  sectionObserver.observe(section);
 }
 
 function initCustomCursor() {
