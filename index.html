@@ -11,10 +11,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/Konjunkturhoffnung-und-Defense/apple-touch-icon.png" />
   <link rel="manifest" href="/Konjunkturhoffnung-und-Defense/site.webmanifest" />
   <title>Konjunkturhoffnung und Defense</title>
-  <script type="module" crossorigin src="/Konjunkturhoffnung-und-Defense/assets/index-lffu8DRY.js"></script>
-  <link rel="stylesheet" crossorigin href="/Konjunkturhoffnung-und-Defense/assets/index-DBvHbKJi.css">
+  <script type="module" crossorigin src="/Konjunkturhoffnung-und-Defense/assets/index-BQIMKDmp.js"></script>
+  <link rel="stylesheet" crossorigin href="/Konjunkturhoffnung-und-Defense/assets/index-B4Iw5on_.css">
 </head>
 <body>
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
   <nav>
     <div class="nav-brand">Defense Konjunktur</div>
@@ -137,7 +140,7 @@
           <div class="stat-label">Ausgaben DE 2025</div>
         </div>
         <div class="stat-item">
-          <div class="stat-value">~400.000</div>
+          <div class="stat-value">400.000</div>
           <div class="stat-label">Beschäftigte</div>
         </div>
         <div class="stat-item">
@@ -153,12 +156,13 @@
   </section>
 
   <section class="scroll-section tech-section" id="section-technologie">
+    <canvas id="techCanvas" class="tech-canvas"></canvas>
     <div class="content">
       <p class="tech-eyebrow">Technologie</p>
       <h2>Wo Innovation entsteht</h2>
       <p class="intro">Die gefragtesten Felder der modernen Verteidigung.</p>
       <div class="tech-grid" id="techGrid">
-        <div class="tech-card" data-detail="Aufklärung::Drohnen liefern Echtzeit-Bildmaterial für taktische Entscheidungen.;;Bewaffnete Systeme::Präzisionsangriffe bei minimalem Kollateralrisiko.;;Marktführer::Helsing und Quantum Systems zählen zu den am schnellsten wachsenden DefTech-Firmen Europas.">
+        <div class="tech-card" data-title="Drohnen" data-detail="Aufklärung::Echtzeit-Bildmaterial für taktische Entscheidungen.;;Bewaffnete Systeme::Präzisionsangriffe bei minimalem Kollateralrisiko.;;Marktführer::Helsing und Quantum Systems zählen zu den am schnellsten wachsenden DefTech-Firmen Europas.">
           <div class="tech-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="5" cy="5" r="2"></circle>
@@ -171,9 +175,8 @@
           </div>
           <div class="tech-name">Drohnen</div>
           <div class="tech-desc">Aufklärung &amp; Kampf</div>
-          <div class="tech-detail"></div>
         </div>
-        <div class="tech-card" data-detail="Kriegsführung &amp; Simulation::KI-gestützte Taktikmodelle.;;Strategische Analyse::Datengesteuerte Bedrohungserkennung.;;Sicherheit &amp; SDD::Sichere Softwareentwicklung.">
+        <div class="tech-card" data-title="KI &amp; Software" data-detail="Kriegsführung &amp; Simulation::KI-gestützte Taktikmodelle.;;Strategische Analyse::Datengesteuerte Bedrohungserkennung.;;Sicherheit &amp; SDD::Sichere Softwareentwicklung.">
           <div class="tech-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect x="6" y="6" width="12" height="12" rx="1.5"></rect>
@@ -183,9 +186,8 @@
           </div>
           <div class="tech-name">KI &amp; Software</div>
           <div class="tech-desc">Lageanalyse, SDD</div>
-          <div class="tech-detail"></div>
         </div>
-        <div class="tech-card" data-detail="Netzwerkschutz::Absicherung militärischer und ziviler kritischer Infrastruktur.;;Angriffserkennung::Echtzeit-Monitoring staatlicher und krimineller Bedrohungen.;;Marktdynamik::Europäische Anbieter bauen Abwehrkapazitäten schnell aus.">
+        <div class="tech-card" data-title="Cyberabwehr" data-detail="Netzwerkschutz::Absicherung militärischer und ziviler kritischer Infrastruktur.;;Angriffserkennung::Echtzeit-Monitoring staatlicher und krimineller Bedrohungen.;;Marktdynamik::Europäische Anbieter bauen Abwehrkapazitäten schnell aus.">
           <div class="tech-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z"></path>
@@ -194,9 +196,8 @@
           </div>
           <div class="tech-name">Cyberabwehr</div>
           <div class="tech-desc">Schutz vor Angriffen</div>
-          <div class="tech-detail"></div>
         </div>
-        <div class="tech-card" data-detail="Aufklärung aus dem Orbit::Satelliten für Navigation, Kommunikation und Beobachtung.;;New-Space-Ökonomie::Start-ups senken Kosten für europäische Souveränität im All.;;Strategische Bedeutung::Der Orbit wird zum neuen Schlachtfeld.">
+        <div class="tech-card" data-title="New Space" data-detail="Aufklärung aus dem Orbit::Satelliten für Navigation, Kommunikation und Beobachtung.;;New-Space-Ökonomie::Start-ups senken Kosten für europäische Souveränität im All.;;Strategische Bedeutung::Der Orbit wird zum neuen Schlachtfeld.">
           <div class="tech-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="10" width="6" height="6" rx="1" transform="rotate(-25 6 13)"></rect>
@@ -206,9 +207,8 @@
           </div>
           <div class="tech-name">New Space</div>
           <div class="tech-desc">Satelliten, Sensorik</div>
-          <div class="tech-detail"></div>
         </div>
-        <div class="tech-card" data-detail="Nachfrage::Steigende Verteidigungsausgaben erhöhen den Munitionsbedarf massiv.;;Kapazitätsausbau::Europäische Hersteller reaktivieren jahrzehntelang brachliegende Produktion.;;Versorgungssicherheit::Zentraler Faktor für die Handlungsfähigkeit im Ernstfall.">
+        <div class="tech-card" data-title="Munition" data-detail="Nachfrage::Steigende Verteidigungsausgaben erhöhen den Munitionsbedarf massiv.;;Kapazitätsausbau::Europäische Hersteller reaktivieren jahrzehntelang brachliegende Produktion.;;Versorgungssicherheit::Zentraler Faktor für die Handlungsfähigkeit im Ernstfall.">
           <div class="tech-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z"></path>
@@ -217,8 +217,16 @@
           </div>
           <div class="tech-name">Munition</div>
           <div class="tech-desc">Nachschub &amp; Kapazität</div>
-          <div class="tech-detail"></div>
         </div>
+      </div>
+    </div>
+
+    <div class="tech-modal-backdrop" id="techModalBackdrop">
+      <div class="tech-modal" id="techModal">
+        <button class="tech-modal-close" id="techModalClose" aria-label="Schließen">×</button>
+        <div class="tech-modal-icon" id="techModalIcon"></div>
+        <h3 class="tech-modal-title" id="techModalTitle"></h3>
+        <div class="tech-modal-body" id="techModalBody"></div>
       </div>
     </div>
   </section>
