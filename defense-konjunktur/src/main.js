@@ -1,6 +1,6 @@
 import scrollama from 'scrollama';
 import { initPolitik }     from './sections/politik.js';
-import { initMittelstand } from './sections/mittelstand.js';
+import { initMittelstand } from './sections/markt-zugang.js';
 import { initKonzerne }    from './sections/konzerne.js';
 
 const scroller = scrollama();

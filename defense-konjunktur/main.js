@@ -1,6 +1,6 @@
 import scrollama from 'scrollama';
 import { initPolitik }     from './sections/politik.js';
-import { initMittelstand } from './sections/mittelstand.js';
+import { initMittelstand } from './sections/markt-zugang.js';
 import { initKonzerne }    from './sections/konzerne.js';
 import { initEuropeMap }   from './sections/europe-map.js';
 import { initLaenderPanel } from './sections/laender-panel.js';
@@ -134,6 +134,10 @@ function makeWaveCanvas(canvasId) {
 
 function initStatCanvas() {
   makeWaveCanvas('statCanvas');
+}
+
+function initMzCanvas() {
+  makeWaveCanvas('mzCanvas');
 }
 
 function initTechCanvas() {
@@ -300,6 +304,100 @@ function initCustomCursor() {
   });
 }
 
+function initNavProgress() {
+  const nav = document.querySelector('nav');
+  const navLinksEl = document.getElementById('navLinks');
+  const track = document.getElementById('navProgressTrack');
+  const plane = document.getElementById('navProgressPlane');
+  const brand = document.querySelector('.nav-brand');
+  const fill = document.getElementById('navProgressFill');
+  if (!nav || !navLinksEl || !track || !plane) return;
+
+  const sectionIds = ['section-allgemeines', 'section-technologie', 'section-mittelstand', 'section-konzerne', 'section-survey', 'section-politik'];
+  const links = {};
+  sectionIds.forEach(id => {
+    const link = navLinksEl.querySelector(`a[href="#${id}"]`);
+    if (link) links[id] = link;
+  });
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  function positionTrack() {
+    const navRect = nav.getBoundingClientRect();
+    const linksRect = navLinksEl.getBoundingClientRect();
+    track.style.left = (linksRect.left - navRect.left) + 'px';
+    track.style.width = linksRect.width + 'px';
+  }
+
+  function movePlaneTo(x) {
+    plane.style.left = x + 'px';
+    if (fill) {
+      const clamped = Math.max(0, x);
+      fill.style.width = clamped + 'px';
+    }
+  }
+
+  function setBrandPosition() {
+    const trackRect = track.getBoundingClientRect();
+    if (brand) {
+      const brandRect = brand.getBoundingClientRect();
+      movePlaneTo(brandRect.left - trackRect.left);
+    } else {
+      movePlaneTo(0);
+    }
+    Object.values(links).forEach(l => l.classList.remove('nav-active'));
+  }
+
+  function moveToLink(link) {
+    if (!link) return;
+    const trackRect = track.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    const centerX = (linkRect.left + linkRect.width / 2) - trackRect.left;
+    movePlaneTo(centerX);
+    Object.values(links).forEach(l => l.classList.remove('nav-active'));
+    link.classList.add('nav-active');
+  }
+
+  positionTrack();
+  setBrandPosition();
+
+  let ticking = false;
+
+  function updateOnScroll() {
+    const scrollY = window.scrollY;
+
+    if (scrollY < 80) {
+      setBrandPosition();
+      ticking = false;
+      return;
+    }
+
+    let currentId = sectionIds[0];
+    const midpoint = window.innerHeight / 2;
+
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= midpoint && rect.bottom >= 0) {
+        currentId = sec.id;
+      }
+    });
+
+    moveToLink(links[currentId]);
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateOnScroll);
+      ticking = true;
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    positionTrack();
+    updateOnScroll();
+  });
+}
+
 const hamburger = document.getElementById('navHamburger');
 const navLinks  = document.getElementById('navLinks');
 
@@ -392,11 +490,13 @@ document.querySelectorAll('.scrolly-step').forEach(el => {
 
 initHeroCanvas();
 initStatCanvas();
+initMzCanvas();
 initTechCanvas();
 initTechCards();
 initCustomCursor();
 initEuropeMap();
 initLaenderPanel();
+initNavProgress();
 
 window.addEventListener('resize', () => {
   redrawCharts();
