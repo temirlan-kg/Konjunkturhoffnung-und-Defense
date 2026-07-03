@@ -1555,16 +1555,35 @@ nav a:hover::after {
   height: 220px;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .tech-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   border-color: var(--hero-accent);
-  box-shadow: 0 12px 30px rgba(110, 231, 183, 0.15);
+  box-shadow: 0 16px 34px rgba(110, 231, 183, 0.2), 0 0 0 1px rgba(110, 231, 183, 0.3);
 }
 
 .tech-card.active {
   border-color: var(--hero-accent);
+}
+
+.tech-card-hint {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--hero-accent);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.tech-card:hover .tech-card-hint {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .tech-icon {
@@ -1635,6 +1654,10 @@ nav a:hover::after {
 
   .tech-info.open {
     max-height: 400px;
+  }
+
+  .tech-card-hint {
+    display: none;
   }
 }
 
@@ -1734,14 +1757,14 @@ nav a:hover::after {
   justify-content: space-between;
   gap: 1rem;
   padding: 1.25rem 1.5rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .mz-left {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  min-width: 200px;
+  flex-shrink: 0;
 }
 
 .mz-icon {
@@ -1756,17 +1779,17 @@ nav a:hover::after {
   height: 100%;
 }
 
-.mz-label {
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--text-primary);
+.mz-card:nth-child(3) .mz-label {
+  white-space: normal;
+  max-width: 120px;
+  line-height: 1.25;
 }
 
 .mz-right {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   margin-left: auto;
 }
@@ -1774,29 +1797,81 @@ nav a:hover::after {
 .mz-guess-options {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mz-tap-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  animation: mz-badge-blink 2s ease-in-out infinite;
+}
+
+.mz-tap-badge::after {
+  content: "→";
+  font-size: 0.9rem;
+  animation: mz-arrow-nudge 1.2s ease-in-out infinite;
+}
+
+@keyframes mz-arrow-nudge {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
+}
+
+@keyframes mz-badge-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
 }
 
 .mz-guess-btn {
-  background: rgba(59, 130, 246, 0.08);
-  border: 1px solid rgba(59, 130, 246, 0.45);
+  background: rgba(59, 130, 246, 0.1);
+  border: 1.5px solid rgba(59, 130, 246, 0.55);
   color: #3b82f6;
   font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.4rem 0.75rem;
+  font-weight: 700;
+  padding: 0.45rem 0.85rem;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
+  transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  animation: mz-btn-pulse 2.2s ease-in-out infinite;
 }
 
+.mz-guess-btn:nth-child(2) { animation-delay: 0.15s; }
+.mz-guess-btn:nth-child(3) { animation-delay: 0.3s; }
+.mz-guess-btn:nth-child(4) { animation-delay: 0.45s; }
+.mz-guess-btn:nth-child(5) { animation-delay: 0.6s; }
+
 .mz-guess-btn:hover {
-  background: rgba(59, 130, 246, 0.2);
-  transform: translateY(-2px);
+  background: #3b82f6;
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+  animation-play-state: paused;
+}
+
+@keyframes mz-btn-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0);
+  }
 }
 
 .mz-guess-btn.selected {
   background: #3b82f6;
   color: #ffffff;
   border-color: #3b82f6;
+  animation: none;
 }
 
 .mz-guess-btn.shake {
@@ -2061,3 +2136,4 @@ nav a.nav-active {
     display: none;
   }
 }
+
