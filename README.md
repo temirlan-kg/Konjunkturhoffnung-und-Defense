@@ -1,4 +1,4 @@
-# Konjunkturhoffnung und Defense
+# Konjunkturhoffnung & Defense
 
 > Eine interaktive Datenvisualisierungs-Website zum Zusammenhang zwischen der europäischen Verteidigungsbranche und der wirtschaftlichen Entwicklung in Deutschland.
 
@@ -8,140 +8,111 @@
 
 ---
 
+**Live-Version:** https://temirlan-kg.github.io/Konjunkturhoffnung-und-Defense/
+
+---
+
 ## Über das Projekt
 
-Seit der Zeitenwende 2022 hat sich die sicherheitspolitische Lage in Europa grundlegend verändert. Staaten investieren wieder systematisch in ihre Verteidigungsfähigkeit — nicht nur militärisch, sondern auch industriell. Diese Website analysiert diesen Wandel datenbasiert und visuell zugänglich.
+Der russische Angriffskrieg gegen die Ukraine und ein unsicherer gewordener Bündnispartner USA verändern die sicherheitspolitische Lage in Europa grundlegend. Deutschland reagiert mit historisch hohen Investitionen: bis 2029 sollen rund 152 Milliarden Euro in die Verteidigung fließen. Diese Zeitenwende betrifft nicht nur die Politik, sondern verändert Konjunktur, Industrie und Innovationslandschaft nachhaltig.
 
-**These:** *Der Rüstungsboom ist Realität — ob er zur Konjunkturhoffnung wird, entscheiden die nächsten Jahre.*
-
-### Zielgruppe
-- Unternehmen
-- Mittelständische Unternehmer
-
-### Gestaltungsprinzipien
-- Niedrigschwellig
-- Faktennah
-- Visuell stark
-- Quellenbasiert
+Die Website macht diese Entwicklung sichtbar. Sie führt die Nutzerinnen und Nutzer durch fünf Kapitel und kombiniert Textnarrative mit interaktiven Karten, Charts und Quiz-Elementen.
 
 ---
 
-## Features
+## Sektionen im Überblick
 
-- **Interaktive Europa-Karte** mit Verteidigungsausgaben pro Land
-- **Vier datengetriebene Visualisierungen** (Karte, Donut, Balken, Bubble)
-- **Scroll-getriggerte Animationen** mit Intersection Observer API
-- **Dark- und Light-Mode** mit dynamischem Chart-Re-Rendering
-- **Sticky-Split-Screen-Layout** für Storytelling
-- **Hot-Module-Reload** über Vite
+**Überblick**
+Scrollytelling-Einleitung mit einer choroplethen Europakarte, die je nach Scroll-Position auf Deutschland, die führenden Rüstungsnationen und die NATO-Staaten fokussiert. Über ein Länder-Menü lassen sich Detailansichten mit den Top-3-Unternehmen einzelner Länder aufrufen.
 
----
+**Europas Antwort**
+Vier zentrale Kennzahlen zum europäischen Rüstungsboom, dargestellt als Kreissegmente mit dezenter Wellenanimation im Hintergrund.
 
-## Sections
+**Technologie**
+Fünf Karten zu den gefragtesten Feldern moderner Verteidigung: Drohnen, KI & Software, Cyberabwehr, New Space und Munition. Jede Karte lässt sich anklicken und öffnet Detailinformationen mit belegten Zahlen aus aktuellen Bitkom-Studien.
 
-| Section | Visualisierung | Quelle |
-|---------|----------------|--------|
-| **Allgemeines** | Choropleth-Karte (D3.js + TopoJSON) | NATO, EDA Defence Data |
-| **Politik** | Multi-Series Column Chart (Highcharts) | Bundestag, BMVg, EDA 2024–2025 |
-| **Mittelstand** | Semi-Circle Donut Chart (Highcharts) | DIHK-Konjunkturumfrage April 2026 |
-| **Unternehmen** | Bubble Chart + Metric Cards (Highcharts) | EY/Deka 2025, Bitkom DefTech Report 2026 |
+**Markt & Zugang**
+Ein interaktives Schätzquiz zu den Hürden, mit denen deutsche DefTech-Startups konfrontiert sind. Nutzerinnen und Nutzer tippen ihre Vermutung an und erfahren die realen Werte aus dem Bitkom DefTech-Report 2026 (langsame Beschaffung, fehlendes Kapital, Zugang über Kooperation).
 
----
+**Unternehmen**
+Ein Bubble Chart vergleicht zehn deutsche und internationale Akteure aus vier Kategorien: klassische Rüstung, Defense-Pivot, Tech & Software sowie DefTech-Startups. Beim Scrollen durch die fünf Textkapitel werden jeweils die zugehörigen Bubbles hervorgehoben.
 
-## 🛠️ Tech-Stack
-
-### Entwicklungsumgebung
-- **PyCharm** — Code-Editor
-- **Vite** — Build-Tool mit Hot-Module-Reload
-- **Node.js** (v24+) — JavaScript-Runtime
-- **npm** — Package Manager
-
-### Sprachen
-- **HTML5** — Struktur
-- **CSS3** — Styling, Animationen, Dark/Light-Mode
-- **JavaScript (Vanilla, ES6+)** — Logik & Interaktionen
-- **JSON** — Datenformat
-
-### Bibliotheken
-- **[Highcharts](https://www.highcharts.com/)** — Balken-, Donut- und Bubble-Charts
-- **[highcharts-3d](https://www.highcharts.com/docs/chart-and-series-types/3d-charts)** — 3D-Erweiterung
-- **[highcharts-more](https://www.highcharts.com/docs/chart-and-series-types/bubble-series)** — Bubble-Charts
-- **[D3.js](https://d3js.org/)** — Datengetriebene Visualisierungen (Europa-Karte)
-- **[TopoJSON](https://github.com/topojson/topojson)** — Kompaktes Geo-Datenformat
-- **[Scrollama](https://github.com/russellsamora/scrollama)** — Scroll-Trigger
-- **Intersection Observer API** — Native Browser-Schnittstelle für Scroll-Animationen
-
-### Versionierung
-- **Git** & **GitHub**
+**Politik**
+Ein Umschalter mit drei Ansichten (absolute Milliarden Euro, BIP-Anteil, Wachstum) visualisiert die Entwicklung der deutschen Verteidigungsausgaben bis 2029 im Vergleich zur EU-27.
 
 ---
 
-## Installation & Start
+## Technologie-Stack
 
-### Voraussetzungen
-- Node.js v18 oder höher
-- npm
-
-### Setup
-
-```bash
-# Repository klonen
-git clone https://github.com/temirlan-kg/Konjunkturhoffnung-und-Defense.git
-
-# Ins Projektverzeichnis wechseln
-cd Konjunkturhoffnung-und-Defense/defense-konjunktur
-
-# Abhängigkeiten installieren
-npm install
-
-# Development-Server starten
-npm run dev
-```
-
-Während der Entwicklung läuft die Website lokal unter `http://localhost:5173/Konjunkturhoffnung-und-Defense/`.
-
-### Live-Version
-
-Die veröffentlichte Website ist über GitHub Pages erreichbar:
-
-**https://temirlan-kg.github.io/Konjunkturhoffnung-und-Defense/**
-
-### Build & Deployment
-
-Production-Build erstellen und auf GitHub Pages veröffentlichen:
-
-```bash
-npm run build && npm run deploy
-```
+- **Vite** als Build-Tool und Dev-Server
+- **D3.js** und **TopoJSON** für die interaktive Europakarte
+- **Highcharts** für Bubble Chart, Politik-Diagramm und Länderdetails
+- **Scrollama** und **IntersectionObserver API** für Scroll-Trigger und Choreografie
+- **HTML5 Canvas** für animierte Hintergründe (Partikel-System, Wellenanimationen)
+- **Vanilla JavaScript** (ES-Module) und **CSS-Variablen** für Dark/Light Mode
 
 ---
 
 ## Datenquellen
 
-### Offizielle Statistiken
-- **NATO** — Defence Expenditure Database
-- **European Defence Agency (EDA)** — Defence Data 2024–2025
-- **Bundestag** — Haushaltspläne und Sondervermögen
-- **Bundesministerium der Verteidigung (BMVg)** — Mittelplanung
-
-### Verbandsdaten
-- **DIHK** — Konjunkturumfrage April 2026
-- **BDSV** — Bundesverband der Deutschen Sicherheits- und Verteidigungsindustrie
-
-### Wirtschaftsstudien
-- **EY/Deka 2025** — Beschäftigungsprognose
-- **McKinsey** — Marktvolumen-Analyse
-- **Universität Mannheim** — Fiskalmultiplikator-Studie
-- **Bitkom DefTech Report 2026**
+- Bitkom Get Started, DefTech-Report 2026
+- Bitkom Research, Kapitalmangel-Studie 2025
+- Bitkom Wirtschaftsschutzstudie 2025
+- BSI-Lagebericht zur IT-Sicherheit in Deutschland 2025
+- EY/Deka Analysen 2025
+- Bundestag, BMVg und EDA Defence Data 2024–2025
+- Handelsblatt und produktion.de zu DefTech-Finanzierungsrunden 2025/26
 
 ---
 
-
-## 👥 Team
-- **Temirlan Anarkulov**
-- **Semanur Asalioglu**
-- **Manuel Nseguet Tchamfa**
+## Projektstruktur
+defense-konjunktur/
+├── public/
+│   └── data/
+│       ├── laender.json
+│       └── politik.json
+├── sections/
+│   ├── europe-map.js
+│   ├── laender-panel.js
+│   ├── konzerne.js
+│   ├── markt-zugang.js
+│   └── politik.js
+├── index.html
+├── main.js
+├── style.css
+├── vite.config.js
+└── package.json
 ---
 
+## Installation
 
-**Stand:** Juni 2026
+Voraussetzungen: Node.js und npm.
+
+```bash
+git clone https://github.com/temirlan-kg/Konjunkturhoffnung-und-Defense.git
+cd Konjunkturhoffnung-und-Defense/defense-konjunktur
+npm install
+npm run dev
+```
+
+Anschließend ist die Website unter `http://localhost:5173` erreichbar.
+
+Für den Build und das Deployment auf GitHub Pages:
+
+```bash
+npm run build
+npm run deploy
+```
+
+---
+
+## Team
+- Temirlan Anarkulov
+- Semanur Asalioglu
+- Manuel Nseguet Tchamfa
+
+---
+
+## Hinweis zur Entwicklung
+
+Die technische Umsetzung entstand mit Unterstützung von KI-gestützten Programmierwerkzeugen. Konzept, redaktionelle Auswahl, Datenrecherche, inhaltliche Struktur und die kritische Bewertung aller Ergebnisse liegen bei den Autorinnen und Autoren.
