@@ -66,6 +66,8 @@ Ein Umschalter mit drei Ansichten (absolute Milliarden Euro, BIP-Anteil, Wachstu
 ---
 
 ## Projektstruktur
+
+```
 defense-konjunktur/
 ├── public/
 │   └── data/
@@ -82,7 +84,7 @@ defense-konjunktur/
 ├── style.css
 ├── vite.config.js
 └── package.json
----
+```
 
 ## Installation
 
