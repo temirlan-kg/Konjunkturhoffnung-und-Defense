@@ -230,7 +230,7 @@ export function markiereAktivesLand(name) {
       : (document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'));
 }
 
-// Setzt Karte auf "rausgezoomt + unsichtbar" zurück
+// Setzt Karte auf "herausgezoomt + unsichtbar" zurück
 function resetMap() {
   if (!mapGroup) return;
   mapGroup.style('transition', 'none');
