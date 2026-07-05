@@ -448,9 +448,9 @@ nav .nav-links a:hover { color: var(--text-primary); }
   top: 60px;
   height: calc(100vh - 60px);
   background: var(--bg);
-  padding: 1rem 2rem 1rem 0;
+  padding: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .scrolly-map-inner {
@@ -459,6 +459,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
   position: relative;
   display: flex;
   flex-direction: column;
+  padding: 1rem 1.5rem 1rem 0;
 }
 
 #europe-map {
@@ -977,13 +978,18 @@ nav .nav-links a:hover { color: var(--text-primary); }
 
 @media (max-width: 1024px) {
   .scrolly-grid { flex-direction: column-reverse; }
-  .scrolly-text, .scrolly-map-wrap { max-width: 100%; width: 100%; padding: 0 1.5rem; }
+  .scrolly-text { max-width: 100%; width: 100%; padding: 0 1.5rem; }
   .scrolly-map-wrap {
+    max-width: 100%;
+    width: 100%;
     position: sticky;
     top: 60px;
     height: 45vh;
-    padding: 1rem;
+    padding: 0;
     z-index: 15;
+  }
+  .scrolly-map-inner {
+    padding: 0.75rem 1rem;
   }
   .scrolly-step { min-height: auto; padding: 3rem 0; opacity: 1; }
   .scrolly-intro { min-height: auto; padding-top: 2rem; }
@@ -1069,15 +1075,21 @@ nav .nav-links a:hover { color: var(--text-primary); }
   .allgemeines-scrolly { padding: 0; }
   .scrolly-grid { flex-direction: column-reverse; padding-top: 1rem; }
 
-  .scrolly-text,
-  .scrolly-map-wrap {
+ .scrolly-text {
     max-width: 100%;
     width: 100%;
     padding: 0 1.25rem;
   }
 
+  .scrolly-map-wrap {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+  }
+
   .scrolly-map-inner {
     max-width: 100%;
+    padding: 0.75rem 1rem;
   }
 
   .scrolly-step { min-height: auto; padding: 2rem 0; }
@@ -1669,6 +1681,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
   z-index: 0;
   pointer-events: none;
 }
+
 
 .mz-section .content {
   position: relative;

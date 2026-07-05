@@ -222,15 +222,12 @@ function initStatCanvas() {
 }
 
 function initMzCanvas() {
-  makeWaveCanvas('mzCanvas');
-}
-
-function initTechCanvas() {
-  const canvas = document.getElementById('techCanvas');
+  const canvas = document.getElementById('mzCanvas');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
   let w, h;
+  let strands = [];
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -241,31 +238,84 @@ function initTechCanvas() {
     canvas.height = h * dpr;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+    buildStrands();
+  }
+
+  let bandTop, bandBottom;
+
+  function buildStrands() {
+    strands = [];
+   bandTop = h * 0.55;
+    bandBottom = h * 0.78;
+    const bandHeight = bandBottom - bandTop;
+    const countA = 16;
+    const countB = 16;
+
+    for (let i = 0; i < countA; i++) {
+      strands.push({
+        baseY: bandTop + (i / (countA - 1)) * bandHeight,
+        amp: 10 + Math.random() * 14,
+        freq: 1.6 + Math.random() * 2.2,
+        speed: 0.00010 + Math.random() * 0.00012,
+        phase: Math.random() * Math.PI * 2,
+        tilt: 0,
+        widthPx: 0.8 + Math.random() * 0.5,
+        alpha: 0.16 + Math.random() * 0.16
+      });
+    }
+
+    for (let i = 0; i < countB; i++) {
+      strands.push({
+        baseY: bandTop + (i / (countB - 1)) * bandHeight,
+        amp: 12 + Math.random() * 16,
+        freq: 1.2 + Math.random() * 1.8,
+        speed: 0.00009 + Math.random() * 0.00013,
+        phase: Math.random() * Math.PI * 2,
+        tilt: (bandHeight / w) * (0.5 + Math.random() * 0.6) * (Math.random() < 0.5 ? -1 : 1),
+        widthPx: 0.8 + Math.random() * 0.5,
+        alpha: 0.14 + Math.random() * 0.14
+      });
+    }
   }
 
   function draw(time) {
     ctx.clearRect(0, 0, w, h);
-    const isDark = document.documentElement.classList.contains('dark');
-    const alpha = isDark ? 0.05 : 0.14;
-    const spacing = 64;
-    const offset = (time * 0.012) % spacing;
 
-    ctx.strokeStyle = `rgba(110, 231, 183, ${alpha})`;
-    ctx.lineWidth = 1;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, bandTop - 40, w, (bandBottom - bandTop) + 80);
+    ctx.clip();
 
-    for (let x = -h + offset; x < w + h; x += spacing) {
+    strands.forEach(s => {
+      const t = time * s.speed;
       ctx.beginPath();
-      ctx.moveTo(x, h);
-      ctx.lineTo(x + h, 0);
+      const points = 70;
+      for (let i = 0; i <= points; i++) {
+        const prog = i / points;
+        const x = prog * w;
+        const y = s.baseY + prog * s.tilt * w + Math.sin(prog * Math.PI * 2 * s.freq + t + s.phase) * s.amp;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = `rgba(110, 231, 183, ${s.alpha})`;
+      ctx.lineWidth = s.widthPx;
+      ctx.shadowColor = 'rgba(110, 231, 183, 0.6)';
+      ctx.shadowBlur = 3;
       ctx.stroke();
-    }
+      ctx.shadowBlur = 0;
+    });
 
+    ctx.restore();
     requestAnimationFrame(draw);
   }
 
   resize();
   requestAnimationFrame(draw);
   window.addEventListener('resize', resize);
+}
+
+function initTechCanvas() {
+  // Hintergrund-Animation entfernt
 }
 
 function initTechCards() {
@@ -578,7 +628,6 @@ initStatCanvas();
 initMzCanvas();
 initTechCanvas();
 initTechCards();
-initCustomCursor();
 initEuropeMap();
 initLaenderPanel();
 initNavProgress();
