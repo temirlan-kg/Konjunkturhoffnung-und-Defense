@@ -133,7 +133,91 @@ function makeWaveCanvas(canvasId) {
 }
 
 function initStatCanvas() {
-  makeWaveCanvas('statCanvas');
+  const canvas = document.getElementById('statCanvas');
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  let sparkles = [];
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    w = rect.width;
+    h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+  }
+
+  function spawnSparkle(baseY) {
+    const x = Math.random() * w;
+    sparkles.push({
+      x,
+      baseY,
+      size: 1.5 + Math.random() * 2.5,
+      life: 0,
+      maxLife: 50 + Math.random() * 50
+    });
+  }
+
+  const ribbons = [
+    { ampBase: 65, freq: 1.3, speed: 0.00020, phase: 0,   widthPx: 4,   alpha: 0.85, blur: 22 },
+    { ampBase: 48, freq: 1.9, speed: 0.00016, phase: 2.2, widthPx: 2.5, alpha: 0.55, blur: 16 },
+    { ampBase: 80, freq: 0.9, speed: 0.00012, phase: 4.6, widthPx: 5,   alpha: 0.4,  blur: 26 }
+  ];
+
+  function draw(time) {
+    ctx.clearRect(0, 0, w, h);
+
+    const baseY = h * 0.72;
+
+    ribbons.forEach(rib => {
+      const t = time * rib.speed;
+      ctx.beginPath();
+      const points = 90;
+      for (let i = 0; i <= points; i++) {
+        const x = (i / points) * w;
+        const y = baseY + Math.sin((i / points) * Math.PI * 2 * rib.freq + t + rib.phase) * rib.ampBase;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = `rgba(110, 231, 183, ${rib.alpha})`;
+      ctx.lineWidth = rib.widthPx;
+      ctx.shadowColor = 'rgba(110, 231, 183, 1)';
+      ctx.shadowBlur = rib.blur;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    });
+
+    if (Math.random() < 0.08) spawnSparkle(baseY);
+
+    for (let i = sparkles.length - 1; i >= 0; i--) {
+      const s = sparkles[i];
+      s.life++;
+      const progress = s.life / s.maxLife;
+      const alpha = Math.sin(progress * Math.PI);
+
+      const y = s.baseY + Math.sin((s.x / w) * Math.PI * 2 + time * 0.0002) * 60;
+
+      ctx.beginPath();
+      ctx.arc(s.x, y, s.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(220, 255, 240, ${alpha})`;
+      ctx.shadowColor = 'rgba(220, 255, 240, 1)';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if (s.life >= s.maxLife) sparkles.splice(i, 1);
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
 }
 
 function initMzCanvas() {
