@@ -473,17 +473,6 @@ nav .nav-links a:hover { color: var(--text-primary); }
 }
 
 .map-legend {
-  padding: 0.75rem 1rem;
-  background: var(--bg-side);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 0.75rem;
-  flex-shrink: 0;
-}
-
-.map-legend {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -493,6 +482,10 @@ nav .nav-links a:hover { color: var(--text-primary); }
   background: none;
   border: none;
   border-radius: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+  flex-shrink: 0;
 }
 
 .map-legend span {
@@ -954,6 +947,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
 .konzerne-chart-wrap #chart-bubble {
   width: 100%;
 }
+
 .konzerne-chart-inner {
   width: 100%;
   height: 100%;
@@ -972,12 +966,27 @@ nav .nav-links a:hover { color: var(--text-primary); }
   margin-top: 0.75rem;
   margin-bottom: 0;
 }
+
 @media (max-width: 1024px) {
   .konzerne-grid { flex-direction: column-reverse; }
   .konzerne-text, .konzerne-chart-wrap { max-width: 100%; width: 100%; padding: 0 1.5rem; }
   .konzerne-chart-wrap { position: sticky; top: 60px; height: 45vh; padding: 1rem; }
   .konzerne-step { min-height: auto; padding: 3rem 0; opacity: 1; }
   .konzerne-intro { min-height: auto; padding-top: 2rem; }
+}
+
+@media (max-width: 1024px) {
+  .scrolly-grid { flex-direction: column-reverse; }
+  .scrolly-text, .scrolly-map-wrap { max-width: 100%; width: 100%; padding: 0 1.5rem; }
+  .scrolly-map-wrap {
+    position: sticky;
+    top: 60px;
+    height: 45vh;
+    padding: 1rem;
+    z-index: 15;
+  }
+  .scrolly-step { min-height: auto; padding: 3rem 0; opacity: 1; }
+  .scrolly-intro { min-height: auto; padding-top: 2rem; }
 }
 
 /* 11. HAMBURGER-NAVIGATION */
@@ -1058,32 +1067,13 @@ nav .nav-links a:hover { color: var(--text-primary); }
   h2 { font-size: 1.9rem; }
 
   .allgemeines-scrolly { padding: 0; }
-  .scrolly-grid { flex-direction: column; padding-top: 1rem; }
+  .scrolly-grid { flex-direction: column-reverse; padding-top: 1rem; }
 
   .scrolly-text,
   .scrolly-map-wrap {
     max-width: 100%;
     width: 100%;
     padding: 0 1.25rem;
-  }
-
-  .scrolly-map-wrap {
-    position: sticky !important;
-    top: 60px !important;
-    height: 42vh;
-    z-index: 15;
-    background: var(--bg);
-    padding: 0.75rem 1.25rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  }
-
-  .scrolly-text {
-    margin-top: -1.5rem;
-    background: var(--bg);
-    position: relative;
-    z-index: 20;
-    border-radius: 18px 18px 0 0;
-    padding-top: 2.5rem;
   }
 
   .scrolly-map-inner {
@@ -1143,7 +1133,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
     color: var(--text-primary);
   }
 
-.land-select-backdrop {
+  .land-select-backdrop {
     display: block;
     position: fixed;
     inset: 0;
