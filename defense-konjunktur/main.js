@@ -168,10 +168,11 @@ function initStatCanvas() {
     { ampBase: 80, freq: 0.9, speed: 0.00012, phase: 4.6, widthPx: 5,   alpha: 0.4,  blur: 26 }
   ];
 
-  function draw(time) {
+ function draw(time) {
     ctx.clearRect(0, 0, w, h);
 
-    const baseY = h * 0.72;
+    const isMobileLayout = window.innerWidth <= 768;
+    const baseY = isMobileLayout ? h * 0.5 : h * 0.72;
 
     ribbons.forEach(rib => {
       const t = time * rib.speed;
