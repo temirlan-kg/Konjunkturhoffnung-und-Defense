@@ -421,13 +421,137 @@
     </div>
   </section>
 
-  <section class="scroll-section" id="section-survey">
+<section class="scroll-section" id="section-survey">
     <div class="content">
-      <h2>Survey</h2>
-      <p class="intro">
-        Inhalt folgt in Kürze.
-      </p>
+      <p class="survey-eyebrow">Ergebnisse der DefTech-Befragung</p>
+
+      <div id="svCaro" class="sv-caro">
+        <div id="svView" class="sv-view"></div>
+        <div class="sv-nav">
+          <button type="button" id="svPrev" class="sv-arrow">‹</button>
+          <div id="svDots" class="sv-dots"></div>
+          <button type="button" id="svNext" class="sv-arrow">›</button>
+        </div>
+      </div>
     </div>
+
+    <script>
+      (function () {
+        var MYBLUE = '#8CC4E2', MYGOLD = '#E4A73E';
+        var RED_DARK = '#a81f1f', RED_LIGHT = '#ef6a5a', GREEN = '#4caf50', REDX = '#e53935', GREY = '#9aa1ac';
+
+        var slides = [
+          { num: '01', type: 'grouped',
+            q: 'Wenn Du noch einmal vor der Entscheidung stehen würdest, würdest Du wieder gründen?',
+            cats: ['Ja, in Deutschland', 'Ja, in den USA', 'Ja, aber anderswo in Europa', 'Ja, aber anderswo auf der Welt', 'Nein, ich würde nicht mehr gründen wollen'],
+            y2026: [49, 8, 24, 19, 0], y2025: [39, 25, 16, 18, 2],
+            src: 'Quelle: Bitkom DefTech Report 2026 (2025: n=44, 2026: n=37).' },
+          { num: '02', type: 'grouped',
+            q: 'Hast Du das Gefühl, dass Deine Arbeit als Gründerin / Gründer in Deutschland grundsätzlich Wertschätzung erfährt?',
+            cats: ['Nein, auf keinen Fall', 'Nein, eher nicht', 'Weder noch', 'Ja, eher schon', 'Ja, auf jeden Fall'],
+            y2026: [9, 11, 16, 43, 22], y2025: [2, 32, 25, 34, 7],
+            src: 'Quelle: Bitkom DefTech Report 2026 (2025: n=44, 2026: n=37).' },
+          { num: '03', type: 'grouped',
+            q: 'Wie schätzt Du die Verteidigungsfähigkeit der Bundesrepublik Deutschlands ein?',
+            cats: ['Sehr geringe Verteidigungsfähigkeit', 'Geringe Verteidigungsfähigkeit', 'Hohe Verteidigungsfähigkeit', 'Sehr hohe Verteidigungsfähigkeit', 'Keine Angabe'],
+            y2026: [11, 76, 11, 0, 3], y2025: [25, 71, 4, 0, 0],
+            src: 'Quelle: Bitkom DefTech Report 2026 (2025: n=44, 2026: n=37).' },
+          { num: '04', type: 'hbar',
+            q: 'Wurdet ihr bereits durch die Bundeswehr direkt beauftragt?',
+            items: [['Ja, durch das BAAINBw', 21], ['Ja, durch die Ukraine-Hilfe', 8], ['Nein, aber wir haben bereits Projekte durchgeführt (z.B. Studien)', 28], ['Nein, wir beliefern Primes etc.', 10], ['Nein', 33]],
+            src: 'Quelle: Bitkom DefTech Report 2026 (2026: n=37).' },
+          { num: '05', type: 'stacked',
+            q: 'Wie beurteilst du die Relevanz der folgenden Maßnahmen zur Stärkung des DefTech-Standorts?',
+            rows: [
+              ['Neue Vergabe- und Beschaffungswege (z.B. Fast Track)', [76, 14, 5, 0, 5]],
+              ['Mehr Haushaltsmittel für die Beschaffung von innovativen Lösungen', [60, 27, 14, 0, 0]],
+              ['Erhöhung der Sichtbarkeit durch Präsenz auf Veranstaltungen', [22, 54, 19, 0, 5]],
+              ['Ausbau von frühphasigen Kooperationen von DefTech-Startups und Bundeswehr (z.B. Challenge-Formate)', [60, 16, 16, 5, 3]],
+              ['Politische Unterstützung für Kooperationen zwischen DefTech-Startups und etablierten Unternehmen', [54, 30, 8, 8, 0]],
+              ['Politische Unterstützung für deutsch-ukrainische Kooperationen', [35, 32, 14, 14, 5]]
+            ],
+            legend: ['Sehr hohe Relevanz', 'Hohe Relevanz', 'Niedrige Relevanz', 'Sehr niedrige Relevanz', 'Weiß nicht / Keine Angabe'],
+            src: 'Quelle: Bitkom DefTech Report 2026 (2026: n=37).' }
+        ];
+        var stackCols = [MYBLUE, GREEN, MYGOLD, REDX, GREY];
+        var stackTxt  = ['#0a0c11', '#0a0c11', '#0a0c11', '#ffffff', '#0a0c11'];
+
+        function grouped(s) {
+          var max = Math.max.apply(null, s.y2026.concat(s.y2025)), g = '';
+          for (var i = 0; i < s.cats.length; i++) {
+            g += '<div class="sv-grp"><div class="sv-pair">'
+              + '<div class="sv-col"><span class="sv-cval">' + s.y2026[i] + '%</span><div class="sv-cbar" style="height:' + (s.y2026[i] / max * 140) + 'px;background:' + RED_DARK + ';"></div></div>'
+              + '<div class="sv-col"><span class="sv-cval">' + s.y2025[i] + '%</span><div class="sv-cbar" style="height:' + (s.y2025[i] / max * 140) + 'px;background:' + RED_LIGHT + ';"></div></div>'
+              + '</div><div class="sv-clabel">' + s.cats[i] + '</div></div>';
+          }
+          return '<div class="sv-groupwrap">' + g + '</div>'
+            + '<div class="sv-legend"><span><i style="background:' + RED_DARK + '"></i>2026</span><span><i style="background:' + RED_LIGHT + '"></i>2025</span></div>';
+        }
+        function hbar(s) {
+          var max = Math.max.apply(null, s.items.map(function (x) { return x[1]; })), r = '';
+          s.items.forEach(function (it) {
+            r += '<div class="sv-hrow"><div class="sv-hlab"><span>' + it[0] + '</span><b>' + it[1] + '%</b></div>'
+              + '<div class="sv-htrack"><div class="sv-hfill" style="width:' + (it[1] / max * 100) + '%;background:' + RED_LIGHT + ';"></div></div></div>';
+          });
+          return r;
+        }
+        function stacked(s) {
+          var r = '';
+          s.rows.forEach(function (row) {
+            var segs = '';
+            row[1].forEach(function (v, i) {
+              if (v > 0) segs += '<div class="sv-seg" style="width:' + v + '%;background:' + stackCols[i] + ';color:' + stackTxt[i] + ';">' + v + '%</div>';
+            });
+            r += '<div class="sv-srow"><div class="sv-slabel">' + row[0] + '</div><div class="sv-sbar">' + segs + '</div></div>';
+          });
+          var leg = '';
+          s.legend.forEach(function (l, i) { leg += '<span><i style="background:' + stackCols[i] + '"></i>' + l + '</span>'; });
+          return r + '<div class="sv-legend sv-legend-wrap">' + leg + '</div>';
+        }
+
+        var view = document.getElementById('svView'), slideEls = [];
+        slides.forEach(function (s) {
+          var el = document.createElement('div');
+          el.className = 'sv-slide';
+          var body = s.type === 'grouped' ? grouped(s) : (s.type === 'hbar' ? hbar(s) : stacked(s));
+          el.innerHTML = '<div class="sv-num">' + s.num + ' <span>/ 05</span></div><div class="sv-q">' + s.q + '</div>' + body + '<div class="sv-src">' + s.src + '</div>';
+          view.appendChild(el); slideEls.push(el);
+        });
+
+        var cur = 0;
+        function render() {
+          slideEls.forEach(function (el, i) {
+            el.style.transform = 'translateX(' + ((i - cur) * 100) + '%)';
+            el.style.opacity = i === cur ? '1' : '0';
+            el.style.pointerEvents = i === cur ? 'auto' : 'none';
+          });
+          Array.prototype.forEach.call(document.querySelectorAll('#svDots span'), function (d, i) {
+            d.classList.toggle('aktiv', i === cur);
+          });
+        }
+        var dots = document.getElementById('svDots');
+        slides.forEach(function (_, i) {
+          var d = document.createElement('span');
+          d.addEventListener('click', function () { cur = i; render(); });
+          dots.appendChild(d);
+        });
+        function go(dir) { if (dir > 0 && cur < slides.length - 1) { cur++; render(); } else if (dir < 0 && cur > 0) { cur--; render(); } }
+        document.getElementById('svNext').addEventListener('click', function () { go(1); });
+        document.getElementById('svPrev').addEventListener('click', function () { go(-1); });
+
+        var lock = false, caro = document.getElementById('svCaro');
+        caro.addEventListener('wheel', function (e) {
+          e.preventDefault(); if (lock) return; if (Math.abs(e.deltaY) < 8) return;
+          go(e.deltaY > 0 ? 1 : -1); lock = true; setTimeout(function () { lock = false; }, 650);
+        }, { passive: false });
+        var sx = 0, sy = 0, sw = false;
+        caro.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; sw = false; }, { passive: true });
+        caro.addEventListener('touchmove', function (e) { if (Math.abs(e.touches[0].clientX - sx) > Math.abs(e.touches[0].clientY - sy) + 6) sw = true; }, { passive: true });
+        caro.addEventListener('touchend', function (e) { if (!sw) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); }, { passive: true });
+
+        render();
+      })();
+    </script>
   </section>
 
   <section class="scroll-section" id="section-politik">
