@@ -971,7 +971,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
 @media (max-width: 1024px) {
   .konzerne-grid { flex-direction: column-reverse; }
   .konzerne-text, .konzerne-chart-wrap { max-width: 100%; width: 100%; padding: 0 1.5rem; }
-  .konzerne-chart-wrap { position: sticky; top: 60px; height: 45vh; padding: 1rem; }
+  .konzerne-chart-wrap { position: sticky; top: 60px; height: 440px; padding: 1rem; }
   .konzerne-step { min-height: auto; padding: 3rem 0; opacity: 1; }
   .konzerne-intro { min-height: auto; padding-top: 2rem; }
 }
@@ -1538,15 +1538,10 @@ nav .nav-links a:hover { color: var(--text-primary); }
   font-size: 0.8rem;
   font-weight: 600;
   color: #529bf5;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
-}
-
-.tech-card:hover .tech-card-hint {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
 }
 
 .tech-icon {

@@ -95,44 +95,55 @@ export function initKonzerne(force = false) {
         series: { animation: { duration: 1400 } }
       },
       series: [
-        {
-          name: 'Klassische Rüstung',
-          color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#58a6ff']] },
-          data: [
-            { name: 'Rheinmetall',         x: 36, y: 85, z: 40,  bewertung: 'Pivot erfolgreich' },
-            { name: 'Hensoldt',            x: 18, y: 90, z: 15,  bewertung: 'Hohe Erwartungen' },
-            { name: 'RENK',                x: 42, y: 95, z: 12,  bewertung: 'Risiko: Überbewertung' },
-            { name: 'Thyssenkrupp Marine', x: 12, y: 70, z: 10,  bewertung: 'Solide, spezialisiert' },
-          ]
-        },
-        {
-          name: 'Defense-Pivot',
-          color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#6ee7b7']] },
-          data: [
-            { name: 'Airbus Defence', x: 8,  y: 30, z: 22, bewertung: 'Diversifiziert' },
-            { name: 'Diehl',          x: 22, y: 55, z: 12, bewertung: 'Munition, stark' },
-          ]
-        },
-        {
-          name: 'Tech & Software',
-          color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#a78bfa']] },
-          data: [
-            { name: 'Palantir',    x: 55, y: 45, z: 180, bewertung: 'Hype möglich' },
-            { name: 'SAP Defense', x: 10, y: 15, z: 220, bewertung: 'Randbereich' },
-          ]
-        },
-        {
-          name: 'Start-ups / DefTech',
-          color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#f59e0b']] },
-          data: [
-            { name: 'Helsing',         x: 120, y: 100, z: 18, bewertung: 'KI-Drohnen, sehr früh' },
-            { name: 'Quantum Systems', x: 200, y: 100, z: 25, bewertung: 'Drohnen, wächst schnell' },
-            { name: 'ARX Robotics',    x: 180, y: 100, z: 12, bewertung: 'Bodenroboter, früh' },
-          ]
-        }
-      ],
-      credits: { enabled: false }
-    });
+    {
+      name: 'Klassische Rüstung',
+      color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#58a6ff']] },
+      data: [
+        { name: 'Rheinmetall',         x: 36, y: 85, z: 40,  bewertung: 'Pivot erfolgreich' },
+        { name: 'Hensoldt',            x: 18, y: 90, z: 15,  bewertung: 'Hohe Erwartungen' },
+        { name: 'RENK',                x: 42, y: 95, z: 12,  bewertung: 'Risiko: Überbewertung' },
+        { name: 'Thyssenkrupp Marine', x: 12, y: 70, z: 10,  bewertung: 'Solide, spezialisiert' },
+      ]
+    },
+    {
+      name: 'Defense-Pivot',
+      color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#6ee7b7']] },
+      data: [
+        { name: 'Airbus Defence', x: 8,  y: 30, z: 22, bewertung: 'Diversifiziert' },
+        { name: 'Diehl',          x: 22, y: 55, z: 12, bewertung: 'Munition, stark' },
+      ]
+    },
+    {
+      name: 'Tech & Software',
+      color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#a78bfa']] },
+      data: [
+        { name: 'Palantir',    x: 55, y: 45, z: 180, bewertung: 'Hype möglich' },
+        { name: 'SAP Defense', x: 10, y: 15, z: 220, bewertung: 'Randbereich' },
+      ]
+    },
+    {
+      name: 'Start-ups / DefTech',
+      color: { radialGradient: { cx: 0.4, cy: 0.3, r: 0.7 }, stops: [[0, 'rgba(255,255,255,0.8)'], [1, '#f59e0b']] },
+      data: [
+        { name: 'Helsing',         x: 120, y: 100, z: 18, bewertung: 'KI-Drohnen, sehr früh' },
+        { name: 'Quantum Systems', x: 200, y: 100, z: 25, bewertung: 'Drohnen, wächst schnell' },
+        { name: 'ARX Robotics',    x: 180, y: 100, z: 12, bewertung: 'Bodenroboter, früh' },
+      ]
+    }
+  ],
+  credits: { enabled: false },
+  responsive: {
+    rules: [{
+      condition: { maxWidth: 500 },
+      chartOptions: {
+        chart: { height: 380 },
+        title: { style: { fontSize: '13px' } },
+        subtitle: { style: { fontSize: '9px' } },
+        legend: { itemStyle: { fontSize: '11px' } }
+      }
+    }]
+  }
+});
 
     chartBubble.reflow();
   }
