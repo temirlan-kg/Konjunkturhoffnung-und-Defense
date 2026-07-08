@@ -32,9 +32,9 @@ function initHeroCanvas() {
     const cx = w / 2;
     const groundY = h * 0.97;
     return [
-      { cx, groundY, rx: w * 0.5,  ry: h * 0.36, alpha: 0.12 },
-      { cx, groundY, rx: w * 0.42, ry: h * 0.30, alpha: 0.22 },
-      { cx, groundY, rx: w * 0.34, ry: h * 0.24, alpha: 0.30 }
+      { cx, groundY, rx: w * 0.5,  ry: h * 0.36, alpha: 0.12, clipTop: h * 0.65 },
+      { cx, groundY, rx: w * 0.42, ry: h * 0.30, alpha: 0.22, clipTop: h * 0.71 },
+      { cx, groundY, rx: w * 0.34, ry: h * 0.24, alpha: 0.30, clipTop: h * 0.75 }
     ];
   }
 
@@ -192,13 +192,23 @@ function initHeroCanvas() {
   }
 
   function drawDomes() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const rgb = isDark ? '230, 237, 243' : '15, 40, 30';
     const ds = domes();
+
     ds.forEach((dome) => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, dome.clipTop, w, h - dome.clipTop);
+      ctx.clip();
+
       ctx.beginPath();
       ctx.ellipse(dome.cx, dome.groundY, dome.rx, dome.ry, 0, Math.PI, Math.PI * 2);
-      ctx.strokeStyle = `rgba(230, 237, 243, ${dome.alpha + 0.1})`;
+      ctx.strokeStyle = `rgba(${rgb}, ${dome.alpha + 0.2})`;
       ctx.lineWidth = 1.2;
       ctx.stroke();
+
+      ctx.restore();
     });
   }
 

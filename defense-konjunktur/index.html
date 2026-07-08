@@ -454,6 +454,7 @@
 
 <section class="scroll-section" id="section-survey">
     <div class="content">
+      <h2 class="survey-title">Survey</h2>
       <p class="survey-eyebrow">Ergebnisse der DefTech-Befragung</p>
 
       <div id="svCaro" class="sv-caro">
@@ -463,6 +464,7 @@
           <div id="svDots" class="sv-dots"></div>
           <button type="button" id="svNext" class="sv-arrow">›</button>
         </div>
+        <div id="svCounter" class="sv-counter"></div>
       </div>
     </div>
 
@@ -559,6 +561,8 @@
           Array.prototype.forEach.call(document.querySelectorAll('#svDots span'), function (d, i) {
             d.classList.toggle('aktiv', i === cur);
           });
+          var counterEl = document.getElementById('svCounter');
+          if (counterEl) counterEl.textContent = (cur + 1) + ' / ' + slides.length;
         }
         var dots = document.getElementById('svDots');
         slides.forEach(function (_, i) {
@@ -570,17 +574,23 @@
         document.getElementById('svNext').addEventListener('click', function () { go(1); });
         document.getElementById('svPrev').addEventListener('click', function () { go(-1); });
 
-        var lock = false, caro = document.getElementById('svCaro');
-        caro.addEventListener('wheel', function (e) {
-          e.preventDefault(); if (lock) return; if (Math.abs(e.deltaY) < 8) return;
-          go(e.deltaY > 0 ? 1 : -1); lock = true; setTimeout(function () { lock = false; }, 650);
-        }, { passive: false });
+        var caro = document.getElementById('svCaro');
         var sx = 0, sy = 0, sw = false;
         caro.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; sw = false; }, { passive: true });
         caro.addEventListener('touchmove', function (e) { if (Math.abs(e.touches[0].clientX - sx) > Math.abs(e.touches[0].clientY - sy) + 6) sw = true; }, { passive: true });
         caro.addEventListener('touchend', function (e) { if (!sw) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); }, { passive: true });
 
         render();
+
+        var svSectionObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) {
+              cur = 0;
+              render();
+            }
+          });
+        }, { threshold: 0.15 });
+        svSectionObserver.observe(document.getElementById('section-survey'));
       })();
     </script>
   </section>
