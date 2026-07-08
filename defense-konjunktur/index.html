@@ -26,10 +26,11 @@
     <div class="nav-links" id="navLinks">
       <a href="#section-allgemeines">Überblick</a>
       <a href="#section-technologie">Technologie</a>
+      <a href="#section-politik">Politik</a>
       <a href="#section-mittelstand">Markt &amp; Zugang</a>
       <a href="#section-konzerne">Unternehmen</a>
       <a href="#section-survey">Survey</a>
-      <a href="#section-politik">Politik</a>
+      <a href="#section-fazit">Ausblick</a>
     </div>
     <div class="nav-progress-track" id="navProgressTrack">
       <div class="nav-progress-fill-wrap">
@@ -55,6 +56,14 @@
 
   <div class="hero">
     <canvas id="heroCanvas" class="hero-canvas"></canvas>
+    <div class="hero-frame" aria-hidden="true">
+      <span class="hero-frame-corner hero-frame-tl"></span>
+      <span class="hero-frame-corner hero-frame-tr"></span>
+      <span class="hero-frame-corner hero-frame-bl"></span>
+      <span class="hero-frame-corner hero-frame-br"></span>
+      <div class="hero-tag">SEC.00 / SCHUTZSCHILD</div>
+      <div class="hero-status">PERIMETER<br><span class="hero-status-blink">ACTIVE</span></div>
+    </div>
     <div class="hero-content">
       <p class="hero-eyebrow">Deutschland &amp; Europa</p>
       <h1 class="hero-title">Konjunkturhoffnung<br><span class="hero-title-white">&amp;</span> <span class="hero-title-accent">Defense</span></h1>
@@ -247,6 +256,28 @@
       </div>
 
       <p class="quelle" style="margin-top: 2rem;">Quellen: Bitkom Wirtschaftsschutzstudie 2025; Handelsblatt, produktion.de (DefTech-Finanzierungsrunden 2025/26)</p>
+    </div>
+  </section>
+
+  <section class="scroll-section" id="section-politik">
+    <div class="content">
+      <h2>Politik</h2>
+      <p class="intro">
+        Die deutschen Verteidigungsausgaben verzeichnen einen massiven Zuwachs: Bis 2029 sind insgesamt 152 Milliarden Euro eingeplant. Diese Budgeterhöhung sichert nicht nur das NATO-Ziel, sondern kurbelt auch die Nachfrage bei heimischen Industrie- und Technologiepartnern spürbar an.
+      </p>
+      <div class="politik-toggle-wrap">
+        <div class="politik-toggle-hint">
+          <span>Klicke, um die Ansicht zu wechseln</span>
+          <span class="politik-toggle-hint-arrow">→</span>
+        </div>
+        <div class="politik-toggle">
+          <button id="toggle-absolut" class="aktiv">Milliarden €</button>
+          <button id="toggle-bip">BIP in %</button>
+          <button id="toggle-wachstum">Wachstum</button>
+        </div>
+      </div>
+      <div id="chart-politik"></div>
+      <p class="quelle">Quellen: Bundestag, BMVg, EDA Defence Data 2024–2025</p>
     </div>
   </section>
 
@@ -554,25 +585,12 @@
     </script>
   </section>
 
-  <section class="scroll-section" id="section-politik">
+  <section class="scroll-section" id="section-fazit">
     <div class="content">
-      <h2>Politik</h2>
+      <h2>Ausblick</h2>
       <p class="intro">
-        Die deutschen Verteidigungsausgaben verzeichnen einen massiven Zuwachs: Bis 2029 sind insgesamt 152 Milliarden Euro eingeplant. Diese Budgeterhöhung sichert nicht nur das NATO-Ziel, sondern kurbelt auch die Nachfrage bei heimischen Industrie- und Technologiepartnern spürbar an.
+        Inhalt folgt in Kürze.
       </p>
-      <div class="politik-toggle-wrap">
-        <div class="politik-toggle-hint">
-          <span>Klicke, um die Ansicht zu wechseln</span>
-          <span class="politik-toggle-hint-arrow">→</span>
-        </div>
-        <div class="politik-toggle">
-          <button id="toggle-absolut" class="aktiv">Milliarden €</button>
-          <button id="toggle-bip">BIP in %</button>
-          <button id="toggle-wachstum">Wachstum</button>
-        </div>
-      </div>
-      <div id="chart-politik"></div>
-      <p class="quelle">Quellen: Bundestag, BMVg, EDA Defence Data 2024–2025</p>
     </div>
   </section>
 

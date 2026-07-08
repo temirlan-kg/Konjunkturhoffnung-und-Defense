@@ -11,7 +11,10 @@ function initHeroCanvas() {
 
   const ctx = canvas.getContext('2d');
   let w, h;
-  let particles = [];
+  let bombs = [];
+  let flashes = [];
+  let cityBuildings = [];
+  let cityTrees = [];
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -22,61 +25,272 @@ function initHeroCanvas() {
     canvas.height = h * dpr;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
+    buildCityData();
   }
 
-  function spawn(initial) {
-    const lanes = 7;
-    const lane = Math.floor(Math.random() * lanes);
-    const baseY = h * (0.12 + lane * (0.78 / (lanes - 1)));
-    particles.push({
-      x: initial ? Math.random() * w : -8,
-      y: baseY + (Math.random() - 0.5) * h * 0.04,
-      speed: 0.4 + Math.random() * 0.6,
-      r: 1.2 + Math.random() * 1.2,
-      phase: Math.random() * Math.PI * 2,
-      amp: 3 + Math.random() * 6,
-      alpha: 0.5 + Math.random() * 0.39
+  function domes() {
+    const cx = w / 2;
+    const groundY = h * 0.97;
+    return [
+      { cx, groundY, rx: w * 0.5,  ry: h * 0.36, alpha: 0.12 },
+      { cx, groundY, rx: w * 0.42, ry: h * 0.30, alpha: 0.22 },
+      { cx, groundY, rx: w * 0.34, ry: h * 0.24, alpha: 0.30 }
+    ];
+  }
+
+  function domePoint(dome, t) {
+    return {
+      x: dome.cx + dome.rx * Math.cos(t),
+      y: dome.groundY - dome.ry * Math.sin(t)
+    };
+  }
+
+  function spawnBomb() {
+    const ds = domes();
+    const dome = ds[Math.floor(Math.random() * ds.length)];
+    const t = 0.1 + Math.random() * (Math.PI - 0.2);
+    const target = domePoint(dome, t);
+    const dx = target.x - dome.cx;
+    const dy = target.y - dome.groundY;
+    const len = Math.hypot(dx, dy) || 1;
+    const nx = dx / len;
+    const ny = dy / len;
+    const outerDist = len + 120 + Math.random() * 160;
+    bombs.push({
+      x: dome.cx + nx * outerDist,
+      y: dome.groundY + ny * outerDist,
+      tx: target.x,
+      ty: target.y,
+      angle: Math.atan2(ny, nx),
+      speed: 1.5 + Math.random() * 1.3,
+      size: 0.55 + Math.random() * 0.2
     });
   }
 
-  function init() {
-    resize();
-    particles = [];
-    for (let i = 0; i < 80; i++) spawn(true);
+  function buildCityData() {
+    const groundY = h * 0.97;
+
+    const left = [
+      { x: w * 0.11,  wgt: 22, hgt: 44, roof: 'peak' },
+      { x: w * 0.145, wgt: 26, hgt: 68, roof: 'flat' },
+      { x: w * 0.185, wgt: 20, hgt: 34, roof: 'peak' },
+      { x: w * 0.22,  wgt: 30, hgt: 88, roof: 'flat' },
+      { x: w * 0.265, wgt: 20, hgt: 54, roof: 'tank' }
+    ];
+    const right = [
+      { x: w * 0.715, wgt: 20, hgt: 54, roof: 'tank' },
+      { x: w * 0.755, wgt: 30, hgt: 88, roof: 'flat' },
+      { x: w * 0.80,  wgt: 20, hgt: 34, roof: 'peak' },
+      { x: w * 0.835, wgt: 26, hgt: 68, roof: 'flat' },
+      { x: w * 0.875, wgt: 22, hgt: 44, roof: 'peak' }
+    ];
+
+    cityBuildings = [...left, ...right].map(b => {
+      const y = groundY - b.hgt;
+      const cols = b.wgt > 24 ? 3 : 2;
+      const colGap = b.wgt / (cols + 1);
+      const windows = [];
+      for (let row = y + 8; row < y + b.hgt - 8; row += 11) {
+        for (let c = 1; c <= cols; c++) {
+          windows.push({ x: b.x + colGap * c - 1, y: row, lit: Math.random() < 0.75 });
+        }
+      }
+      return { ...b, y, windows };
+    });
+
+    cityTrees = [
+      w * 0.30, w * 0.325, w * 0.35,
+      w * 0.645, w * 0.67, w * 0.695
+    ].map(tx => ({ x: tx, size: 8 + Math.random() * 5 }));
+  }
+
+  function drawBuildings() {
+    const groundY = h * 0.97;
+    const fillCol = '#10161f';
+    const strokeCol = '#232c38';
+    const winColLit = 'rgba(251, 191, 36, 0.85)';
+    const winColOff = 'rgba(139, 148, 158, 0.18)';
+    const lampCol = 'rgba(139, 148, 158, 0.5)';
+
+    ctx.strokeStyle = 'rgba(139, 148, 158, 0.3)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(w * 0.07, groundY);
+    ctx.lineTo(w * 0.33, groundY);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(w * 0.67, groundY);
+    ctx.lineTo(w * 0.93, groundY);
+    ctx.stroke();
+
+    const lamps = [w * 0.085, w * 0.18, w * 0.30, w * 0.70, w * 0.82, w * 0.905];
+    lamps.forEach(lx => {
+      ctx.strokeStyle = lampCol;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(lx, groundY);
+      ctx.lineTo(lx, groundY - 24);
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(253, 230, 138, 0.85)';
+      ctx.beginPath();
+      ctx.arc(lx, groundY - 26, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    cityTrees.forEach(t => {
+      ctx.strokeStyle = '#3a2a1a';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(t.x, groundY);
+      ctx.lineTo(t.x, groundY - t.size * 0.9);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1c3326';
+      ctx.beginPath();
+      ctx.arc(t.x, groundY - t.size * 1.5, t.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#2d4a3a';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    cityBuildings.forEach(b => {
+      ctx.fillStyle = fillCol;
+      ctx.strokeStyle = strokeCol;
+      ctx.lineWidth = 1;
+      ctx.fillRect(b.x, b.y, b.wgt, b.hgt);
+      ctx.strokeRect(b.x, b.y, b.wgt, b.hgt);
+
+      if (b.roof === 'peak') {
+        ctx.beginPath();
+        ctx.moveTo(b.x, b.y);
+        ctx.lineTo(b.x + b.wgt / 2, b.y - 10);
+        ctx.lineTo(b.x + b.wgt, b.y);
+        ctx.closePath();
+        ctx.fillStyle = fillCol;
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      if (b.roof === 'tank') {
+        ctx.beginPath();
+        ctx.arc(b.x + b.wgt / 2, b.y - 6, b.wgt * 0.32, 0, Math.PI * 2);
+        ctx.fillStyle = fillCol;
+        ctx.fill();
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(b.x + b.wgt / 2, b.y - 6 - b.wgt * 0.32);
+        ctx.lineTo(b.x + b.wgt / 2, b.y - 6 - b.wgt * 0.32 - 8);
+        ctx.stroke();
+      }
+
+      b.windows.forEach(win => {
+        ctx.fillStyle = win.lit ? winColLit : winColOff;
+        ctx.fillRect(win.x, win.y, 2, 2);
+      });
+    });
+  }
+
+  function drawDomes() {
+    const ds = domes();
+    ds.forEach((dome) => {
+      ctx.beginPath();
+      ctx.ellipse(dome.cx, dome.groundY, dome.rx, dome.ry, 0, Math.PI, Math.PI * 2);
+      ctx.strokeStyle = `rgba(230, 237, 243, ${dome.alpha + 0.1})`;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    });
+  }
+
+  function drawBombs() {
+    bombs.forEach(b => {
+      ctx.save();
+      ctx.translate(b.x, b.y);
+      ctx.rotate(b.angle);
+      ctx.scale(b.size, b.size);
+
+      ctx.fillStyle = '#4b5563';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 13, 4.2, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#374151';
+      ctx.beginPath();
+      ctx.moveTo(-13, 0);
+      ctx.lineTo(-20, -3);
+      ctx.lineTo(-20, 3);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(4, -3.8);
+      ctx.lineTo(8.5, -8);
+      ctx.lineTo(8.5, -3.8);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(4, 3.8);
+      ctx.lineTo(8.5, 8);
+      ctx.lineTo(8.5, 3.8);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.restore();
+    });
+  }
+
+  function drawFlashes() {
+    for (let i = flashes.length - 1; i >= 0; i--) {
+      const f = flashes[i];
+      f.life++;
+      const progress = f.life / f.maxLife;
+      const r = 5 + progress * 16;
+      const alpha = 1 - progress;
+
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, r, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(251, 191, 36, ${alpha})`;
+      ctx.lineWidth = 1.8;
+      ctx.stroke();
+
+      if (f.life >= f.maxLife) flashes.splice(i, 1);
+    }
   }
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
 
-    const isDark = document.documentElement.classList.contains('dark');
-    const rgb = isDark ? '123,217,158' : '5,150,105';
+    drawDomes();
+    drawBuildings();
 
-    for (let i = particles.length - 1; i >= 0; i--) {
-      const p = particles[i];
-      p.x += p.speed;
-      const yWobble = Math.sin(p.x * 0.012 + p.phase) * p.amp * 0.3;
-      const midFactor = 1 - Math.abs((p.x / w) - 0.5) * 1.2;
-      const fade = Math.max(0, Math.min(1, midFactor));
+    if (Math.random() < 0.035 && bombs.length < 9) spawnBomb();
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y + yWobble, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${rgb},${p.alpha * (0.25 + 0.75 * fade)})`;
-      ctx.fill();
+    for (let i = bombs.length - 1; i >= 0; i--) {
+      const b = bombs[i];
+      const dx = b.tx - b.x;
+      const dy = b.ty - b.y;
+      const dist = Math.hypot(dx, dy);
 
-      if (p.x > w + 8) {
-        particles.splice(i, 1);
-        spawn(false);
+      if (dist < 4) {
+        flashes.push({ x: b.tx, y: b.ty, life: 0, maxLife: 24 });
+        bombs.splice(i, 1);
+        continue;
       }
+
+      b.x += (dx / dist) * b.speed;
+      b.y += (dy / dist) * b.speed;
     }
+
+    drawBombs();
+    drawFlashes();
+
     requestAnimationFrame(draw);
   }
 
-  init();
-  draw();
-
-  window.addEventListener('resize', () => {
-    resize();
-  });
+  resize();
+  requestAnimationFrame(draw);
+  window.addEventListener('resize', resize);
 }
 
 function makeWaveCanvas(canvasId) {
@@ -448,7 +662,7 @@ function initNavProgress() {
   const fill = document.getElementById('navProgressFill');
   if (!nav || !navLinksEl || !track || !plane) return;
 
-  const sectionIds = ['section-allgemeines', 'section-technologie', 'section-mittelstand', 'section-konzerne', 'section-survey', 'section-politik'];
+  const sectionIds = ['section-allgemeines', 'section-technologie', 'section-politik', 'section-mittelstand', 'section-konzerne', 'section-survey', 'section-fazit'];
   const links = {};
   sectionIds.forEach(id => {
     const link = navLinksEl.querySelector(`a[href="#${id}"]`);
