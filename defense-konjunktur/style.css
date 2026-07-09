@@ -561,7 +561,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
 /* 8. LÄNDER-PANEL (Detailansicht) */
 .land-panel {
   background: var(--bg-side);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(167, 139, 250, 0.5);
   border-radius: 12px;
   padding: 0;
   margin-top: 2rem;
@@ -623,7 +623,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
   padding: 8px 10px;
   border-radius: 8px;
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(167, 139, 250, 0.5);
   margin-bottom: 6px;
 }
 
@@ -684,10 +684,10 @@ nav .nav-links a:hover { color: var(--text-primary); }
   position: absolute;
   top: calc(100% + 6px);
   left: 0;
-  background: #1c2530;
-  border: 1px solid var(--border);
+  background: #241a38;
+  border: 1px solid #6d28d9;
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.35);
   padding: 6px;
   min-width: 210px;
   max-height: 320px;
@@ -700,8 +700,9 @@ nav .nav-links a:hover { color: var(--text-primary); }
 }
 
 :root:not(.dark) .land-select-panel {
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+  background: #f5f3ff;
+  border-color: #a78bfa;
+  box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
 }
 
 .land-select-panel.open {
@@ -727,11 +728,12 @@ nav .nav-links a:hover { color: var(--text-primary); }
   text-align: left;
 }
 
-.land-select-item:hover { background: var(--bg); }
+.land-select-item:hover { background: rgba(167, 139, 250, 0.12); }
 .land-select-item.active {
-  background: var(--bg);
-  outline: 1px solid var(--hero-accent);
+  background: rgba(167, 139, 250, 0.15);
+  outline: 1px solid #a78bfa;
 }
+
 .land-select-flag { font-size: 1.1rem; }
 
 .land-select-backdrop {
@@ -2291,6 +2293,10 @@ nav a.nav-active {
 }
 
 .transition-title-white {
+  color: var(--text-primary);
+}
+
+:root.dark .transition-title-white {
   color: #f5f7f9;
 }
 
@@ -2339,4 +2345,64 @@ nav a.nav-active {
 
 .stat-value {
   color: var(--accent-blue) !important;
+}
+
+/* RISIKEN & OFFENE FRAGEN */
+.fazit-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4ade80;
+  margin-bottom: 1.25rem;
+}
+
+.fazit-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: #4ade80;
+  opacity: 0.8;
+}
+
+.fazit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin: 2.5rem 0 1.5rem;
+}
+
+.fazit-card {
+  background: var(--bg-side);
+  border-left: 3px solid #4ade80;
+  border-radius: 0 10px 10px 0;
+  padding: 1.5rem 1.4rem;
+}
+
+.fazit-card h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.fazit-card p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 900px) {
+  .fazit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .fazit-grid {
+    grid-template-columns: 1fr;
+  }
 }
