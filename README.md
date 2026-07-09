@@ -2,7 +2,7 @@
 
 > Eine interaktive Datenvisualisierungs-Website zum Zusammenhang zwischen der europäischen Verteidigungsbranche und der wirtschaftlichen Entwicklung in Deutschland.
 
-**Universitätsprojekt** — TH Nürnberg Georg Simon Ohm
+**Universitätsprojekt** - TH Nürnberg Georg Simon Ohm
 **Kurs:** Data Motion / Interaction (Mirko Schramm)
 **Sommersemester 2026**
 
@@ -24,13 +24,13 @@ Animierter Einstieg im HUD-Stil: ein pulsierendes Schutzschild aus mehreren Kupp
 **Überblick**
 Scrollytelling-Einleitung mit einer choroplethen Europakarte, die je nach Scroll-Position auf Deutschland, die fünf führenden Rüstungsnationen und die NATO-Staaten fokussiert. Über ein Länder-Menü lassen sich Detailansichten mit den Top-3-Unternehmen einzelner Länder aufrufen.
 
-**Übergang — „Kein Land rüstet allein“**
+**Übergang - „Kein Land rüstet allein“**
 Kurze, schmale Zwischensektion, die von der Länder-Perspektive zur europäischen Antwort überleitet.
 
 **Europas Antwort**
 Vier zentrale Kennzahlen zum europäischen Rüstungsboom (SAFE-Kredite, NATO-Ziel, geplante Investitionen bis 2035, Anteil europäischer Unternehmen), dargestellt als leuchtende Kreissegmente mit Wellenanimation im Hintergrund.
 
-**Übergang — „Doch Milliarden allein schützen nicht“**
+**Übergang - „Doch Milliarden allein schützen nicht“**
 Zweite schmale Zwischensektion, die zur Technologie-Sektion überleitet.
 
 **Technologie**
