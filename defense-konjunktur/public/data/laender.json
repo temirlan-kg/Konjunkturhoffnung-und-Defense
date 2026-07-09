@@ -6,9 +6,9 @@
     "jahre": ["2022", "2023", "2024", "2025", "2026"],
     "ausgaben": [55, 64, 72, 86, 108],
     "top3": [
-      { "name": "Rheinmetall", "fokus": "Munition, Panzer, Systeme", "marktkap": "28 Mrd. €" },
-      { "name": "Hensoldt", "fokus": "Sensorik, Radar", "marktkap": "6 Mrd. €" },
-      { "name": "RENK", "fokus": "Antriebstechnik", "marktkap": "4 Mrd. €" }
+      { "name": "Rheinmetall", "fokus": "Munition, Panzer, Systeme", "marktkap": "~56 Mrd. €" },
+      { "name": "Hensoldt", "fokus": "Sensorik, Radar", "marktkap": "~9 Mrd. €" },
+      { "name": "RENK", "fokus": "Antriebstechnik", "marktkap": "~5 Mrd. €" }
     ]
   },
   "France": {
@@ -18,9 +18,9 @@
     "jahre": ["2022", "2023", "2024", "2025", "2026"],
     "ausgaben": [44, 51, 59, 64, 70],
     "top3": [
-      { "name": "Thales", "fokus": "Elektronik, Verteidigung", "marktkap": "32 Mrd. €" },
-      { "name": "Dassault Aviation", "fokus": "Kampfflugzeuge (Rafale)", "marktkap": "24 Mrd. €" },
-      { "name": "Naval Group", "fokus": "Marine, U-Boote", "marktkap": "n. v." }
+      { "name": "Safran", "fokus": "Triebwerke, Ausrüstung", "marktkap": "~90 Mrd. €" },
+      { "name": "Thales", "fokus": "Elektronik, Verteidigung", "marktkap": "~50 Mrd. €" },
+      { "name": "Dassault Aviation", "fokus": "Kampfflugzeuge (Rafale)", "marktkap": "~23 Mrd. €" }
     ]
   },
   "United Kingdom": {
@@ -30,9 +30,9 @@
     "jahre": ["2022", "2023", "2024", "2025", "2026"],
     "ausgaben": [58, 62, 68, 74, 80],
     "top3": [
-      { "name": "BAE Systems", "fokus": "Systeme, Luft, See", "marktkap": "48 Mrd. €" },
-      { "name": "Rolls-Royce Defence", "fokus": "Antriebe, Triebwerke", "marktkap": "35 Mrd. €" },
-      { "name": "Babcock International", "fokus": "Marine, Support", "marktkap": "3 Mrd. €" }
+      { "name": "BAE Systems", "fokus": "Systeme, Luft, See", "marktkap": "~70 Mrd. €" },
+      { "name": "Babcock International", "fokus": "Marine, Support", "marktkap": "~5 Mrd. €" },
+      { "name": "QinetiQ", "fokus": "Verteidigungstechnik, Cyber", "marktkap": "~3 Mrd. €" }
     ]
   },
   "Italy": {

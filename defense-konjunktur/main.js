@@ -451,7 +451,9 @@ function initMzCanvas() {
 
   const ctx = canvas.getContext('2d');
   let w, h;
-  let strands = [];
+  let nodes = [];
+  let edges = [];
+  let packets = [];
 
   function resize() {
     const rect = canvas.getBoundingClientRect();
@@ -462,74 +464,157 @@ function initMzCanvas() {
     canvas.height = h * dpr;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
-    buildStrands();
+    buildNetwork();
   }
 
-  let bandTop, bandBottom;
+  function buildNetwork() {
+    nodes = [];
+    edges = [];
+    packets = [];
 
-  function buildStrands() {
-    strands = [];
-   bandTop = h * 0.55;
-    bandBottom = h * 0.78;
-    const bandHeight = bandBottom - bandTop;
-    const countA = 16;
-    const countB = 16;
-
-    for (let i = 0; i < countA; i++) {
-      strands.push({
-        baseY: bandTop + (i / (countA - 1)) * bandHeight,
-        amp: 10 + Math.random() * 14,
-        freq: 1.6 + Math.random() * 2.2,
-        speed: 0.00010 + Math.random() * 0.00012,
-        phase: Math.random() * Math.PI * 2,
-        tilt: 0,
-        widthPx: 0.8 + Math.random() * 0.5,
-        alpha: 0.16 + Math.random() * 0.16
+    const area = w * h;
+    const count = Math.max(70, Math.round(area / 9000));
+    for (let i = 0; i < count; i++) {
+      nodes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        bright: Math.random() < 0.12
       });
     }
 
-    for (let i = 0; i < countB; i++) {
-      strands.push({
-        baseY: bandTop + (i / (countB - 1)) * bandHeight,
-        amp: 12 + Math.random() * 16,
-        freq: 1.2 + Math.random() * 1.8,
-        speed: 0.00009 + Math.random() * 0.00013,
-        phase: Math.random() * Math.PI * 2,
-        tilt: (bandHeight / w) * (0.5 + Math.random() * 0.6) * (Math.random() < 0.5 ? -1 : 1),
-        widthPx: 0.8 + Math.random() * 0.5,
-        alpha: 0.14 + Math.random() * 0.14
+    const edgeSet = new Set();
+    nodes.forEach((n, i) => {
+      const dists = nodes
+        .map((other, j) => ({ j, d: Math.hypot(n.x - other.x, n.y - other.y) }))
+        .filter(o => o.j !== i)
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 3 + Math.floor(Math.random() * 3));
+
+      dists.forEach(o => {
+        const key = i < o.j ? `${i}-${o.j}` : `${o.j}-${i}`;
+        if (!edgeSet.has(key) && o.d < Math.min(w, h) * 0.28) {
+          edgeSet.add(key);
+          edges.push({ a: i, b: o.j });
+        }
       });
+    });
+  }
+
+  function spawnPacket() {
+    if (!edges.length) return;
+    const edge = edges[Math.floor(Math.random() * edges.length)];
+    packets.push({
+      edge,
+      progress: 0,
+      speed: 0.006 + Math.random() * 0.008,
+      reverse: Math.random() < 0.5
+    });
+  }
+
+  function drawNetwork() {
+    const isDark = document.documentElement.classList.contains('dark');
+    const lineColor = isDark ? '59, 130, 246' : '30, 64, 175';
+    const lineAlpha = isDark ? 0.22 : 0.4;
+    const nodeDimColor = isDark ? '59, 130, 246' : '30, 64, 175';
+    const nodeBrightColor = isDark ? '96, 165, 250' : '29, 78, 216';
+
+    ctx.strokeStyle = `rgba(${lineColor}, ${lineAlpha})`;
+    ctx.lineWidth = 1;
+    edges.forEach(e => {
+      const a = nodes[e.a];
+      const b = nodes[e.b];
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    });
+
+    nodes.forEach(n => {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.bright ? 2.6 : 1.6, 0, Math.PI * 2);
+      ctx.fillStyle = n.bright
+        ? `rgba(${nodeBrightColor}, 0.9)`
+        : `rgba(${nodeDimColor}, ${isDark ? 0.45 : 0.65})`;
+      if (n.bright) {
+        ctx.shadowColor = `rgba(${nodeBrightColor}, 0.8)`;
+        ctx.shadowBlur = 6;
+      }
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    });
+  }
+
+  function drawPackets() {
+    for (let i = packets.length - 1; i >= 0; i--) {
+      const p = packets[i];
+      p.progress += p.speed;
+
+      if (p.progress >= 1) {
+        packets.splice(i, 1);
+        continue;
+      }
+
+      const a = nodes[p.reverse ? p.edge.b : p.edge.a];
+      const b = nodes[p.reverse ? p.edge.a : p.edge.b];
+      const x = a.x + (b.x - a.x) * p.progress;
+      const y = a.y + (b.y - a.y) * p.progress;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(147, 197, 253, 0.95)';
+      ctx.shadowColor = 'rgba(147, 197, 253, 0.9)';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
     }
+  }
+
+  function drawShield(time) {
+    const cx = w * 0.92;
+    const cy = h * 0.5;
+    const pulse = (Math.sin(time * 0.0018) + 1) / 2;
+    const scale = 1 + pulse * 0.12;
+    const alpha = 0.35 + pulse * 0.35;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(scale, scale);
+
+    ctx.beginPath();
+    ctx.moveTo(0, -22);
+    ctx.bezierCurveTo(10, -18, 18, -14, 18, -6);
+    ctx.bezierCurveTo(18, 8, 10, 20, 0, 26);
+    ctx.bezierCurveTo(-10, 20, -18, 8, -18, -6);
+    ctx.bezierCurveTo(-18, -14, -10, -18, 0, -22);
+    ctx.closePath();
+    ctx.strokeStyle = `rgba(96, 165, 250, ${alpha})`;
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = 'rgba(96, 165, 250, 0.8)';
+    ctx.shadowBlur = 10 + pulse * 8;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.beginPath();
+    ctx.moveTo(-7, -1);
+    ctx.lineTo(-2, 6);
+    ctx.lineTo(8, -9);
+    ctx.strokeStyle = `rgba(96, 165, 250, ${alpha + 0.15})`;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    ctx.restore();
   }
 
   function draw(time) {
     ctx.clearRect(0, 0, w, h);
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, bandTop - 40, w, (bandBottom - bandTop) + 80);
-    ctx.clip();
+    drawNetwork();
 
-    strands.forEach(s => {
-      const t = time * s.speed;
-      ctx.beginPath();
-      const points = 70;
-      for (let i = 0; i <= points; i++) {
-        const prog = i / points;
-        const x = prog * w;
-        const y = s.baseY + prog * s.tilt * w + Math.sin(prog * Math.PI * 2 * s.freq + t + s.phase) * s.amp;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      }
-      ctx.strokeStyle = `rgba(110, 231, 183, ${s.alpha})`;
-      ctx.lineWidth = s.widthPx;
-      ctx.shadowColor = 'rgba(110, 231, 183, 0.6)';
-      ctx.shadowBlur = 3;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-    });
+    if (Math.random() < 0.04) spawnPacket();
+    drawPackets();
 
-    ctx.restore();
+    drawShield(time);
+
     requestAnimationFrame(draw);
   }
 
