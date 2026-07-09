@@ -8,10 +8,6 @@
 
 ---
 
-**Live-Version:** https://temirlan-kg.github.io/Konjunkturhoffnung-und-Defense/
-
----
-
 ## Über das Projekt
 
 Der russische Angriffskrieg gegen die Ukraine und ein unsicherer gewordener Bündnispartner USA verändern die sicherheitspolitische Lage in Europa grundlegend. Deutschland reagiert mit historisch hohen Investitionen: bis 2029 sollen rund 152 Milliarden Euro in die Verteidigung fließen. Diese Zeitenwende betrifft nicht nur die Politik, sondern verändert Konjunktur, Industrie und Innovationslandschaft nachhaltig.
