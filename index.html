@@ -11,8 +11,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/Konjunkturhoffnung-und-Defense/apple-touch-icon.png" />
   <link rel="manifest" href="/Konjunkturhoffnung-und-Defense/site.webmanifest" />
   <title>Konjunkturhoffnung und Defense</title>
-  <script type="module" crossorigin src="/Konjunkturhoffnung-und-Defense/assets/index-DBpNrNPX.js"></script>
-  <link rel="stylesheet" crossorigin href="/Konjunkturhoffnung-und-Defense/assets/index-BQgv160V.css">
+  <script type="module" crossorigin src="/Konjunkturhoffnung-und-Defense/assets/index-B5jHc_kf.js"></script>
+  <link rel="stylesheet" crossorigin href="/Konjunkturhoffnung-und-Defense/assets/index-dy11IkX1.css">
 </head>
 <body>
 
@@ -586,8 +586,20 @@
 
         var lock = false, caro = document.getElementById('svCaro');
         caro.addEventListener('wheel', function (e) {
-          e.preventDefault(); if (lock) return; if (Math.abs(e.deltaY) < 8) return;
-          go(e.deltaY > 0 ? 1 : -1); lock = true; setTimeout(function () { lock = false; }, 650);
+          var goingDown = e.deltaY > 0;
+          var atEnd = goingDown && cur >= slides.length - 1;
+          var atStart = !goingDown && cur <= 0;
+
+          if (atEnd || atStart) {
+            return;
+          }
+
+          e.preventDefault();
+          if (Math.abs(e.deltaY) < 8) return;
+          if (lock) return;
+          go(goingDown ? 1 : -1);
+          lock = true;
+          setTimeout(function () { lock = false; }, 650);
         }, { passive: false });
         var sx = 0, sy = 0, sw = false;
         caro.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; sw = false; }, { passive: true });
