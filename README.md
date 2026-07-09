@@ -107,8 +107,6 @@ npm run deploy
 ## Team
 - Temirlan Anarkulov
 - Semanur Asalioglu
-- Manuel Nseguet Tchamfa
-
 ---
 
 ## Hinweis zur Entwicklung
