@@ -2244,18 +2244,33 @@ nav a.nav-active {
 
 @media (max-width: 768px) {
   .sv-caro { padding: 16px 14px; }
-  .sv-view { height: 620px; }
-  .sv-q { font-size: 14px; margin-bottom: 12px; }
-  .sv-pair { height: 110px; }
-  .sv-cbar { width: 14px; }
-  .sv-cval { font-size: 9px; }
-  .sv-clabel { font-size: 8.5px; }
+  .sv-view { height: 640px; }
+  .sv-slide { padding-top: 8px; }
+  .sv-q { font-size: 12.5px; line-height: 1.4; margin-bottom: 14px; min-height: 78px; }
+  .sv-groupwrap { margin-top: 34px; align-items: flex-end; flex-wrap: nowrap; }
+  .sv-grp { min-width: 0; }
+  .sv-pair { height: 76px; align-items: flex-end; }
+  .sv-cbar { width: 16px; max-height: 76px !important; }
+  .sv-cval { font-size: 8.5px; margin-bottom: 2px; }
+  .sv-clabel { font-size: 8px; word-break: break-word; overflow-wrap: anywhere; hyphens: auto; margin-top: 6px; }
   .sv-hlab { font-size: 11px; }
   .sv-htrack, .sv-hfill { height: 12px; }
   .sv-slabel { font-size: 11px; }
-  .sv-sbar { height: 18px; }
+  .sv-sbar { height: 13px; }
   .sv-seg { font-size: 8px; }
   .sv-arrow { width: 32px; height: 32px; font-size: 14px; }
+}
+
+@media (max-width: 768px) {
+  /* ... deine anderen Styles ... */
+
+  .sv-pair {
+    display: flex !important;       /* Aktiviert Flexbox */
+    align-items: flex-end;          /* Richtet die Balken am unteren Ende aus */
+    justify-content: space-between; /* Hält die beiden Balken nebeneinander */
+    height: 40px;                   /* Behält deine Wunschhöhe */
+    margin-top: 10px;
+  }
 }
 
 /* ÜBERGANGS-SECTIONS (SCHMAL) */
@@ -2404,5 +2419,92 @@ nav a.nav-active {
 @media (max-width: 640px) {
   .fazit-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Diagramm-Container generell nicht über Kartenrand hinauswachsen lassen */
+  #chart-politik,
+  #chart-mittelstand,
+  #chart-bubble {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  #chart-politik,
+  #chart-mittelstand {
+    height: 260px;
+    min-height: 220px;
+  }
+
+  .konzerne-chart-wrap {
+    height: 360px;
+    min-height: 320px;
+  }
+
+  .konzerne-chart-inner {
+    overflow: hidden;
+  }
+
+  /* Scrolly-Text und Karte sauber untereinander, kein Überlappen */
+  .scrolly-map-wrap {
+    height: 40vh;
+    min-height: 260px;
+  }
+
+  .scrolly-step {
+    padding: 1.75rem 0;
+  }
+
+  .scrolly-step p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .konzerne-step {
+    padding: 2rem 0;
+  }
+
+  .konzerne-step p {
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  /* Markt & Zugang Karten: Icon/Label/Buttons nicht überlappen lassen */
+  .mz-left {
+    flex-wrap: wrap;
+  }
+
+  .mz-label {
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  .mz-value {
+    font-size: 1.1rem;
+  }
+
+  /* Politik-Toggle-Buttons nicht in Chart hineinragen lassen */
+  .politik-toggle-wrap {
+    margin: 1.5rem 0 2rem;
+  }
+
+  /* Fazit-Karten: Text nicht an Rand kleben */
+  .fazit-card {
+    padding: 1.25rem 1.1rem;
+  }
+
+  .fazit-card h3 {
+    font-size: 0.98rem;
+  }
+
+  .fazit-card p {
+    font-size: 0.85rem;
+  }
+
+  /* Konzerne-Bubble-Legende (falls vorhanden) nicht abschneiden */
+  .konzerne-chart-quelle {
+    font-size: 0.75rem;
+    padding: 0 0.5rem;
   }
 }

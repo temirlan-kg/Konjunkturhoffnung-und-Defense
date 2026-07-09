@@ -12,7 +12,23 @@ export function initLaenderPanel() {
       laenderDaten = data;
       baueDropdown();
       baueSchliessenButton();
+      beobachteSection();
     });
+}
+
+function beobachteSection() {
+  const step = document.querySelector('.scrolly-step[data-step="3"]');
+  if (!step) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) {
+        schliessePanel();
+      }
+    });
+  }, { threshold: 0.1 });
+
+  observer.observe(step);
 }
 
 function baueDropdown() {
