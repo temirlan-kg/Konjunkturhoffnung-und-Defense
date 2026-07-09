@@ -274,7 +274,7 @@ function initHeroCanvas() {
     drawDomes();
     drawBuildings();
 
-    if (Math.random() < 0.035 && bombs.length < 9) spawnBomb();
+    if (Math.random() < 0.07 && bombs.length < 16) spawnBomb();
 
     for (let i = bombs.length - 1; i >= 0; i--) {
       const b = bombs[i];

@@ -257,11 +257,13 @@ nav .nav-links a:hover { color: var(--text-primary); }
 }
 
 @media (max-width: 768px) {
-  .hero-frame { inset: 0.8rem; }
-  .hero-tag, .hero-status { font-size: 0.55rem; }
-  .hero-tag { left: 26px; }
-  .hero-status { right: 26px; }
+  .hero-frame { top: 1.75rem; left: 0.8rem; right: 0.8rem; bottom: 0.8rem; }
+  .hero-frame-corner { width: 16px; height: 16px; }
+  .hero-tag, .hero-status { font-size: 0.5rem; letter-spacing: 0.08em; top: 24px; }
+  .hero-tag { left: 8px; }
+  .hero-status { right: 8px; }
 }
+
 /* 5. SCROLL-SECTIONS (Standard) */
 .scroll-section {
   padding: 8rem 4rem 6rem;
@@ -2173,6 +2175,10 @@ nav a.nav-active {
   background: transparent;
   border: 1px solid rgba(228, 167, 62, .3);
   border-radius: 10px; padding: 16px 18px; position: relative; touch-action: pan-y;
+}
+
+:root:not(.dark) .sv-caro {
+  border-color: rgba(180, 120, 20, .6);
 }
 .sv-caro-head { display: flex; justify-content: flex-end; margin-bottom: 8px; }
 .sv-caro-hint { font-size: 12px; color: var(--text-muted); }
