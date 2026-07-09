@@ -2190,10 +2190,10 @@ nav a.nav-active {
 }
 .sv-caro-head { display: flex; justify-content: flex-end; margin-bottom: 8px; }
 .sv-caro-hint { font-size: 12px; color: var(--text-muted); }
-.sv-view { position: relative; overflow: hidden; height: 520px; }
+.sv-view { position: relative; overflow: hidden; height: 600px; }
 .sv-slide {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  padding: 4px 6px; box-sizing: border-box; overflow-y: auto;
+  padding: 4px 6px; box-sizing: border-box; overflow-y: hidden;
   transition: transform .6s cubic-bezier(0.22,1,0.36,1), opacity .5s;
 }
 .sv-num { font-size: 13px; font-weight: 800; color: #a78bfa; margin-bottom: 6px; }
@@ -2244,7 +2244,7 @@ nav a.nav-active {
 
 @media (max-width: 768px) {
   .sv-caro { padding: 16px 14px; }
-  .sv-view { height: 540px; }
+  .sv-view { height: 620px; }
   .sv-q { font-size: 14px; margin-bottom: 12px; }
   .sv-pair { height: 110px; }
   .sv-cbar { width: 14px; }
