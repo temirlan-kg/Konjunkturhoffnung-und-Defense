@@ -48,7 +48,7 @@ Ein Bubble Chart vergleicht zehn deutsche und internationale Akteure aus vier Ka
 **Survey**
 Ein Karussell mit fünf Ergebnissen der Bitkom DefTech-Befragung 2026 (Gründungsbereitschaft, Wertschätzung, Einschätzung der Verteidigungsfähigkeit, Bundeswehr-Aufträge, Relevanz politischer Maßnahmen), dargestellt als gruppierte Balken, horizontale Balken und gestapelte Balken. Innerhalb der Karte wird zunächst durch alle fünf Fragen navigiert, bevor die Seite zur nächsten Sektion weiterscrollt.
 
-**Kehrseite — Risiken & offene Fragen**
+**Kehrseite - Risiken & offene Fragen**
 Ein bewusst kritischer Abschluss: vier Karten zu Schuldenfinanzierung, Fachkräftemangel, Abhängigkeit vom Ausland und der Frage, ob der Boom von Dauer ist — mit Quellenangaben von IfW Kiel, bpb, Kearney und SIPRI.
 
 ---
