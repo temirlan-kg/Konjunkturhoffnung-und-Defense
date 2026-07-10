@@ -449,7 +449,10 @@ nav .nav-links a:hover { color: var(--text-primary); }
   padding-top: 2rem;
 }
 
-.scrolly-intro h2 { margin-bottom: 0.5rem; }
+.scrolly-intro h2 {
+  margin-bottom: 0.5rem;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+}
 
 .scrolly-sub {
   font-size: 1.1rem;
@@ -744,7 +747,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
 #section-politik { padding-top: 5rem; padding-bottom: 4rem; }
 
 #section-politik h2 {
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-weight: 800;
   margin-bottom: 2rem;
   letter-spacing: -0.02em;
@@ -932,8 +935,8 @@ nav .nav-links a:hover { color: var(--text-primary); }
 }
 
 .konzerne-intro h2 {
-  font-size: clamp(3rem, 6vw, 4.5rem);
-  font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 800;
   margin-bottom: 0;
   letter-spacing: -0.02em;
   color: #6ee7b7;
@@ -1414,7 +1417,17 @@ nav .nav-links a:hover { color: var(--text-primary); }
   overflow: hidden;
   padding: 0 1.25rem;
   position: relative;
-  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (min-width: 901px) {
+  .tech-info {
+    max-width: 620px;
+  }
+
+  .tech-info.open {
+    box-shadow: 0 0 0 1px #a78bfa, 0 0 40px 6px rgba(167, 139, 250, 0.3);
+  }
 }
 
 .tech-info.open {
@@ -1740,7 +1753,7 @@ nav .nav-links a:hover { color: var(--text-primary); }
 }
 
 .mz-section h2 {
-  font-size: clamp(2.4rem, 7vw, 3.6rem);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
 }
 
 .mz-content {
@@ -1750,6 +1763,14 @@ nav .nav-links a:hover { color: var(--text-primary); }
 .mz-content .intro {
   font-size: clamp(1.15rem, 2vw, 1.4rem);
   line-height: 1.7;
+}
+
+:root:not(.dark) .mz-content .intro {
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .mz-grid {
@@ -1823,7 +1844,13 @@ nav .nav-links a:hover { color: var(--text-primary); }
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 640px) {
+  .mz-guess-options {
+    flex-wrap: wrap;
+  }
 }
 
 .mz-tap-badge {
@@ -2388,6 +2415,12 @@ nav a.nav-active {
   grid-template-columns: repeat(4, 1fr);
   gap: 1.25rem;
   margin: 2.5rem 0 1.5rem;
+}
+
+@media (min-width: 901px) {
+  .fazit-grid {
+    gap: 2.25rem;
+  }
 }
 
 .fazit-card {

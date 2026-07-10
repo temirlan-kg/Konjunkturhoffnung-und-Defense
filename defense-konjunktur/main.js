@@ -478,7 +478,7 @@ function initMzCanvas() {
       nodes.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        bright: Math.random() < 0.12
+        bright: Math.random() < 0.28
       });
     }
 
@@ -516,7 +516,7 @@ function initMzCanvas() {
     const lineColor = isDark ? '59, 130, 246' : '30, 64, 175';
     const lineAlpha = isDark ? 0.22 : 0.4;
     const nodeDimColor = isDark ? '59, 130, 246' : '30, 64, 175';
-    const nodeBrightColor = isDark ? '96, 165, 250' : '29, 78, 216';
+    const nodeBrightColor = isDark ? '191, 219, 254' : '29, 78, 216';
 
     ctx.strokeStyle = `rgba(${lineColor}, ${lineAlpha})`;
     ctx.lineWidth = 1;
@@ -533,11 +533,11 @@ function initMzCanvas() {
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.bright ? 2.6 : 1.6, 0, Math.PI * 2);
       ctx.fillStyle = n.bright
-        ? `rgba(${nodeBrightColor}, 0.9)`
+        ? `rgba(${nodeBrightColor}, 1)`
         : `rgba(${nodeDimColor}, ${isDark ? 0.45 : 0.65})`;
       if (n.bright) {
-        ctx.shadowColor = `rgba(${nodeBrightColor}, 0.8)`;
-        ctx.shadowBlur = 6;
+        ctx.shadowColor = `rgba(${nodeBrightColor}, 0.95)`;
+        ctx.shadowBlur = 8;
       }
       ctx.fill();
       ctx.shadowBlur = 0;
