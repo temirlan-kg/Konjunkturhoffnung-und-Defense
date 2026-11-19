@@ -5,6 +5,8 @@ An interactive data visualization website about the link between the European de
 University project at TH Nürnberg Georg Simon Ohm
 Course: Data Motion / Interaction (Mirko Schramm), Summer Semester 2026
 
+**Live website:** https://temirlan-kg.github.io/Konjunkturhoffnung-und-Defense/
+
 ## About the Project
 
 Russia's war of aggression against Ukraine and an increasingly unreliable ally in the USA are fundamentally changing Europe's security situation. Germany is responding with historically high investments: around €152 billion is set to flow into defense by 2029. This turning point affects not only politics but also the economy, industry and innovation.
@@ -32,9 +34,9 @@ The website makes this development visible. It guides users through eight chapte
 - HTML5 Canvas (animated backgrounds)
 - Vanilla JavaScript (ES modules) and CSS variables for dark/light mode
 
-## Installation
+## Run Locally
 
-Requirements: Node.js and npm.
+The website is live at the link above. To run it on your own machine (requires Node.js and npm):
 
 ```bash
 git clone https://github.com/temirlan-kg/Konjunkturhoffnung-und-Defense.git
@@ -43,7 +45,7 @@ npm install
 npm run dev
 ```
 
-The website is then available at http://localhost:5173.
+The local dev version then runs at http://localhost:5173.
 
 Build and deploy to GitHub Pages:
 
